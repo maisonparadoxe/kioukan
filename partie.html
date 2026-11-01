@@ -586,14 +586,14 @@ window.addEventListener('error', function (e) {
     return s;
   }
 
-  window.AlibisArt = { avatar: avatar, avatarInner: inner, defs: defs, furn: furn };
+  window.KioukanArt = { avatar: avatar, avatarInner: inner, defs: defs, furn: furn };
 })();
 
 </script>
 <script>
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
-  else root.AlibisEngine = factory();
+  else root.KioukanEngine = factory();
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
@@ -1378,13 +1378,13 @@ window.addEventListener('error', function (e) {
 <script>
 (function () {
   'use strict';
-  var E = window.AlibisEngine;
+  var E = window.KioukanEngine;
   var ROOMS, SUSPECTS, STEP, DOORS, GEO, SC;
   var LEVELS = E.LEVELS;
   var tl = E.timeLabel;
 
   /* Plans (viewBox 350 x 210) et vocabulaire propres à chaque décor */
-  var Art = window.AlibisArt;
+  var Art = window.KioukanArt;
   var SCENE_UI = {
     manoir: {
       label: 'Manoir', plan: 'Plan du manoir',
@@ -1855,9 +1855,9 @@ window.addEventListener('error', function (e) {
     state.scene = scene || state.scene;
     state.level = level || state.level;
     state.mode = mode || state.mode;
-    lsSet('alibis.level', state.level);
-    lsSet('alibis.mode', state.mode);
-    lsSet('alibis.scene', state.scene);
+    lsSet('kioukan.level', state.level);
+    lsSet('kioukan.mode', state.mode);
+    lsSet('kioukan.scene', state.scene);
     renderScenes(); renderModes(); renderLevels();
     $('board-panel').innerHTML = '<p class="loading">Instruction du dossier…</p>';
     $('case').innerHTML = ''; $('suspects').innerHTML = ''; $('map-panel').innerHTML = ''; $('clues-panel').innerHTML = ''; $('verdict').innerHTML = '';
@@ -1971,15 +1971,15 @@ window.addEventListener('error', function (e) {
   });
 
   /* ---------- Démarrage ---------- */
-  var saved = lsGet('alibis.level');
+  var saved = lsGet('kioukan.level');
   if (saved && LEVELS[saved]) state.level = saved;
-  var savedMode = lsGet('alibis.mode');
+  var savedMode = lsGet('kioukan.mode');
   if (savedMode === 'liar' || savedMode === 'half' || savedMode === 'classic') state.mode = savedMode;
-  var savedScene = lsGet('alibis.scene');
+  var savedScene = lsGet('kioukan.scene');
   if (SCENE_UI[savedScene]) state.scene = savedScene;
   var rules = $('rules');
-  if (!lsGet('alibis.seen')) { rules.open = true; lsSet('alibis.seen', '1'); }
-  window.Alibis = { state: state, newCase: newCase };
+  if (!lsGet('kioukan.seen')) { rules.open = true; lsSet('kioukan.seen', '1'); }
+  window.Kioukan = { state: state, newCase: newCase };
   newCase(state.level);
 })();
 

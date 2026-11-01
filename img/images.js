@@ -2,7 +2,7 @@
    Dépose les fichiers dans ce dossier « img », puis retire les // devant la ligne de chaque image ajoutée.
    Tant qu'une image n'est pas listée ici, le jeu utilise le dessin de remplacement.
    Un portrait sans expression ("nom") sert pour toutes les expressions ; "nom:expression" le remplace pour une expression précise. */
-window.ALIBI_IMAGES = {
+window.KIOUKAN_IMAGES = {
   // Portraits (PNG détouré, fond transparent)
   // 'hortense-lafleur': 'img/hortense-lafleur.png',
   // 'comtesse-diane-de-carat': 'img/comtesse-diane-de-carat.png',
