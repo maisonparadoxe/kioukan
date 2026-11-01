@@ -7,223 +7,267 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Yellowtail&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap">
 <style>
-/* Concept : boîte de jeu d'enquête. Aplats pastel, polaroïds des suspects, plan vu de dessus, grille sur papier déchiré.
-   Mobile : une colonne (affaire, suspects, plan, chronologie, constats). Large : chronologie à gauche, plan et constats à droite. */
+/* Concept : épisode de webtoon. On lit l'histoire en faisant défiler de grandes cases pleine largeur
+   séparées par du blanc, avec une lumière de cinéma et des bulles ovales. L'enquête suit, sur des
+   cartes claires et douces, comme une application de lecture. */
 :root {
-  --bg: #d9ebfb;
-  --panel: #ffffff;
-  --panel-2: #eceffd;
-  --cell: #f3f5ff;
-  --ink: #2b2f55;
-  --ink-2: #666c91;
-  --rule: #e0e5f5;
-  --accent: #6a78c9;
-  --accent-d: #4d5aa8;
+  --bg: #f6f3ef;
+  --gutter: #ffffff;
+  --paper: #ffffff;
+  --panel-2: #f1ece6;
+  --cell: #fbf9f6;
+  --ink: #26201f;
+  --ink-2: #77706b;
+  --line: #e7e0d8;
+  --line-2: #d6cdc3;
+  --accent: #c2414f;
   --accent-ink: #ffffff;
-  --pink: #f4b6c9;
-  --pink-2: #fbdde7;
-  --lav: #e7e3fa;
-  --given: #fbd3df;
-  --ok: #2f9e77;
-  --bad: #dc4f6b;
-  --bad-bg: #ffe1e7;
-  --shadow: 0 6px 16px rgba(60, 80, 140, 0.16);
-  --wall: #2b2f55;
-  --door: #fff3cf;
-  --wood-a: #f7dbe2; --wood-b: #ebbccb;
-  --check-a: #fde9ef; --check-c: #f6c7d6;
-  --tile-a: #e3e7fb; --tile-b: #cdd4f3;
-  --diamond-a: #ece3f8; --diamond-c: #d6c8f0;
-  --grass-a: #cdeac3; --grass-c: #a9d89d;
-  --steel-a: #dde3f2; --steel-b: #bcc6e0;
+  --accent-2: #3d5a96;
+  --red: #d23c4c;
+  --red-bg: #fde4e6;
+  --given: #f7e7cf;
+  --ok: #2f9a6a;
+  --shadow: 0 6px 22px rgba(60, 40, 30, 0.10);
+  --s0: #4f7fc4;
+  --s1: #2f9a6a;
+  --s2: #c9824a;
+  --s3: #8a5bb3;
+  --s4: #c2414f;
+  --wall: #3a2a28; --door: #fff3cf;
+  --wood-a: #f7dbe2; --wood-b: #ebbccb; --check-a: #fde9ef; --check-c: #f6c7d6; --tile-a: #e3e7fb; --tile-b: #cdd4f3;
+  --diamond-a: #ece3f8; --diamond-c: #d6c8f0; --grass-a: #cdeac3; --grass-c: #a9d89d; --steel-a: #dde3f2; --steel-b: #bcc6e0;
   --fu: #f0a3b9; --fu2: #c9bdf0; --fw: #ffffff; --fpot: #b5806a; --fg: #6dbb84; --fg2: #4f9f6c; --ftv: #3a3f6b; --win: #bfe2f7;
-  --s0: #f08a5d;
-  --s1: #3bb39f;
-  --s2: #8e7cf0;
-  --s3: #ee6fa5;
-  --s4: #e8b730;
-  --display: 'Yellowtail', 'Brush Script MT', cursive;
-  --sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: var(--sans);
-  --tw: 46px;
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans: 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --tw: 48px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #171c3d;
-    --panel: #252b57;
-    --panel-2: #323a70;
-    --cell: #1d2348;
-    --ink: #eef0ff;
-    --ink-2: #aeb4da;
-    --rule: #353d6b;
-    --accent: #8d9cf0;
-    --accent-d: #5f6ec9;
-    --accent-ink: #11153a;
-    --pink: #c97b97;
-    --pink-2: #4a2f55;
-    --lav: #343b72;
-    --given: #6b3f66;
-    --ok: #4fd68c;
-    --bad: #ff7d93;
-    --bad-bg: #55243c;
-    --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-    --wall: #0b0e24;
-    --door: #ffe9a8;
-    --wood-a: #5b4666; --wood-b: #6e5780;
-    --check-a: #5a4465; --check-c: #6c5379;
-    --tile-a: #3d4676; --tile-b: #4b5590;
-    --diamond-a: #46407a; --diamond-c: #574f90;
-    --grass-a: #3b6b55; --grass-c: #4b806a;
-    --steel-a: #424a78; --steel-b: #545d93;
-    --fu: #c97b97; --fu2: #8d82cf; --fw: #eef0ff; --fg: #58ab78; --fg2: #3f8f5f; --win: #8fc0e8;
-    --s0: #ff9a6e;
-    --s1: #4fd1bb;
-    --s2: #a99aff;
-    --s3: #ff86b8;
-    --s4: #f2c53f;
+    --bg: #131217; --gutter: #0c0b0f; --paper: #1d1b22; --panel-2: #26232c; --cell: #17151b;
+    --ink: #f2ece6; --ink-2: #a49c96; --line: #2e2a33; --line-2: #3d3843;
+    --accent: #ef6f7c; --accent-ink: #160c10; --accent-2: #9db7ef; --red: #ff7a86; --red-bg: #3e1d26;
+    --given: #4a3a26; --ok: #5fd39b; --shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
+    --s0: #7da7ea; --s1: #55c690; --s2: #e7a56d; --s3: #b48ad6; --s4: #ef6f7c;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #171c3d;
-  --panel: #252b57;
-  --panel-2: #323a70;
-  --cell: #1d2348;
-  --ink: #eef0ff;
-  --ink-2: #aeb4da;
-  --rule: #353d6b;
-  --accent: #8d9cf0;
-  --accent-d: #5f6ec9;
-  --accent-ink: #11153a;
-  --pink: #c97b97;
-  --pink-2: #4a2f55;
-  --lav: #343b72;
-  --given: #6b3f66;
-  --ok: #4fd68c;
-  --bad: #ff7d93;
-  --bad-bg: #55243c;
-  --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-  --wall: #0b0e24;
-  --door: #ffe9a8;
-  --wood-a: #5b4666; --wood-b: #6e5780;
-  --check-a: #5a4465; --check-c: #6c5379;
-  --tile-a: #3d4676; --tile-b: #4b5590;
-  --diamond-a: #46407a; --diamond-c: #574f90;
-  --grass-a: #3b6b55; --grass-c: #4b806a;
-  --steel-a: #424a78; --steel-b: #545d93;
-  --fu: #c97b97; --fu2: #8d82cf; --fw: #eef0ff; --fg: #58ab78; --fg2: #3f8f5f; --win: #8fc0e8;
-  --s0: #ff9a6e;
-  --s1: #4fd1bb;
-  --s2: #a99aff;
-  --s3: #ff86b8;
-  --s4: #f2c53f;
+  --bg: #131217; --gutter: #0c0b0f; --paper: #1d1b22; --panel-2: #26232c; --cell: #17151b;
+  --ink: #f2ece6; --ink-2: #a49c96; --line: #2e2a33; --line-2: #3d3843;
+  --accent: #ef6f7c; --accent-ink: #160c10; --accent-2: #9db7ef; --red: #ff7a86; --red-bg: #3e1d26;
+  --given: #4a3a26; --ok: #5fd39b; --shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
+  --s0: #7da7ea; --s1: #55c690; --s2: #e7a56d; --s3: #b48ad6; --s4: #ef6f7c;
   color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font: 16px/1.4 var(--sans);
+  margin: 0; background: var(--bg); color: var(--ink); font: 15.5px/1.5 var(--sans);
   padding-block: 18px 56px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 button { font: inherit; color: inherit; }
 .app { max-width: 1040px; margin: 0 auto; }
-.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.mono { font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-/* En-tête */
-.top {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
-  gap: 14px 20px; margin-bottom: 18px;
-}
-.brand { min-width: 0; }
-h1 { margin: 0; font: 400 clamp(60px, 18vw, 84px)/0.9 var(--display); color: var(--ink); text-shadow: 3px 4px 0 var(--pink); }
-.dossier {
-  margin: 8px 0 0; display: inline-block; font: 700 13px/1.2 var(--sans); color: var(--ink);
-  background: var(--panel); padding: 5px 12px; border-radius: 999px; box-shadow: var(--shadow);
-}
-.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.controls .seg { flex: 1 1 auto; }
-.controls .seg button { flex: 1 1 auto; }
-.seg { display: inline-flex; padding: 4px; gap: 2px; border-radius: 999px; background: var(--panel); box-shadow: var(--shadow); }
-.seg button {
-  border: 0; background: transparent; padding: 8px 14px; min-height: 40px; border-radius: 999px;
-  font: 700 14.5px var(--sans); cursor: pointer; color: var(--ink-2);
-}
-.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
+.top { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 16px; }
+h1 { margin: 0; font: 900 clamp(40px, 12vw, 60px)/0.95 var(--serif); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.mode-tag { margin: 0; font: 600 12px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
 
+/* Épisode : couverture puis bande verticale */
+#intro { max-width: 640px; margin: 0 auto; }
+/* sur grand écran, une case de BD tient dans la hauteur de l'écran */
+@media (min-width: 700px) { #intro { max-width: max(360px, min(640px, 82vh)); } }
+.cover { text-align: center; padding: 6px 0 18px; }
+.kicker { margin: 0 0 6px; font: 600 12px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); }
+.lvl-title { margin: 0; font: italic 700 30px/1.15 var(--serif); text-wrap: balance; }
+.lvl-title span { display: block; margin-bottom: 4px; font: 600 12px var(--sans); font-style: normal; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+.strip { background: var(--gutter); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 28px 0 40px; display: flex; flex-direction: column; gap: 46px; }
+@media (min-width: 672px) { .strip { margin-inline: 0; border-radius: 6px; } }
+.beat { position: relative; }
+.says { position: relative; z-index: 3; display: flex; flex-direction: column; gap: 6px; padding: 0 14px; margin-bottom: -26px; }
+.wbubble {
+  position: relative; margin: 0; max-width: 80%; padding: 20px 28px; background: #fff; color: #231b1b;
+  border: 1.6px solid #2a201f; border-radius: 50%; text-align: center;
+  font: 600 13.5px/1.35 var(--sans); text-transform: uppercase; letter-spacing: 0.02em; text-wrap: balance;
+}
+.wbubble.l { align-self: flex-start; }
+.wbubble.r { align-self: flex-end; }
+.wbubble::after {
+  content: ""; position: absolute; top: calc(100% - 4px); width: 18px; height: 22px; background: #fff;
+  border-right: 1.6px solid #2a201f; clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.wbubble.l::after { left: 30%; transform: skewX(14deg); }
+.wbubble.r::after { right: 30%; transform: scaleX(-1) skewX(14deg); }
+.wpanel { position: relative; margin: 0; overflow: hidden; background: #222; }
+.wbg, .wbg svg, .wbg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.wchar { position: absolute; bottom: 0; transform: translateX(-50%); }
+.wchar .wport { display: block; width: 100%; height: auto; }
+.wcap {
+  position: absolute; z-index: 2; margin: 0; max-width: 74%; padding: 8px 12px; background: rgba(255, 252, 247, 0.92); color: #231b1b;
+  border: 1px solid rgba(40, 30, 30, 0.6); font: 400 13.5px/1.4 var(--sans);
+}
+.wcap.tl { top: 12px; left: 12px; } .wcap.br { bottom: 12px; right: 12px; } .wcap.bl { bottom: 12px; left: 12px; }
+.sfx {
+  position: absolute; z-index: 2; white-space: nowrap; font: italic 900 42px/1 var(--serif); color: #fff; transform: rotate(var(--r));
+  -webkit-text-stroke: 1.6px #2a201f; paint-order: stroke fill; text-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+.sfx.center { transform: translate(-50%, -50%) rotate(var(--r)); font-size: 54px; color: #ffe0d6; }
+.go { text-align: center; margin: 22px 0 0; }
+
+/* Boutons */
 .btn {
-  border: 0; background: var(--panel); color: var(--ink); box-shadow: var(--shadow);
-  padding: 9px 16px; min-height: 42px; border-radius: 999px; font: 800 14.5px var(--sans); cursor: pointer;
+  display: inline-block; text-decoration: none; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink);
+  padding: 9px 16px; min-height: 42px; border-radius: 999px; font: 600 14px var(--sans); cursor: pointer;
 }
-.btn:active { transform: translateY(1px); }
-.btn.primary { background: var(--bad); color: #fff; box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); padding-inline: 22px; }
 .btn.sm { min-height: 38px; padding: 6px 14px; font-size: 13.5px; }
-.btn:disabled { opacity: 0.45; cursor: default; }
-button:focus-visible, summary:focus-visible, input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn.accuse { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible + span { outline: 3px solid var(--accent-2); outline-offset: 2px; }
 
-/* Mise en page */
-.layout { display: flex; flex-direction: column; gap: 18px; }
+/* Jeu */
+.layout { display: flex; flex-direction: column; gap: 16px; margin-top: 26px; }
 .col { display: contents; }
-#case { order: 1; } #suspects { order: 2; } #map-panel { order: 3; } #board-panel { order: 4; }
-#verdict { order: 5; } #clues-panel { order: 6; } #rules { order: 7; }
-#suspects[hidden] { display: none; }
+#case { order: 1; } #suspects { order: 2; } #map-panel { order: 3; } #board-panel { order: 4; } #verdict { order: 5; } #clues-panel { order: 6; } #rules { order: 7; }
 @media (min-width: 700px) {
-  .layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 22px; align-items: start; }
-  .col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 20px; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   #case, #suspects, #map-panel, #board-panel, #verdict, #clues-panel, #rules { order: 0; }
 }
 @media (min-width: 700px) and (min-height: 520px) {
   /* indices et plan restent à l'écran pendant qu'on remplit la grille */
   .layout > .col:last-child { position: sticky; top: 10px; max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 4px 6px 10px; margin: -4px -6px 0; }
 }
-.panel { background: var(--panel); border-radius: 20px; box-shadow: var(--shadow); padding: 14px; min-width: 0; }
-@media (min-width: 480px) { .panel { padding: 18px; } :root { --tw: 60px; } }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 16px; min-width: 0; scroll-margin-top: 12px; }
 .panel-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
-.label { margin: 0; font: 800 19px/1.1 var(--sans); color: var(--ink); }
-.sub { font: 700 13px var(--sans); color: var(--ink-2); }
+.label { margin: 0; font: 700 19px/1.15 var(--serif); }
+.sub { font: 600 12px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
 
-/* L'affaire */
-.eyebrow {
-  display: inline-block; margin: 0 0 8px; padding: 3px 11px; border-radius: 999px; background: var(--pink-2); color: var(--bad);
-  font: 800 12px/1.4 var(--sans); letter-spacing: 0.08em; text-transform: uppercase;
-}
-.case h2 { margin: 0 0 8px; font: 800 21px/1.25 var(--sans); text-wrap: balance; }
-.case h2 em { font-style: normal; background: var(--pink-2); padding: 0 8px; border-radius: 8px; white-space: nowrap; }
-.case p { margin: 0; color: var(--ink-2); max-width: 62ch; }
-.case p b { color: var(--ink); font-weight: 800; }
+.eyebrow { margin: 0 0 6px; font: 600 12px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+.case h2 { margin: 0 0 6px; font: 700 21px/1.3 var(--serif); text-wrap: balance; }
+.case h2 em { font-style: italic; color: var(--accent); }
+.case p { margin: 0; color: var(--ink-2); }
+.case p b { color: var(--ink); }
 
-/* Polaroïds */
-.pola {
-  margin: 0; padding: 5px 5px 0; background: #fff; color: #2b2f55; border: 1.5px solid #2b2f55; border-radius: 4px;
-  box-shadow: 0 3px 8px rgba(43, 47, 85, 0.22); min-width: 0;
-}
-.pola-img { aspect-ratio: 1; overflow: hidden; background: color-mix(in srgb, var(--c) 40%, #fff); border: 1.5px solid rgba(43, 47, 85, 0.5); }
-.pola-img svg { display: block; width: 100%; height: 100%; }
-.pola figcaption { text-align: center; padding: 1px 0 6px; line-height: 1.1; }
-.pola .pn { display: block; font: 400 22px/1.1 var(--display); overflow-wrap: anywhere; }
-.pola small { display: block; font: 700 12px/1.2 var(--sans); color: #666c91; }
-.pola .guilty { color: #dc4f6b; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; }
-.strip { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 12px; padding: 2px 4px 6px; }
-@media (min-width: 600px) { .strip { grid-template-columns: repeat(var(--N), minmax(0, 1fr)); } }
-.strip .pola:nth-child(odd) { transform: rotate(-1.6deg); }
-.strip .pola:nth-child(even) { transform: rotate(1.3deg); }
-.mini { display: inline-block; width: 30px; height: 30px; border-radius: 50%; overflow: hidden; flex: none; background: color-mix(in srgb, var(--c) 45%, #fff); border: 2.5px solid var(--c); }
-.mini svg { display: block; width: 100%; height: 100%; }
+.fiches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.fiche { margin: 0; min-width: 0; border-radius: 14px; overflow: hidden; background: var(--cell); border: 1px solid var(--line); }
+.fiche-img { aspect-ratio: 5 / 6; background: linear-gradient(180deg, color-mix(in srgb, var(--c) 22%, #fff8f2), color-mix(in srgb, var(--c) 45%, #f6efe8)); overflow: hidden; }
+.fiche-img svg, .fiche-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fiche figcaption { text-align: center; padding: 6px 4px 8px; line-height: 1.15; }
+.fiche .fn { display: block; font: 700 16px var(--serif); }
+.fiche small { display: block; font: 600 11px var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-top: 2px; }
+.fiche .guilty { color: var(--red); }
+.mini { display: inline-block; width: 32px; height: 32px; border-radius: 50%; overflow: hidden; flex: none; background: color-mix(in srgb, var(--c, #c9a48a) 30%, #fff8f2); border: 2px solid var(--c, var(--line-2)); vertical-align: middle; }
+.mini svg, .mini img { display: block; width: 100%; height: 100%; transform: scale(1.5) translateY(14%); object-fit: cover; }
 
-/* Plan */
 .chips { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
-.chip {
-  border: 0; background: var(--panel-2); border-radius: 999px; padding: 4px 0; min-height: 34px;
-  font: 700 13px var(--sans); color: var(--ink-2); cursor: pointer; position: relative; font-variant-numeric: tabular-nums;
+.chip { border: 1px solid var(--line-2); background: var(--paper); border-radius: 999px; padding: 3px 0; min-height: 36px; font: 600 13px var(--sans); color: var(--ink-2); cursor: pointer; position: relative; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chip.crime::after { content: ""; position: absolute; top: -3px; right: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--red); border: 2px solid var(--paper); }
+.train-frame { border-radius: 12px; overflow: hidden; }
+.lc-train { display: block; width: 100%; height: auto; }
+.lc-train [stroke="#1c1b22"] { stroke: #3a2a28; stroke-width: 0.8; }
+.lc-plate { font: 700 5.6px var(--sans); letter-spacing: 0.1em; text-anchor: middle; dominant-baseline: central; fill: #2a2020; }
+.lc-plate.crime { fill: #fff; }
+.lc-roof-t { font: 700 6.5px var(--sans); letter-spacing: 0.3em; text-anchor: middle; fill: rgba(255, 240, 220, 0.6); }
+.lc-tok.culprit { filter: drop-shadow(0 0 2px #ff5a5a) drop-shadow(0 0 3px #ff5a5a); }
+.legend { margin: 10px 0 0; font-size: 13px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.legend i { display: inline-block; margin-right: 6px; vertical-align: middle; }
+.lg-door { width: 8px; height: 14px; background: #2a2a30; border-radius: 2px; }
+.lg-ladder { width: 12px; height: 5px; background: #e3b23c; border-radius: 2px; }
+.lg-crime { width: 16px; height: 12px; border: 2px dashed #e2483d; border-radius: 2px; }
+
+.s0 { --c: var(--s0); } .s1 { --c: var(--s1); } .s2 { --c: var(--s2); } .s3 { --c: var(--s3); } .s4 { --c: var(--s4); }
+.board { display: grid; grid-template-columns: var(--tw) repeat(var(--cols), minmax(0, 1fr)); gap: 6px; }
+.who { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px; padding-bottom: 4px; min-width: 0; text-align: center; }
+.who .mini { width: 40px; height: 40px; }
+.who b { font: 700 14px/1.1 var(--serif); overflow-wrap: anywhere; }
+.who small { font: 600 10.5px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.time { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 1px; min-height: 48px; padding: 0 6px; border: 0; border-radius: 10px; background: transparent; font: 600 13px var(--sans); color: var(--ink-2); cursor: pointer; font-variant-numeric: tabular-nums; }
+.time.sel { background: var(--panel-2); color: var(--ink); }
+.time small { font: 700 9.5px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); }
+.cell {
+  position: relative; min-height: 48px; min-width: 0; padding: 2px 3px; border: 1px solid var(--line-2); border-radius: 10px;
+  box-shadow: inset 0 -3px 0 var(--c); background: var(--cell); color: var(--ink); font: 600 13px var(--sans);
+  cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;
 }
-.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
-.chip.crime::after { content: ""; position: absolute; top: -2px; right: -1px; width: 11px; height: 11px; border-radius: 50%; background: var(--bad); border: 2px solid var(--panel); }
-.plan { display: block; width: 100%; height: auto; overflow: visible; }
+.cell.empty { color: var(--ink-2); }
+.cell.empty::before { content: "·"; }
+.cell.given { background: var(--given); cursor: default; }
+.cell.given svg { position: absolute; top: 4px; right: 5px; opacity: 0.6; }
+.cell.bad { background: var(--red-bg); border-color: var(--red); }
+.cell:disabled { color: var(--ink); opacity: 1; }
+.status { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 12px; font-size: 13px; color: var(--ink-2); }
+.status .err { color: var(--red); font-weight: 600; }
+.reply { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.reply.r { justify-content: flex-end; }
+.reply .bubble.small { margin: 0; padding: 10px 16px; background: #fff; color: #231b1b; border: 1.4px solid #2a201f; border-radius: 22px; font: 600 12.5px/1.35 var(--sans); text-transform: uppercase; }
+.reply .mini { width: 42px; height: 42px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; min-height: 36px; }
+.switch { min-height: 44px; }
+.switch input { width: 22px; height: 22px; accent-color: var(--accent); margin: 0; }
+.hintline { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-2); }
+
+.opts { margin: -2px 0 6px; }
+.clues { list-style: none; margin: 0; padding: 0; }
+.clue { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 9px 2px; border-top: 1px solid var(--line); font-size: 14.5px; }
+.clue:first-child { border-top: 0; }
+.clue .ico { width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--line-2); display: grid; place-items: center; color: #fff; }
+.clue.ok .ico { background: var(--ok); border-color: var(--ok); }
+.clue.bad .ico { background: var(--red); border-color: var(--red); }
+.clue.ok .txt { color: var(--ink-2); }
+.clue.bad .txt { color: var(--red); font-weight: 600; }
+.clue.rule .txt { font-weight: 600; }
+.empty-note { margin: 0; color: var(--ink-2); }
+
+.verdict { display: flex; flex-direction: column; gap: 12px; border-color: var(--red); }
+.v-top { display: flex; align-items: center; gap: 16px; }
+.v-top .fiche { width: 108px; flex: none; }
+.stamp { font: italic 900 28px/1.05 var(--serif); color: var(--red); }
+.verdict p { margin: 0; }
+.verdict .sub { text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 13.5px; }
+.strip.epi { margin-inline: -16px; border-radius: 0; padding-top: 34px; }
+.next { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.soon { font-size: 13px; color: var(--ink-2); }
+
+.rules summary { cursor: pointer; font: 700 18px var(--serif); padding: 10px 0; min-height: 44px; }
+.rules ol { margin: 12px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 7px; color: var(--ink-2); font-size: 14.5px; }
+.rules ol b { color: var(--ink); }
+
+.scrim { position: fixed; inset: 0; z-index: 20; background: rgba(15, 10, 12, 0.55); }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; max-width: 560px; margin: 0 auto; background: var(--paper);
+  border-radius: 22px 22px 0 0; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+  padding: 16px max(16px, env(safe-area-inset-left, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-reduced-motion: no-preference) { .sheet { animation: rise 0.16s ease-out; } @keyframes rise { from { transform: translateY(20px); } } }
+.sheet-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.sheet-hd b { font: 700 17px var(--serif); }
+.trail { margin: 0 0 12px; font-size: 13px; color: var(--ink-2); overflow-wrap: anywhere; }
+.trail b { color: var(--ink); }
+.room-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.room-btn { min-height: 52px; padding: 6px 4px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--cell); font: 600 13.5px/1.15 var(--sans); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; overflow-wrap: anywhere; }
+.room-btn small { font-size: 11px; color: var(--ink-2); font-weight: 400; }
+.room-btn.far { border-style: dashed; color: var(--ink-2); }
+.room-btn.cur { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.room-btn.cur small { color: var(--paper); }
+.sheet-ft { display: flex; justify-content: space-between; gap: 8px; margin-top: 12px; }
+.acc-t { font: italic 900 26px var(--serif); color: var(--red); }
+.acc-grid { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 10px; }
+.acc-btn { border: 0; background: transparent; padding: 0; cursor: pointer; min-width: 0; text-align: inherit; }
+.acc-btn:active .fiche { transform: scale(0.97); }
+.acc-btn.out { opacity: 0.45; cursor: default; }
+.acc-btn.out .fiche-img { filter: grayscale(1); }
+
+/* Plans vus de dessus */
+.plan { display: block; width: 100%; height: auto; background: var(--panel-2); }
 .pt-wood .pa-a { fill: var(--wood-a); } .pt-wood .pa-b { stroke: var(--wood-b); fill: none; stroke-width: 0.9; }
 .pt-check .pa-a { fill: var(--check-a); } .pt-check .pa-c { fill: var(--check-c); }
 .pt-tile .pa-a { fill: var(--tile-a); } .pt-tile .pa-b { stroke: var(--tile-b); fill: none; stroke-width: 1; }
@@ -233,169 +277,100 @@ button:focus-visible, summary:focus-visible, input:focus-visible + span { outlin
 .furn .fu { fill: var(--fu); } .furn .fu2 { fill: var(--fu2); } .furn .fw { fill: var(--fw); } .furn .fpot { fill: var(--fpot); }
 .furn .fg { fill: var(--fg); } .furn .fg2 { fill: var(--fg2); } .furn .ftv { fill: var(--ftv); } .furn .win { fill: var(--win); }
 .furn .fl { stroke: var(--wall); stroke-opacity: 0.35; stroke-width: 0.9; fill: none; }
-.furn rect, .furn ellipse, .furn circle { stroke: var(--wall); stroke-opacity: 0.35; stroke-width: 0.8; }
-.deco .rail { stroke: var(--wall); stroke-width: 2.4; fill: none; stroke-linecap: round; }
-.deco .wheel { fill: var(--panel-2); stroke: var(--wall); stroke-width: 2.4; }
-.wall { fill: none; stroke: var(--wall); stroke-width: 3.4; stroke-linejoin: round; }
-.crimeroom { fill: none; stroke: var(--bad); stroke-width: 2.2; stroke-dasharray: 6 4; }
+.furn rect, .furn ellipse, .furn circle { stroke: var(--wall); stroke-opacity: 0.3; stroke-width: 0.8; }
+.wall { fill: none; stroke: var(--wall); stroke-width: 3; stroke-linejoin: round; }
+.crimeroom { fill: none; stroke: #e2483d; stroke-width: 2.2; stroke-dasharray: 6 4; }
 .door { fill: var(--door); stroke: var(--wall); stroke-width: 1.2; }
-.pill rect { fill: #fff; stroke: #2b2f55; stroke-width: 1.1; }
-.pill text { font: 800 7.6px var(--sans); letter-spacing: 0.04em; fill: #2b2f55; text-anchor: middle; dominant-baseline: central; }
-.crimemark polygon { fill: var(--bad); stroke: #fff; stroke-width: 1.8; stroke-linejoin: round; }
-.crimemark path { stroke: #fff; stroke-width: 2.2; stroke-linecap: round; fill: none; }
-.tok .halo { fill: #fff; opacity: 0.9; }
-.tok .face { fill: color-mix(in srgb, var(--c) 45%, #fff); }
-.tok .ring { fill: none; stroke: var(--c); stroke-width: 2.4; }
-.tok.culprit .ring { stroke: var(--bad); stroke-width: 3.6; }
-.legend { margin: 12px 0 0; font: 700 13px var(--sans); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 10px; }
-.legend span { background: var(--panel-2); border-radius: 999px; padding: 4px 11px; display: inline-flex; align-items: center; }
-.legend i { display: inline-block; margin-right: 7px; }
-.legend .lg-door { width: 16px; height: 8px; background: var(--door); border: 1.5px solid var(--wall); border-radius: 2px; }
-.legend .lg-crime { width: 16px; height: 11px; border: 2px dashed var(--bad); border-radius: 2px; }
+.pill rect { fill: #fff; stroke: #3a2a28; stroke-width: 1; }
+.pill text { font: 700 6.8px var(--sans); letter-spacing: 0.06em; fill: #3a2a28; text-anchor: middle; dominant-baseline: central; }
 
-/* Chronologie */
-.s0 { --c: var(--s0); } .s1 { --c: var(--s1); } .s2 { --c: var(--s2); } .s3 { --c: var(--s3); } .s4 { --c: var(--s4); }
-.board { display: grid; grid-template-columns: var(--tw) repeat(var(--cols), minmax(0, 1fr)); gap: 6px; align-items: stretch; }
-.who { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; padding: 0 1px 4px; min-width: 0; text-align: center; }
-.who b { font-weight: 800; font-size: 13px; max-width: 100%; overflow-wrap: anywhere; line-height: 1.1; }
-.who small { font-size: 10.5px; color: var(--ink-2); line-height: 1; font-weight: 700; }
-.time {
-  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px;
-  min-height: 48px; padding: 0 6px; border: 0; border-radius: 12px; background: transparent;
-  font: 800 13px var(--sans); color: var(--ink-2); cursor: pointer; text-align: left; font-variant-numeric: tabular-nums;
-}
-.time.sel { background: var(--panel-2); color: var(--ink); }
-.time small { font: 800 9.5px/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--bad); }
-.cell {
-  position: relative; min-height: 48px; min-width: 0; padding: 2px 3px;
-  border: 2px solid var(--rule); border-radius: 12px; box-shadow: inset 5px 0 0 var(--c);
-  background: var(--cell); color: var(--ink); font: 700 13px var(--sans);
-  cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;
-}
-.board.dense .cell { font-size: 11.5px; }
-.cell.empty { color: var(--ink-2); }
-.cell.empty::before { content: "·"; }
-.cell.given { background: var(--given); border-color: transparent; cursor: default; }
-.cell.given svg { position: absolute; top: 4px; right: 4px; color: var(--ink); opacity: 0.7; }
-.cell.bad { background: var(--bad-bg); border-color: var(--bad); }
-.cell:disabled { color: var(--ink); opacity: 1; }
-.status { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 12px; font: 700 13px var(--sans); color: var(--ink-2); }
-.status .err { color: var(--bad); font-weight: 800; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
-.btns { display: flex; flex-wrap: wrap; gap: 8px; }
-.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; cursor: pointer; min-height: 36px; }
-.switch { min-height: 44px; }
-.switch input { width: 22px; height: 22px; accent-color: var(--accent); margin: 0; }
-.loading { padding: 28px 0; text-align: center; font: 700 14px var(--sans); color: var(--ink-2); }
-/* la grille se pose sur une feuille au bord déchiré */
-#board-panel {
-  padding-bottom: 22px; box-shadow: none; border-radius: 16px 16px 0 0;
-  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
-  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
-}
+/* Liste des épisodes */
+#episodes { max-width: 640px; margin: 0 auto 14px; }
+.ep-toggle { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; text-align: left; padding: 10px 16px; min-height: 48px; border: 1px solid var(--line-2); border-radius: 14px; background: var(--paper); cursor: pointer; box-shadow: var(--shadow); }
+.ep-toggle span { font: 600 11px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.ep-toggle b { font: italic 700 16px var(--serif); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ep-toggle i { font-style: normal; color: var(--ink-2); }
+.ep-list { margin-top: 10px; display: flex; flex-direction: column; gap: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); }
+.ep-ch h3 { margin: 0 0 8px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font: italic 700 17px var(--serif); }
+.ep-ch h3 span { font: 600 11px var(--sans); font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+.ep-ch h3 small { margin-left: auto; font: 600 12px var(--sans); font-style: normal; color: var(--ink-2); }
+.ep-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+.ep-btn { display: grid; grid-template-columns: 26px minmax(0, 1fr); grid-template-rows: auto auto; gap: 0 8px; align-items: center; text-align: left; padding: 7px 9px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--cell); cursor: pointer; min-height: 48px; }
+.ep-btn b { grid-row: 1 / 3; font: 700 15px var(--serif); color: var(--accent); text-align: center; }
+.ep-btn span { font: 600 12.5px/1.2 var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ep-btn small { font-size: 10.5px; color: var(--ink-2); }
+.ep-btn.done { background: color-mix(in srgb, var(--ok) 12%, var(--cell)); }
+.ep-btn.done small { color: var(--ok); }
+.ep-btn.cur { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.ep-btn:disabled { opacity: 0.45; cursor: default; }
+.blurb { margin: 6px auto 12px; max-width: 34ch; font: italic 400 15px/1.4 var(--serif); color: var(--ink-2); }
 
-/* Verdict */
-.verdict { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; border: 3px solid var(--bad); }
-.v-top { display: flex; align-items: center; gap: 18px; width: 100%; }
-.v-top .pola { width: 104px; flex: none; transform: rotate(-3deg); }
-.stamp {
-  display: inline-block; font: 800 25px/1.05 var(--sans); text-transform: uppercase; letter-spacing: 0.04em;
-  color: var(--bad); border: 4px double var(--bad); border-radius: 10px; padding: 8px 12px; transform: rotate(-5deg);
-}
-.verdict p { margin: 0; }
-.verdict .sub { color: var(--ink-2); }
-
-/* Constats */
-.opts { margin: -2px 0 8px; }
-.clues { list-style: none; margin: 0; padding: 0; }
-.clue { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 8px 2px; border-top: 2px dashed var(--rule); font-size: 15px; }
-.clues .clue:first-child { border-top: 0; }
-.clue .ico {
-  width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--rule);
-  display: grid; place-items: center; color: var(--accent-ink); background: var(--panel);
-}
-.clue.ok .ico { background: var(--ok); border-color: var(--ok); color: #fff; }
-.clue.bad .ico { background: var(--bad); border-color: var(--bad); color: #fff; }
-.clue.ok .txt { color: var(--ink-2); }
-.clue.bad .txt { color: var(--bad); font-weight: 800; }
-.clue.rule .txt { font-weight: 800; }
-.clue.rule.ok .txt { font-weight: 400; }
-.empty-note { margin: 0; padding: 10px 0 2px; color: var(--ink-2); font-size: 14px; }
-
-/* Règles */
-.rules summary { cursor: pointer; font: 800 19px/1.1 var(--sans); color: var(--ink); list-style-position: inside; padding: 10px 0; min-height: 44px; }
-.rules ol { margin: 12px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; color: var(--ink-2); font-size: 15px; }
-.rules ol b { color: var(--ink); font-weight: 800; }
-
-/* Sélecteur de pièce */
-.scrim { position: fixed; inset: 0; z-index: 20; background: rgba(15, 20, 50, 0.55); }
-.sheet {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; max-width: 560px; margin: 0 auto;
-  background: var(--panel); border-radius: 26px 26px 0 0; box-shadow: 0 -8px 30px rgba(15, 20, 50, 0.3);
-  padding: 16px max(16px, env(safe-area-inset-left, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-right, 0px));
-}
-@media (prefers-reduced-motion: no-preference) { .sheet { animation: rise 0.18s ease-out; } @keyframes rise { from { transform: translateY(24px); opacity: 0; } } }
-.sheet-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-.sheet-hd b { font: 800 17px var(--sans); }
-.trail { margin: 0 0 12px; font: 700 13px var(--sans); color: var(--ink-2); overflow-wrap: anywhere; }
-.trail b { color: var(--ink); }
-.room-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.room-btn { overflow-wrap: anywhere;
-  min-height: 52px; padding: 6px 4px; border: 0; border-radius: 14px; background: var(--panel-2);
-  font: 800 14px/1.1 var(--sans); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-}
-.room-btn small { font: 700 11px var(--sans); color: var(--ink-2); }
-.room-btn.far { background: transparent; box-shadow: inset 0 0 0 2px var(--rule); color: var(--ink-2); font-weight: 700; }
-.room-btn.cur { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
-.room-btn.cur small { color: var(--accent-ink); }
-.sheet-ft { display: flex; justify-content: space-between; gap: 8px; margin-top: 14px; }
-
-/* Modes « menteur » : polaroïd + bulles */
-.liar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
-.liar-q { font: 400 26px/1 var(--display); color: var(--bad); }
+/* Témoignages (modes menteur) */
+.liar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.liar-q { font: italic 900 20px var(--serif); color: var(--red); }
 .liar-btns { display: flex; flex-wrap: wrap; gap: 8px; }
-.liar-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 4px 14px 4px 5px; border: 0; border-radius: 999px; background: var(--panel-2); font: 800 14px var(--sans); cursor: pointer; }
-.liar-btn .mini { width: 30px; height: 30px; }
-.liar-btn[aria-pressed="true"] { background: var(--bad); color: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
-.who .liar-badge { color: var(--bad); font-weight: 800; }
-.speaker { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 16px 0 4px; font-size: 15px; }
-.speaker b { font-weight: 800; }
-.tag { display: inline-block; font: 800 11px var(--sans); letter-spacing: 0.02em; color: var(--ink-2); background: var(--panel-2); border-radius: 999px; padding: 2px 8px; margin-top: 3px; white-space: nowrap; }
-.tag.liar-tag { color: #fff; background: var(--bad); }
-.pola .tag { color: #666c91; background: #eceffd; }
-.pola .tag.liar-tag { color: #fff; background: #dc4f6b; }
-.sp { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 14px; align-items: start; margin: 18px 0 6px; }
-.sp .pola { transform: rotate(-1.5deg); }
-.sp:nth-of-type(even) .pola { transform: rotate(1.2deg); }
-.bubbles .clue {
-  --bub: var(--lav); position: relative; margin: 0 0 10px; padding: 9px 12px 9px 10px; background: var(--bub); border: 0;
-  border-radius: 18px; color: var(--ink);
-}
-.bubbles .clue::before { content: ""; position: absolute; left: -7px; top: 14px; border: 8px solid transparent; border-left: 0; border-right-color: var(--bub); }
-.bubbles .clue.bad { --bub: var(--bad-bg); }
-.bubbles .clue .txt, .bubbles .clue.ok .txt { color: var(--ink); }
-.bubbles .clue.bad .txt { color: var(--bad); }
-.bubbles .clue .ico { background: var(--panel); border-color: transparent; color: var(--ink); }
-.bubbles .clue.ok .ico { background: var(--ok); color: #fff; }
-.bubbles .clue.bad .ico { background: var(--bad); color: #fff; }
+.liar-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 4px 14px 4px 5px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--cell); font: 600 13.5px var(--sans); cursor: pointer; }
+.liar-btn[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.who .liar-badge { color: var(--red); }
+.speaker { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 14px 0 4px; }
+.speaker b { font: 700 15px var(--serif); }
+.tag { display: inline-block; font: 600 10.5px var(--sans); letter-spacing: 0.04em; color: var(--ink-2); background: var(--panel-2); border-radius: 999px; padding: 2px 8px; white-space: nowrap; vertical-align: middle; }
+.tag.liar-tag { color: #fff; background: var(--red); }
+.sp { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 10px; align-items: start; margin: 16px 0 4px; }
+.sp .mini { width: 42px; height: 42px; }
+.sp-name { margin: 2px 0 6px; }
+.sp-name b { font: 700 15px var(--serif); }
+.bubbles .clue { position: relative; margin: 0 0 8px; padding: 9px 12px 9px 10px; background: var(--panel-2); border: 0; border-radius: 16px; }
+.bubbles .clue::before { content: ""; position: absolute; left: -7px; top: 13px; border: 7px solid transparent; border-left: 0; border-right-color: var(--panel-2); }
+.bubbles .clue.bad { background: var(--red-bg); }
+.bubbles .clue.bad::before { border-right-color: var(--red-bg); }
 .clue.proof .ico { background: var(--given); border-color: transparent; color: var(--ink); }
 .clue.proof .txt { color: var(--ink); }
-.strip .pola .pn { font-size: 19px; overflow-wrap: normal; white-space: nowrap; }
-.strip .pola small, .sp .pola small { overflow-wrap: anywhere; font-size: 11px; }
-@media (min-width: 600px) { .strip .pola .pn { font-size: 22px; } }
+.board.dense .cell { font-size: 11.5px; }
+.skip { margin: 10px 0 0; font-size: 12.5px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fiches { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); }
+@media (min-width: 480px) { .fiches { grid-template-columns: repeat(var(--N), minmax(0, 1fr)); } }
+@media (min-width: 700px) { .fiche .fn { font-size: 14.5px; } .fiche figcaption .sub { font-size: 10.5px; } }
 
-/* J'accuse et aide sur la vérification */
-.btn.accuse { background: var(--bad); color: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
-.hintline { margin: 10px 0 0; font: 700 12.5px/1.35 var(--sans); color: var(--ink-2); }
-.acc-t { font: 400 34px/1 var(--display); color: var(--bad); }
-.acc-grid { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 10px; padding: 4px 2px; }
-.acc-btn { border: 0; background: transparent; padding: 0; cursor: pointer; min-width: 0; }
-.acc-btn:nth-child(odd) .pola { transform: rotate(-1.6deg); }
-.acc-btn:nth-child(even) .pola { transform: rotate(1.3deg); }
-.acc-btn .pola .pn { font-size: 17px; white-space: nowrap; }
-.acc-btn:active .pola { transform: scale(0.96); }
-.acc-btn.out { opacity: 0.4; cursor: default; }
-.acc-btn.out .pola { filter: grayscale(1); }
+.who small { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9.5px; }
+.board.dense .who b, .board[style*="--cols:4"] .who b { font-size: 13px; }
+.fiche figcaption .sub { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Partie rapide : complément au style du mode histoire (style-wt.css). */
+.top { align-items: flex-end; margin-bottom: 18px; }
+.brand { min-width: 0; }
+.dossier { margin: 6px 0 0; font: 600 12px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; width: 100%; }
+.controls .seg { flex: 1 1 auto; }
+.seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); }
+.seg button { flex: 1 1 auto; border: 0; background: transparent; padding: 7px 14px; min-height: 40px; border-radius: 999px; font: 600 14px var(--sans); cursor: pointer; color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+@media (min-width: 700px) { .controls { width: auto; } }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.case .eyebrow { display: block; }
+.case h2 em { font-style: italic; color: var(--accent); white-space: nowrap; }
+
+/* Fiches des suspects (anciennement polaroïds) */
+.pola { margin: 0; min-width: 0; border-radius: 14px; overflow: hidden; background: var(--cell); border: 1px solid var(--line); color: var(--ink); }
+.pola-img { aspect-ratio: 5 / 6; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--c) 22%, #fff8f2), color-mix(in srgb, var(--c) 45%, #f6efe8)); }
+.pola-img svg, .pola-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pola figcaption { text-align: center; padding: 6px 4px 8px; line-height: 1.15; }
+.pola .pn { display: block; font: 700 15px var(--serif); overflow-wrap: anywhere; }
+.pola small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 10.5px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.pola .guilty { color: var(--red); }
+.sp .pola { width: 64px; }
+
+/* Plan */
+.deco .rail { stroke: var(--wall); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+.deco .wheel { fill: var(--panel-2); stroke: var(--wall); stroke-width: 2.4; }
+.crimemark polygon { fill: var(--red); stroke: #fff; stroke-width: 1.8; stroke-linejoin: round; }
+.crimemark path { stroke: #fff; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+.tok .halo { fill: #fff; opacity: 0.92; }
+.tok .face { fill: color-mix(in srgb, var(--c) 30%, #fff8f2); }
+.tok .ring { fill: none; stroke: var(--c); stroke-width: 2.2; }
+.tok.culprit .ring { stroke: var(--red); stroke-width: 3.4; }
+.loading { padding: 28px 0; text-align: center; font: 600 14px var(--sans); color: var(--ink-2); }
 
 </style>
 
@@ -415,7 +390,7 @@ window.addEventListener('error', function (e) {
   <header class="top">
     <div class="brand">
       <h1>Kioukan</h1>
-      <p class="dossier" id="dossier">Dossier en préparation…</p>
+      <p class="dossier mode-tag" id="dossier">Dossier en préparation…</p>
     </div>
     <div class="controls">
       <div class="seg" id="scenes" role="group" aria-label="Décor"></div>
@@ -443,6 +418,7 @@ window.addEventListener('error', function (e) {
   </div>
 </div>
 <div id="sheet-root"></div>
+<script src="img/images.js"></script>
 
 <script>
 /* Illustrations : portraits plats des suspects, sols et mobilier vus de dessus. */
@@ -587,6 +563,358 @@ window.addEventListener('error', function (e) {
   }
 
   window.KioukanArt = { avatar: avatar, avatarInner: inner, defs: defs, furn: furn };
+})();
+
+/* Illustrations « webtoon » : trait fin brun, ombrage doux en dégradés, grands yeux à reflets,
+   cheveux en mèches, lumière de cinéma. Tout est vectoriel ; chaque portrait ou décor peut être
+   remplacé par une vraie image (window.KIOUKAN_IMAGES) sans toucher au reste. */
+(function () {
+  'use strict';
+  var uid = 0;
+  var LINE = '#4a3330';
+
+  var CAST = {
+    'Hortense Lafleur':         { sex: 'f', skin: '#f6dccb', hair: ['#e9e7ee', '#a9a6b8'], style: 'bun',   eye: '#5d8f86', cloth: ['#2f7d73', '#1d5550'], x: ['glasses', 'brooch', 'collar'], age: 1 },
+    'Comtesse Diane de Carat':  { sex: 'f', skin: '#f8e1d4', hair: ['#ffffff', '#c9c4d6'], style: 'curls', eye: '#7a5aa6', cloth: ['#8a5bb3', '#5a3680'], x: ['pearls', 'tiara', 'lips'], age: 1 },
+    'Rémi Sansou':              { sex: 'm', skin: '#f5d7c3', hair: ['#f6dc8c', '#c9993e'], style: 'swept', eye: '#4f7fc4', cloth: ['#2c4a7c', '#1a2d4f'], x: ['shirt', 'bowtie'] },
+    'Aria Vibrato':             { sex: 'f', skin: '#f7dccb', hair: ['#d8693f', '#8c2f1d'], style: 'waves', eye: '#3f9a6c', cloth: ['#2f8a62', '#195a3e'], x: ['earrings', 'lips', 'mole', 'straps'] },
+    'Ernest Couchette':         { sex: 'm', skin: '#efc8ad', hair: ['#7a5236', '#3e2718'], style: 'short', eye: '#7a5236', cloth: ['#fbf8f1', '#d9d2c4'], x: ['cap', 'mustache', 'buttons'], age: 1 },
+    'Jean Bilet':               { sex: 'm', skin: '#f2cfb6', hair: ['#4a4a55', '#24242c'], style: 'short', eye: '#4a5a7a', cloth: ['#3a4f8a', '#22305a'], x: ['cap', 'buttons'] },
+    'Pr Hector Tumulus':        { sex: 'm', skin: '#f0cdb4', hair: ['#f2f2f2', '#b9b9c2'], style: 'short', eye: '#6b6b8a', cloth: ['#b59a6a', '#7c6340'], x: ['glasses', 'shirt', 'beard'], age: 1 },
+    'Paul Ochon':               { sex: 'm', skin: '#f1d0b8', hair: ['#9a9aa6', '#5c5c66'], style: 'swept', eye: '#5a6a8a', cloth: ['#2a2a35', '#121218'], x: ['shirt', 'bowtie', 'mustache'], age: 1 },
+    'Lise Défait':              { sex: 'f', skin: '#f6d8c6', hair: ['#5a3b2a', '#2e1c14'], style: 'bun',   eye: '#7a5236', cloth: ['#2a2a35', '#121218'], x: ['collar', 'apron'] },
+    'Max Valise':               { sex: 'm', skin: '#e9c0a2', hair: ['#c0522e', '#7a2a14'], style: 'short', eye: '#5a7a4a', cloth: ['#b8323d', '#7a1c24'], x: ['cap', 'buttons'] },
+    'Jacques Teil':             { sex: 'm', skin: '#dcae8c', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#3a2a20', cloth: ['#ffffff', '#d9d2c4'], x: ['bowtie', 'mustache'] },
+    'Ginette Pépite':           { sex: 'f', skin: '#f8e0d0', hair: ['#f4d27a', '#c99a2e'], style: 'curls', eye: '#3f7ac4', cloth: ['#e3b23c', '#a87c18'], x: ['pearls', 'earrings', 'lips'] },
+    'Chef Al Dente':            { sex: 'm', skin: '#e8b996', hair: ['#2a2024', '#0e0a0c'], style: 'short', eye: '#3a2a20', cloth: ['#ffffff', '#e2dccf'], x: ['toque', 'mustache', 'buttons'] },
+    'Maître Gérard Menvussa':   { sex: 'm', skin: '#f1d0b8', hair: ['#d9d9de', '#a0a0aa'], style: 'bald',  eye: '#5a5a6a', cloth: ['#1e1e28', '#0c0c12'], x: ['monocle', 'shirt', 'mustache'], age: 1 },
+    'Basile Bouture':           { sex: 'm', skin: '#d9a47e', hair: ['#8a6a3a', '#4a3618'], style: 'short', eye: '#5a7a3a', cloth: ['#5f8a4a', '#3a5a2a'], x: ['hat', 'beard'] },
+    'Julie Enne':               { sex: 'f', skin: '#f2cbb2', hair: ['#a0522d', '#5a2a14'], style: 'bun',   eye: '#7a5236', cloth: ['#f4efe6', '#d6cebd'], x: ['apron'] },
+    'Lucie Fer':                { sex: 'f', skin: '#f8e4d8', hair: ['#1a1418', '#000000'], style: 'bob',   eye: '#b8323d', cloth: ['#7a1c24', '#3e0a10'], x: ['lips', 'earrings'] },
+    'Hippolyte Plateau':        { sex: 'm', skin: '#f1d0b8', hair: ['#4a3a30', '#221a14'], style: 'swept', eye: '#5a4a3a', cloth: ['#1e1e28', '#0c0c12'], x: ['shirt', 'bowtie'], age: 1 },
+    'Dr Mehdi Cament':          { sex: 'm', skin: '#c99272', hair: ['#2a2024', '#0e0a0c'], style: 'short', eye: '#3a2a20', cloth: ['#f4f6fb', '#d0d6e2'], x: ['glasses', 'shirt', 'beard'] },
+    'Capitaine Jean Tempête':   { sex: 'm', skin: '#e8b996', hair: ['#f2f2f2', '#b9b9c2'], style: 'short', eye: '#3f6ac4', cloth: ['#1d2c5a', '#0e1838'], x: ['captain', 'beard', 'buttons'], age: 1 },
+    'Marcel Hélice':            { sex: 'm', skin: '#e2b08c', hair: ['#5a3b2a', '#2e1c14'], style: 'short', eye: '#5a4a3a', cloth: ['#4a6a8a', '#2a4a6a'], x: ['hat', 'mustache'] },
+    'Paul Ka':                  { sex: 'm', skin: '#f2d2bc', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#3a3a5a', cloth: ['#2a2a35', '#121218'], x: ['shirt', 'bowtie'] },
+    'Cécile Ence':              { sex: 'f', skin: '#f8e6dc', hair: ['#cfd3dc', '#8a90a0'], style: 'bob',   eye: '#6a7a9a', cloth: ['#5a6a8a', '#36425a'], x: [] },
+    'Agathe Crispie':           { sex: 'f', skin: '#f6dccb', hair: ['#b9b4c6', '#7a7488'], style: 'curls', eye: '#4a7a6a', cloth: ['#7a6a9a', '#4a3a6a'], x: ['glasses', 'pearls'], age: 1 },
+    'Enzo Lyrico':              { sex: 'm', skin: '#e2b08c', hair: ['#2a2024', '#0e0a0c'], style: 'waves', eye: '#3a2a20', cloth: ['#7a1c24', '#3e0a10'], x: ['shirt', 'mustache'] },
+    'Maestro Vivaldo Baguette': { sex: 'm', skin: '#f1d0b8', hair: ['#f2f2f2', '#b9b9c2'], style: 'curls', eye: '#3a3a5a', cloth: ['#1e1e28', '#0c0c12'], x: ['shirt', 'bowtie'], age: 1 },
+    'Paulette Paillette':       { sex: 'f', skin: '#f6d8c6', hair: ['#e86a9a', '#a0305a'], style: 'bob',   eye: '#5a3a6a', cloth: ['#e3b23c', '#b8862a'], x: ['earrings', 'lips'] },
+    'Gérard Rideau':            { sex: 'm', skin: '#e9c0a2', hair: ['#7a5236', '#3e2718'], style: 'bald',  eye: '#5a4a3a', cloth: ['#3a2a2a', '#1e1414'], x: ['beard', 'glasses'] },
+    'Sam Souffle':              { sex: 'm', skin: '#f2d2bc', hair: ['#c0522e', '#7a2a14'], style: 'short', eye: '#3a6a5a', cloth: ['#6a5a4a', '#3a2e24'], x: ['glasses'] },
+    'René Vaplu':               { sex: 'm', skin: '#e8b996', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#2a3a3a', cloth: ['#1a3a2a', '#0a1e14'], x: ['shirt', 'bowtie'] },
+    'Jacques Potte':            { sex: 'm', skin: '#f1d0b8', hair: ['#9a9aa6', '#5c5c66'], style: 'bald',  eye: '#3a3a3a', cloth: ['#2a2a35', '#121218'], x: ['shirt', 'bowtie', 'monocle'], age: 1 },
+    'Bernadette Banco':         { sex: 'f', skin: '#f4d2bc', hair: ['#f2a65a', '#b8682a'], style: 'waves', eye: '#3a6a3a', cloth: ['#b8323d', '#7a1c24'], x: ['earrings', 'lips', 'straps'] },
+    // Partie rapide
+    'Mme Vernet':               { sex: 'f', skin: '#f6dccb', hair: ['#d9d9de', '#9a9aa6'], style: 'bun',   eye: '#5a5a6a', cloth: ['#2a2a35', '#121218'], x: ['collar', 'brooch'], age: 1 },
+    'Dr Aubry':                 { sex: 'm', skin: '#f1d0b8', hair: ['#7a5236', '#3e2718'], style: 'swept', eye: '#4a5a7a', cloth: ['#f4f6fb', '#d0d6e2'], x: ['glasses', 'shirt'] },
+    'Lucas':                    { sex: 'm', skin: '#f5d7c3', hair: ['#c0522e', '#7a2a14'], style: 'swept', eye: '#3f7a5a', cloth: ['#3f7a5a', '#245038'], x: ['shirt'] },
+    'Colonel Marchal':          { sex: 'm', skin: '#e9c0a2', hair: ['#f2f2f2', '#b9b9c2'], style: 'short', eye: '#4a5a6a', cloth: ['#5a6a3a', '#36421f'], x: ['cap', 'mustache', 'buttons'], age: 1 },
+    'Inès':                     { sex: 'f', skin: '#c99272', hair: ['#2a2024', '#0e0a0c'], style: 'bob',   eye: '#3a2a20', cloth: ['#8a5bb3', '#5a3680'], x: ['earrings', 'glasses'] },
+    'Mme Delaunay':             { sex: 'f', skin: '#f8e1d4', hair: ['#2a2024', '#0e0a0c'], style: 'waves', eye: '#5a3a6a', cloth: ['#1e1e28', '#0c0c12'], x: ['pearls', 'lips'], age: 1 },
+    'Dr Moreau':                { sex: 'm', skin: '#f2cfb6', hair: ['#9a9aa6', '#5c5c66'], style: 'bald',  eye: '#4a5a7a', cloth: ['#4a4a55', '#24242c'], x: ['glasses', 'beard', 'shirt'], age: 1 },
+    'Baron Voss':               { sex: 'm', skin: '#f8e4d8', hair: ['#f6dc8c', '#c9993e'], style: 'swept', eye: '#6a9ac4', cloth: ['#3a1c4a', '#1e0a28'], x: ['monocle', 'shirt', 'bowtie'] },
+    'Roux':                     { sex: 'm', skin: '#e2b08c', hair: ['#5a3b2a', '#2e1c14'], style: 'short', eye: '#5a4a3a', cloth: ['#3a4f8a', '#22305a'], x: ['cap', 'buttons'] },
+    'Mlle Ferrand':             { sex: 'f', skin: '#f7dccb', hair: ['#f4d27a', '#c99a2e'], style: 'bob',   eye: '#3f7ac4', cloth: ['#c2414f', '#7a1c24'], x: ['lips', 'earrings'] },
+    'Mme Lefèvre':              { sex: 'f', skin: '#f6d8c6', hair: ['#a0522d', '#5a2a14'], style: 'curls', eye: '#3f9a6c', cloth: ['#2f8a62', '#195a3e'], x: ['pearls'] },
+    'M. Costa':                 { sex: 'm', skin: '#dcae8c', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#3a2a20', cloth: ['#1a3a2a', '#0a1e14'], x: ['shirt', 'bowtie', 'mustache'] },
+    'Dr Bellamy':               { sex: 'f', skin: '#f2cbb2', hair: ['#4a3a30', '#221a14'], style: 'bun',   eye: '#4a7a6a', cloth: ['#f4f6fb', '#d0d6e2'], x: ['glasses', 'collar'] },
+    'Mme Okafor':               { sex: 'f', skin: '#8a5a40', hair: ['#1a1418', '#000000'], style: 'curls', eye: '#3a2a20', cloth: ['#e3b23c', '#a87c18'], x: ['earrings', 'lips'] },
+    'Chef Duval':               { sex: 'm', skin: '#e8b996', hair: ['#9a9aa6', '#5c5c66'], style: 'short', eye: '#5a5a6a', cloth: ['#ffffff', '#e2dccf'], x: ['toque', 'mustache', 'buttons'], age: 1 }
+  };
+  var DEF = { sex: 'f', skin: '#f6dccb', hair: ['#6b4a3a', '#3a2620'], style: 'waves', eye: '#6b4a3a', cloth: ['#7a8ab8', '#4c5a86'], x: [] };
+
+  function shade(hex, f) {
+    var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    var m = function (c) { return Math.max(0, Math.min(255, Math.round(f < 0 ? c * (1 + f) : c + (255 - c) * f))); };
+    return '#' + ((1 << 24) + (m(r) << 16) + (m(g) << 8) + m(b)).toString(16).slice(1);
+  }
+  function mix(a, b, t) {
+    var A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16);
+    var c = function (sh) { return Math.round(((A >> sh) & 255) * (1 - t) + ((B >> sh) & 255) * t); };
+    return '#' + ((1 << 24) + (c(16) << 16) + (c(8) << 8) + c(0)).toString(16).slice(1);
+  }
+  function lg(id, a, b, x1, y1, x2, y2) {
+    return '<linearGradient id="' + id + '" x1="' + (x1 || 0) + '" y1="' + (y1 || 0) + '" x2="' + (x2 || 0) + '" y2="' + (y2 === undefined ? 1 : y2) + '"><stop offset="0" stop-color="' + a + '"/><stop offset="1" stop-color="' + b + '"/></linearGradient>';
+  }
+  function ln(d, w, c, op) { return '<path d="' + d + '" fill="none" stroke="' + (c || LINE) + '" stroke-width="' + (w || 0.7) + '" stroke-linecap="round" stroke-linejoin="round"' + (op ? ' opacity="' + op + '"' : '') + '/>'; }
+  function fl(d, f, op, stroke) { return '<path d="' + d + '" fill="' + f + '"' + (op ? ' opacity="' + op + '"' : '') + (stroke ? ' stroke="' + LINE + '" stroke-width="' + stroke + '" stroke-linejoin="round"' : '') + '/>'; }
+
+  /* ---------- Portrait (viewBox 0 0 100 120) ---------- */
+  function bust(name, expr) {
+    var L = CAST[name] || DEF, id = 'w' + (++uid), x = L.x, e = expr || 'neutre';
+    var has = function (k) { return x.indexOf(k) >= 0; };
+    var skinS = mix(L.skin, '#e09a86', 0.35), skinD = mix(L.skin, '#c9705e', 0.6), H0 = L.hair[0], H1 = L.hair[1], male = L.sex === 'm';
+    var h = '<defs>' +
+      lg(id + 'h', H0, H1) + lg(id + 'c', L.cloth[0], L.cloth[1]) + lg(id + 's', L.skin, skinS) +
+      '<radialGradient id="' + id + 'i" cx="0.5" cy="0.7" r="0.7"><stop offset="0" stop-color="' + shade(L.eye, 0.35) + '"/><stop offset="0.55" stop-color="' + L.eye + '"/><stop offset="1" stop-color="' + shade(L.eye, -0.55) + '"/></radialGradient>' +
+      '<clipPath id="' + id + 'e"><path d="M36.3 52 Q42 46.2 47.8 51.4 Q42 55.8 36.3 52Z"/></clipPath>' +
+      '<filter id="' + id + 'b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter>' +
+      '</defs>';
+    // cheveux arrière
+    if (L.style === 'waves') h += fl('M29 40C23 66 24 92 16 120L84 120C76 92 77 66 71 40C71 22 61 13 50 13C39 13 29 22 29 40Z', 'url(#' + id + 'h)', 0, 0.7);
+    if (L.style === 'bob') h += fl('M30 42C27 58 28 70 31 78L69 78C72 70 73 58 70 42C70 24 61 15 50 15C39 15 30 24 30 42Z', 'url(#' + id + 'h)', 0, 0.7);
+    if (L.style === 'bun') h += '<circle cx="63" cy="20" r="9.5" fill="url(#' + id + 'h)" stroke="' + LINE + '" stroke-width="0.7"/>' + ln('M57 16Q63 13 69 18M56 22Q62 26 70 22', 0.5, H1, 0.8);
+    if (L.style === 'curls') h += [[33, 30, 9], [67, 30, 9], [30, 44, 7], [70, 44, 7]].map(function (c) { return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + c[2] + '" fill="url(#' + id + 'h)" stroke="' + LINE + '" stroke-width="0.6"/>'; }).join('');
+    // buste
+    if (has('straps')) {
+      h += fl('M6 120C8 99 25 91 42 88Q50 93 58 88C75 91 92 99 94 120Z', 'url(#' + id + 's)', 0, 0.7);
+      h += fl('M14 120C16 106 26 100 38 101Q50 108 62 101C74 100 84 106 86 120Z', 'url(#' + id + 'c)', 0, 0.7);
+      h += ln('M30 101L33 91M70 101L67 91', 0.9, L.cloth[1]);
+    } else h += fl('M6 120C8 99 25 91 42 88Q50 93 58 88C75 91 92 99 94 120Z', 'url(#' + id + 'c)', 0, 0.7);
+    if (has('shirt')) h += fl('M42 88L50 104L58 88Q50 93 42 88Z', '#ffffff', 0, 0.6);
+    if (has('apron')) h += fl('M38 100Q50 104 62 100L64 120H36Z', '#ffffff', 0.95, 0.5);
+    if (has('collar')) h += fl('M36 90L44 87L50 100L42 104Z', shade(L.cloth[0], 0.15), 0, 0.6) + fl('M64 90L56 87L50 100L58 104Z', shade(L.cloth[0], 0.15), 0, 0.6);
+    if (has('buttons')) h += [100, 108, 116].map(function (y) { return '<circle cx="50" cy="' + y + '" r="1.5" fill="#e3b23c" stroke="' + LINE + '" stroke-width="0.4"/>'; }).join('') + ln('M41 89L50 98L59 89', 0.6);
+    h += ln('M24 104Q30 110 30 120M76 104Q70 110 70 120', 0.5, LINE, 0.5);
+    // cou
+    h += fl('M43.5 70L43 90Q50 95 57 90L56.5 70Z', 'url(#' + id + 's)', 0, 0.6) + fl('M43 76Q50 85 57 76L57 83Q50 89 43 83Z', skinD, 0.35);
+    if (has('pearls')) for (var p = 0; p < 9; p++) h += '<circle cx="' + (40 + p * 2.5) + '" cy="' + (90 + Math.sin(p / 8 * Math.PI) * 4.5) + '" r="1.25" fill="#fffaf2" stroke="#b9a99a" stroke-width="0.35"/>';
+    if (has('brooch')) h += '<circle cx="62" cy="99" r="2.2" fill="#e8c35a" stroke="' + LINE + '" stroke-width="0.5"/><circle cx="61.4" cy="98.4" r="0.6" fill="#fff"/>';
+    if (has('bowtie')) h += fl('M50 92L43.5 88.5L43.5 95.5ZM50 92L56.5 88.5L56.5 95.5Z', '#c8343a', 0, 0.6) + '<circle cx="50" cy="92" r="1.3" fill="#9c2229"/>';
+    // oreilles et visage (tête agrandie, proportions manhwa)
+    h += '<g transform="translate(50 54) scale(1.16) translate(-50 -54)">';
+    h += fl('M33.5 49Q29 48 30 54Q31 59 35 58Z', L.skin, 0, 0.6) + fl('M66.5 49Q71 48 70 54Q69 59 65 58Z', L.skin, 0, 0.6);
+    var face = male ? 'M33.5 44C33.5 60 37 70 44 76.5Q50 80.5 56 76.5C63 70 66.5 60 66.5 44C66.5 30 59.5 23 50 23C40.5 23 33.5 30 33.5 44Z'
+                    : 'M33 45C33 62 41.5 74.5 50 78C58.5 74.5 67 62 67 45C67 30 59.5 23 50 23C40.5 23 33 30 33 45Z';
+    h += fl(face, 'url(#' + id + 's)', 0, 0.75);
+    h += fl('M33 45C33 62 41.5 74.5 50 78C45 72 39.5 62 39 51C38.6 41 42 34 46 30.5C40 31.5 33 36 33 45Z', skinD, 0.22);
+    h += '<g filter="url(#' + id + 'b)"><ellipse cx="40" cy="61" rx="5" ry="2.3" fill="#ff8f8f" opacity="' + (e === 'gene' ? 0.55 : 0.25) + '"/><ellipse cx="60" cy="61" rx="5" ry="2.3" fill="#ff8f8f" opacity="' + (e === 'gene' ? 0.55 : 0.25) + '"/></g>';
+    if (has('earrings')) h += '<path d="M31.5 58.5L31.5 63" stroke="#d9a63c" stroke-width="0.6"/><circle cx="31.5" cy="64.5" r="1.7" fill="#f0c95a" stroke="' + LINE + '" stroke-width="0.4"/><path d="M68.5 58.5L68.5 63" stroke="#d9a63c" stroke-width="0.6"/><circle cx="68.5" cy="64.5" r="1.7" fill="#f0c95a" stroke="' + LINE + '" stroke-width="0.4"/>';
+    // yeux (le droit est le miroir du gauche)
+    var irx = e === 'choc' ? 2.8 : 3.9, iry = e === 'choc' ? 3.5 : 4.7, look = e === 'gene' ? -1.4 : 0, lid = e === 'sourire' ? 1.6 : 0;
+    var eye = '<g clip-path="url(#' + id + 'e)">' + fl('M36.3 52Q42 46.2 47.8 51.4Q42 55.8 36.3 52Z', '#fffdfb') +
+      '<ellipse cx="' + (42.2 + look) + '" cy="51.6" rx="' + irx + '" ry="' + iry + '" fill="url(#' + id + 'i)"/>' +
+      '<ellipse cx="' + (42.2 + look) + '" cy="51.4" rx="' + (irx * 0.45) + '" ry="' + (iry * 0.5) + '" fill="#1d1418"/>' +
+      fl('M36 48H48V' + (49.4 + lid) + 'Q42 ' + (47 + lid) + ' 36 ' + (49.6 + lid) + 'Z', skinS, 0.9) +
+      '<circle cx="' + (40.6 + look) + '" cy="49.8" r="1.25" fill="#fff"/><circle cx="' + (43.8 + look) + '" cy="53.6" r="0.6" fill="#fff" opacity="0.9"/></g>' +
+      ln('M35.6 51.7Q41 ' + (45.6 + lid) + ' 48.1 51.2', male ? 1.2 : 1.55, '#2a1a1c') +
+      (male ? '' : ln('M36 51.4L34.4 50.2M37.2 50L35.9 48.6', 0.7, '#2a1a1c')) +
+      ln('M37.4 48.4Q42 45.2 46.8 47.8', 0.45, LINE, 0.6) + ln('M38.5 54.6Q42 55.9 45.8 54.2', 0.45, LINE, 0.5);
+    var ez = male ? 'translate(41 51.5) scale(1.06 0.96) translate(-42 -51.5)' : 'translate(40.6 51.8) scale(1.16) translate(-42 -51.5)';
+    eye = '<g transform="' + ez + '">' + eye + '</g>';
+    h += eye + '<g transform="translate(100 0) scale(-1 1)">' + eye + '</g>';
+    // sourcils
+    var by = e === 'choc' ? -2 : e === 'serieux' ? 1 : 0, tilt = e === 'gene' ? -1.6 : e === 'serieux' ? 1.6 : 0;
+    var brow = 'M36 ' + (44.6 + by) + 'Q41 ' + (41.4 + by) + ' 47 ' + (43.4 + by + tilt);
+    h += ln(brow, male ? 1.5 : 1.05, H1) + '<g transform="translate(100 0) scale(-1 1)">' + ln(brow, male ? 1.5 : 1.05, H1) + '</g>';
+    // nez, bouche
+    h += ln('M50.8 57.6Q52.2 62.4 49.8 63.6', 0.65, '#b07a6c') + '<ellipse cx="51" cy="61.6" rx="0.7" ry="0.45" fill="#fff" opacity="0.7"/>';
+    if (e === 'choc') h += '<ellipse cx="50" cy="69.3" rx="2.4" ry="2" fill="#7a2f3a" stroke="' + LINE + '" stroke-width="0.5"/>';
+    else if (e === 'gene') h += ln('M46 69.4Q48 68.4 50 69.4Q52 70.4 54 69.2', 0.8, '#8a3f48');
+    else if (e === 'sourire') h += ln('M45.5 68.4Q50 72.4 54.5 68.4', 0.9, '#8a3f48') + (male ? '' : fl('M46.5 69Q50 71.6 53.5 69Q50 70.2 46.5 69Z', '#e88a92', 0.7));
+    else if (male) h += ln('M46.4 69.2Q50 70.4 53.6 69.2', 0.8, '#8a4f4f');
+    else h += ln('M45.6 68.7Q48 67.5 50 68.3Q52 67.5 54.4 68.7', 0.75, '#a24b55') + fl('M46.4 69.1Q50 72.6 53.6 69.1Q50 70.1 46.4 69.1Z', has('lips') ? '#d24a5a' : '#e58c95', 0.85) + '<ellipse cx="51" cy="70.4" rx="1" ry="0.4" fill="#fff" opacity="0.6"/>';
+    if (has('mole')) h += '<circle cx="56.6" cy="66" r="0.55" fill="#4a3330"/>';
+    if (has('mustache')) h += fl('M43.5 67.4Q47 64.4 50 66.2Q53 64.4 56.5 67.4Q53 68.4 50 67.2Q47 68.4 43.5 67.4Z', H1, 0, 0.5);
+    // cheveux devant
+    var HG = 'url(#' + id + 'h)', strands = '';
+    switch (L.style) {
+      case 'bun':
+        h += fl('M33 47C31 30 39 19 51 19C62 19 69 28 67 46C64 36 61 31 56 29C53 33 47 34 41 33C37 37 34 42 33 47Z', HG, 0, 0.7);
+        h += fl('M33.5 46C32 52 32.4 58 34 62C35 56 35 51 36.2 47Z', HG, 0, 0.5);
+        strands = 'M40 22Q46 26 49 33M52 20Q57 24 58 29M45 21Q41 27 38 34';
+        break;
+      case 'curls':
+        h += [[37, 22, 7.5], [46, 18, 8], [56, 18, 8], [64, 23, 7.5], [34, 33, 6], [66, 33, 6]].map(function (c) { return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="' + c[2] + '" fill="' + HG + '" stroke="' + LINE + '" stroke-width="0.6"/>'; }).join('');
+        strands = 'M41 19Q46 22 45 27M51 15Q56 19 54 24M60 20Q64 24 61 29M33 30Q37 33 35 37';
+        break;
+      case 'waves':
+        h += fl('M32 50C29 30 38 17 52 17C64 17 71 28 68 50C66 38 62 31 57 28C57 34 54 39 50 42C51 36 49 31 46 29C44 34 40 38 36 40C35 43 33 46 32 50Z', HG, 0, 0.7);
+        h += fl('M32 49C29 62 31 74 27 86C34 80 36 70 35.5 58Z', HG, 0, 0.6) + fl('M68 49C71 62 69 74 73 86C66 80 64 70 64.5 58Z', HG, 0, 0.6);
+        strands = 'M44 20Q50 26 50 34M55 19Q60 25 59 31M38 26Q36 34 37 40M30 64Q32 72 29 80M70 64Q68 72 71 80';
+        break;
+      case 'bob':
+        h += fl('M31 52C29 30 38 18 51 18C63 18 71 29 69 52C67 42 65 36 62 33L38 33C35 37 33 44 31 52Z', HG, 0, 0.7);
+        h += fl('M38 33Q50 38 62 33L62 30Q50 35 38 30Z', HG, 0, 0.5);
+        strands = 'M42 21Q46 27 45 33M55 21Q56 27 56 33M49 19V33';
+        break;
+      case 'swept':
+        h += fl('M32.5 45C30 26 40 15 53 15C65 15 71 25 68 44C66 35 62 30 57 27.5C53 31 45 31.5 38.5 32C35.5 36 33.5 40 32.5 45Z', HG, 0, 0.75);
+        h += fl('M57 27.5C61 22 66 21 69 24C67 27 63 28 57 27.5Z', HG, 0, 0.5);
+        strands = 'M38 22Q48 21 57 27M41 18Q51 18 61 24M44 30Q50 27 55 28';
+        break;
+      case 'bald':
+        h += fl('M33 41C33 34 35 30 37 28C35 33 35 38 35.5 44Z', HG, 0, 0.5) + fl('M67 41C67 34 65 30 63 28C65 33 65 38 64.5 44Z', HG, 0, 0.5);
+        strands = '';
+        break;
+      default: // court
+        h += fl('M33 44C31 28 40 18 51 18C62 18 69 27 67 44C65 36 61 31 56 29.5C51 31.5 44 31.5 39 31.5C36 35 34 39 33 44Z', HG, 0, 0.75);
+        strands = 'M40 22Q47 23 53 29M50 19Q57 21 61 27';
+    }
+    h += ln(strands, 0.5, H1, 0.75);
+    h += ln(L.style === 'curls' ? 'M38 17Q46 12 56 13' : 'M38 25Q50 18 62 24', 1.6, '#ffffff', 0.35);
+    if (has('tiara')) h += fl('M40 13L43 8.5L46 12L50 6.5L54 12L57 8.5L60 13Q50 11 40 13Z', '#f0c95a', 0, 0.5) + '<circle cx="50" cy="9.6" r="1" fill="#9fd6ff"/>';
+    if (has('cap')) h += fl('M32 26Q31 12 50 11Q69 12 68 26Q50 22 32 26Z', '#7a4a2a', 0, 0.7) + fl('M30 27Q50 21 70 27L70 30Q50 25 30 30Z', '#3b2a20', 0, 0.6) + fl('M44 15H56V19H44Z', '#e3b23c', 0, 0.4);
+    if (has('beard')) h += fl('M36 60Q38 76 50 81Q62 76 64 60Q60 70 50 71Q40 70 36 60Z', H1, 0.95, 0.5) + ln('M44 74Q50 76 56 74', 0.4, H0, 0.6);
+    if (has('toque')) h += fl('M36 22Q34 6 42 6Q44 0 50 1Q56 0 58 6Q66 6 64 22Z', '#ffffff', 0, 0.7) + fl('M35 20H65V26H35Z', '#f2efe8', 0, 0.6);
+    if (has('captain')) h += fl('M31 24Q31 10 50 10Q69 10 69 24Z', '#ffffff', 0, 0.7) + fl('M30 24Q50 19 70 24L71 28Q50 23 29 28Z', '#1a1a24', 0, 0.6) + fl('M46 13H54V18H46Z', '#e3b23c', 0, 0.4);
+    if (has('hat')) h += fl('M30 25Q31 11 50 11Q69 11 70 25Q50 21 30 25Z', '#6a5a3a', 0, 0.7) + ln('M26 26Q50 20 74 26', 1.2, '#3a2e1e');
+    if (has('monocle')) h += '<circle cx="59.4" cy="51.8" r="6" fill="#ffffff" fill-opacity="0.12" stroke="#c9a23c" stroke-width="0.9"/>' + ln('M65 54Q69 64 66 74', 0.5, '#c9a23c');
+    if (has('apron')) h += '';
+    if (has('glasses')) h += '<g fill="#ffffff" fill-opacity="0.12" stroke="#b08a3c" stroke-width="0.75"><circle cx="40.6" cy="51.8" r="6.6"/><circle cx="59.4" cy="51.8" r="6.6"/></g>' + ln('M47.2 51Q50 49.8 52.8 51M34 50.8L32.4 49.8M66 50.8L67.6 49.8', 0.7, '#b08a3c');
+    if (L.age) h += ln('M37 56.5Q39 57.5 41 57.2M63 56.5Q61 57.5 59 57.2', 0.4, LINE, 0.45);
+    if (e === 'gene') h += fl('M66 33Q64 37 65.5 39Q68 39 67.6 36.4Z', '#bfe3ff', 0.95, 0.4);
+    h += '</g>';
+    return h;
+  }
+
+  function portrait(name, expr, cls) {
+    var key = slug(name) + ':' + (expr || 'neutre'), src = (window.KIOUKAN_IMAGES || {})[key] || (window.KIOUKAN_IMAGES || {})[slug(name)];
+    if (src) return '<img class="' + (cls || 'pimg') + '" src="' + src + '" alt="">';
+    return '<svg class="' + (cls || 'pimg') + '" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' + bust(name, expr) + '</svg>';
+  }
+  function slug(name) { return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]+/g, '-').replace(/^-|-$/g, ''); }
+
+  /* ---------- Décors (viewBox 0 0 400 260) ---------- */
+  function sc(inner, id) { return '<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + inner + '</svg>'; }
+  function blurDef(id, s) { return '<filter id="' + id + '" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="' + s + '"/></filter>'; }
+
+  var BG = {};
+  BG.night = function () {
+    var id = 'n' + (++uid), h = '<defs>' + lg(id + 's', '#1b2350', '#c97a5a') + '<radialGradient id="' + id + 'm"><stop offset="0" stop-color="#fff6d8"/><stop offset="0.3" stop-color="#fff0c0" stop-opacity="0.6"/><stop offset="1" stop-color="#fff0c0" stop-opacity="0"/></radialGradient>' + blurDef(id + 'b', 6) + blurDef(id + 'b2', 2.5) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 's)"/>';
+    h += '<circle cx="318" cy="62" r="70" fill="url(#' + id + 'm)"/><circle cx="318" cy="62" r="17" fill="#fff7e2"/>';
+    [[40, 30], [90, 52], [150, 20], [210, 40], [250, 16], [380, 110], [30, 90]].forEach(function (s) { h += '<circle cx="' + s[0] + '" cy="' + s[1] + '" r="0.9" fill="#fff" opacity="0.8"/>'; });
+    h += '<path d="M0 150Q80 120 170 142T400 132V260H0Z" fill="#5b4a72" opacity="0.65" filter="url(#' + id + 'b2)"/>';
+    h += '<path d="M0 176Q100 150 210 170T400 162V260H0Z" fill="#3a3157"/>';
+    h += '<rect x="0" y="188" width="400" height="10" fill="#2a2440"/>' + [0, 1, 2, 3, 4, 5, 6].map(function (i) { return '<path d="M' + (i * 64 - 8) + ' 260V214Q' + (i * 64 + 24) + ' 194 ' + (i * 64 + 56) + ' 214V260Z" fill="#2a2440"/>'; }).join('');
+    // train en contre-jour, fenêtres chaudes
+    h += '<g><rect x="42" y="160" width="62" height="28" rx="4" fill="#1a1428"/><rect x="88" y="146" width="22" height="42" rx="3" fill="#1a1428"/><rect x="54" y="148" width="9" height="14" fill="#1a1428"/>';
+    for (var j = 0; j < 4; j++) {
+      var cx = 116 + j * 68;
+      h += '<rect x="' + cx + '" y="158" width="64" height="30" rx="5" fill="#1d1830"/>';
+      for (var w = 0; w < 5; w++) h += '<rect x="' + (cx + 5 + w * 12) + '" y="164" width="8" height="9" rx="1.5" fill="#ffc96b"/>';
+    }
+    h += '</g><g filter="url(#' + id + 'b)" opacity="0.8">' + [0, 1, 2, 3].map(function (j) { return '<rect x="' + (118 + j * 68) + '" y="162" width="60" height="12" fill="#ffb347"/>'; }).join('') + '</g>';
+    h += '<g filter="url(#' + id + 'b)" fill="#f3ece6" opacity="0.85"><circle cx="58" cy="132" r="14"/><circle cx="40" cy="112" r="18"/><circle cx="14" cy="92" r="22"/></g>';
+    h += '<rect y="200" width="400" height="60" fill="#d9c7e6" opacity="0.15" filter="url(#' + id + 'b)"/>';
+    return sc(h);
+  };
+  BG.box = function () {
+    var id = 'x' + (++uid), h = '<defs><radialGradient id="' + id + 'l" cx="0.7" cy="0.25" r="0.8"><stop offset="0" stop-color="#ffd59a"/><stop offset="0.5" stop-color="#8a4a2e"/><stop offset="1" stop-color="#2a1410"/></radialGradient>' + lg(id + 'v', '#b0202e', '#4a0a14') + blurDef(id + 'b', 5) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'l)"/>';
+    h += '<g filter="url(#' + id + 'b)">' + [[300, 50, 22, '#ffe2a8'], [350, 90, 14, '#ffcf80'], [60, 60, 18, '#ff9f6b'], [110, 30, 10, '#ffd59a']].map(function (b) { return '<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + b[2] + '" fill="' + b[3] + '" opacity="0.55"/>'; }).join('') + '</g>';
+    // écrin ouvert, vide
+    h += '<path d="M90 150L310 150L330 230L70 230Z" fill="#3a1a12" stroke="' + LINE + '" stroke-width="1"/>';
+    h += '<path d="M100 155L300 155L316 222L84 222Z" fill="url(#' + id + 'v)"/>';
+    h += '<path d="M150 170Q200 210 250 170" fill="none" stroke="#5a0a16" stroke-width="7" stroke-linecap="round" opacity="0.8"/><path d="M150 170Q200 210 250 170" fill="none" stroke="#000" stroke-width="2" opacity="0.25"/>';
+    h += '<path d="M96 150L112 70L288 70L304 150Z" fill="#4a2216" stroke="' + LINE + '" stroke-width="1"/><path d="M106 146L119 78L281 78L294 146Z" fill="url(#' + id + 'v)" opacity="0.85"/>';
+    h += '<path d="M90 150H310" stroke="#e3b23c" stroke-width="2.4"/>';
+    [[180, 120], [232, 106], [200, 96]].forEach(function (s) { h += '<path d="M' + s[0] + ' ' + (s[1] - 7) + 'L' + (s[0] + 1.6) + ' ' + (s[1] - 1.6) + 'L' + (s[0] + 7) + ' ' + s[1] + 'L' + (s[0] + 1.6) + ' ' + (s[1] + 1.6) + 'L' + s[0] + ' ' + (s[1] + 7) + 'L' + (s[0] - 1.6) + ' ' + (s[1] + 1.6) + 'L' + (s[0] - 7) + ' ' + s[1] + 'L' + (s[0] - 1.6) + ' ' + (s[1] - 1.6) + 'Z" fill="#fff8e0" opacity="0.85"/>'; });
+    return sc(h);
+  };
+  BG.warm = function () {
+    var id = 'r' + (++uid), h = '<defs>' + lg(id + 'g', '#e8b48a', '#6e3a2c') + blurDef(id + 'b', 8) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    h += '<g filter="url(#' + id + 'b)">' + [[70, 60, 34, '#ffe2b0', 0.7], [330, 40, 40, '#ffd08a', 0.6], [250, 120, 26, '#ffcf9a', 0.4], [20, 170, 30, '#c26a4a', 0.5], [380, 200, 36, '#7a2f2a', 0.6], [160, 30, 18, '#fff1d0', 0.5]].map(function (b) { return '<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + b[2] + '" fill="' + b[3] + '" opacity="' + b[4] + '"/>'; }).join('') +
+      '<rect x="0" y="190" width="400" height="70" fill="#5a2a22" opacity="0.6"/></g>';
+    return sc(h);
+  };
+  BG.cool = function () {
+    var id = 'c' + (++uid), h = '<defs>' + lg(id + 'g', '#2e3e6e', '#a9b8d8', 0, 0, 1, 0) + blurDef(id + 'b', 7) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    h += '<g filter="url(#' + id + 'b)">' + [0, 1, 2, 3, 4, 5].map(function (i) { return '<rect x="' + (i * 72 - 20) + '" y="' + (40 + (i % 2) * 14) + '" width="90" height="4" fill="#ffffff" opacity="0.35"/>'; }).join('') +
+      [[320, 70, 30, '#ffe7b0', 0.5], [60, 110, 24, '#d6e4ff', 0.5]].map(function (b) { return '<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + b[2] + '" fill="' + b[3] + '" opacity="' + b[4] + '"/>'; }).join('') + '</g>';
+    return sc(h);
+  };
+  BG.watch = function () {
+    var id = 'k' + (++uid), h = '<defs><radialGradient id="' + id + 'g" cx="0.5" cy="0.45" r="0.75"><stop offset="0" stop-color="#3b4a7a"/><stop offset="1" stop-color="#11142a"/></radialGradient>' + lg(id + 'o', '#f7dc8a', '#a4741e') + blurDef(id + 'b', 4) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    h += '<g filter="url(#' + id + 'b)" opacity="0.5"><circle cx="70" cy="60" r="20" fill="#ffd38a"/><circle cx="340" cy="200" r="26" fill="#8fb0ff"/></g>';
+    h += '<path d="M200 30C210 30 214 22 214 16" fill="none" stroke="url(#' + id + 'o)" stroke-width="5" stroke-linecap="round"/>';
+    h += '<circle cx="200" cy="40" r="10" fill="none" stroke="url(#' + id + 'o)" stroke-width="5"/>';
+    h += '<circle cx="200" cy="140" r="92" fill="url(#' + id + 'o)" stroke="' + LINE + '" stroke-width="1.2"/><circle cx="200" cy="140" r="80" fill="#fbf6ea" stroke="' + LINE + '" stroke-width="0.8"/>';
+    for (var i = 0; i < 12; i++) { var a = i * Math.PI / 6; h += '<path d="M' + (200 + Math.sin(a) * 70) + ' ' + (140 - Math.cos(a) * 70) + 'L' + (200 + Math.sin(a) * 76) + ' ' + (140 - Math.cos(a) * 76) + '" stroke="#3a2a2a" stroke-width="' + (i % 3 ? 1.4 : 3) + '"/>'; }
+    // 22 h 30 : petite aiguille entre 10 et 11, grande sur 6
+    var ah = (10.5) * Math.PI / 6;
+    h += '<path d="M200 140L' + (200 + Math.sin(ah) * 44) + ' ' + (140 - Math.cos(ah) * 44) + '" stroke="#2a1a1c" stroke-width="5" stroke-linecap="round"/>';
+    h += '<path d="M200 140L200 206" stroke="#2a1a1c" stroke-width="3" stroke-linecap="round"/><circle cx="200" cy="140" r="5" fill="#2a1a1c"/>';
+    h += '<path d="M150 74Q190 58 236 70" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity="0.35"/>';
+    return sc(h);
+  };
+  BG.corridor = function () {
+    var id = 'd' + (++uid), h = '<defs>' + lg(id + 'g', '#f2c58a', '#5a2e24') + blurDef(id + 'b', 6) + blurDef(id + 'b2', 1.4) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    // perspective du couloir
+    h += '<path d="M0 0L170 98L230 98L400 0Z" fill="#7a3f2c" opacity="0.5"/><path d="M0 260L170 160L230 160L400 260Z" fill="#3a1d16"/>';
+    h += '<path d="M0 0L170 98L170 160L0 260Z" fill="#8a4a32"/><path d="M400 0L230 98L230 160L400 260Z" fill="#5a2c20"/>';
+    h += '<rect x="170" y="98" width="60" height="62" fill="#ffe6b8"/>';
+    h += '<g filter="url(#' + id + 'b)"><rect x="160" y="88" width="80" height="82" fill="#fff0cf" opacity="0.8"/></g>';
+    [[40, 30, 70, 110], [110, 70, 140, 128]].forEach(function (w) { h += '<path d="M' + w[0] + ' ' + (w[1] + 10) + 'L' + w[2] + ' ' + (w[1] + 24) + 'L' + w[2] + ' ' + (w[3] - 6) + 'L' + w[0] + ' ' + w[3] + 'Z" fill="#2e3e6e" opacity="0.8"/>'; });
+    // trois silhouettes à contre-jour
+    var sil = function (x, s, kind) {
+      var b = '<g transform="translate(' + x + ' 160) scale(' + s + ')" fill="#2a1612" filter="url(#' + id + 'b2)">';
+      b += '<path d="M-20 0C-20 -30 -14 -46 0 -48C14 -46 20 -30 20 0Z"/><circle cx="0" cy="-58" r="10"/>';
+      if (kind === 'cap') b += '<path d="M-11 -64Q0 -74 11 -64L13 -61L-13 -61Z"/>';
+      if (kind === 'hair') b += '<path d="M-11 -60C-14 -46 -12 -36 -16 -26L-6 -40ZM11 -60C14 -46 12 -36 16 -26L6 -40Z"/>';
+      if (kind === 'swept') b += '<path d="M-10 -62Q2 -74 14 -62L4 -64Z"/>';
+      return b + '</g>';
+    };
+    h += sil(184, 0.55, 'hair') + sil(200, 0.62, 'swept') + sil(216, 0.55, 'cap');
+    return sc(h);
+  };
+  BG.scream = function () {
+    var id = 's' + (++uid), h = '<defs><radialGradient id="' + id + 'g" cx="0.5" cy="0.5" r="0.7"><stop offset="0" stop-color="#e2483d"/><stop offset="1" stop-color="#1a0a10"/></radialGradient></defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    for (var i = 0; i < 24; i++) { var a = i * Math.PI / 12; h += '<path d="M200 130L' + (200 + Math.cos(a) * 320) + ' ' + (130 + Math.sin(a) * 320) + '" stroke="#fff" stroke-width="' + (i % 2 ? 1 : 2.5) + '" opacity="0.18"/>'; }
+    return sc(h);
+  };
+
+  BG.sea = function () {
+    var id = 'e' + (++uid), h = '<defs>' + lg(id + 's', '#1b2350', '#6a4a7a') + lg(id + 'w', '#2a3a6a', '#0e1630') + blurDef(id + 'b', 5) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 's)"/><circle cx="90" cy="60" r="14" fill="#fff4d8"/><circle cx="90" cy="60" r="40" fill="#fff4d8" opacity="0.18" filter="url(#' + id + 'b)"/>';
+    h += '<rect y="130" width="400" height="130" fill="url(#' + id + 'w)"/>';
+    for (var i = 0; i < 9; i++) h += '<path d="M' + (i * 50 - 20) + ' ' + (150 + (i % 3) * 22) + 'q12 -5 24 0t24 0" fill="none" stroke="#9fb4e8" stroke-width="1.4" opacity="0.5"/>';
+    h += '<path d="M60 64V150" stroke="#fff4d8" stroke-width="14" opacity="0.12" filter="url(#' + id + 'b)"/>';
+    // bastingage
+    h += '<rect y="200" width="400" height="6" fill="#d9c7a0"/><rect y="230" width="400" height="30" fill="#8a6a44"/>';
+    for (var j = 0; j < 14; j++) h += '<rect x="' + (j * 30 + 8) + '" y="206" width="3" height="24" fill="#d9c7a0"/>';
+    return sc(h);
+  };
+  BG.stage = function () {
+    var id = 'g' + (++uid), h = '<defs>' + lg(id + 'c', '#b0202e', '#4a0a14') + '<radialGradient id="' + id + 'l" cx="0.5" cy="0.2" r="0.7"><stop offset="0" stop-color="#fff2c8" stop-opacity="0.9"/><stop offset="1" stop-color="#fff2c8" stop-opacity="0"/></radialGradient></defs>';
+    h += '<rect width="400" height="260" fill="#2a0c12"/>';
+    h += '<path d="M150 0L250 0L330 260L70 260Z" fill="url(#' + id + 'l)"/>';
+    for (var i = 0; i < 6; i++) h += '<path d="M' + (i * 13) + ' 0Q' + (i * 13 + 8) + ' 130 ' + (i * 13 - 4) + ' 260H' + (i * 13 + 12) + 'Q' + (i * 13 + 20) + ' 130 ' + (i * 13 + 12) + ' 0Z" fill="url(#' + id + 'c)"/>';
+    for (var j = 0; j < 6; j++) h += '<path d="M' + (400 - j * 13) + ' 0Q' + (392 - j * 13) + ' 130 ' + (404 - j * 13) + ' 260H' + (388 - j * 13) + 'Q' + (380 - j * 13) + ' 130 ' + (388 - j * 13) + ' 0Z" fill="url(#' + id + 'c)"/>';
+    h += '<path d="M0 0H400V26Q200 46 0 26Z" fill="url(#' + id + 'c)"/><rect y="230" width="400" height="30" fill="#5a3420"/>';
+    return sc(h);
+  };
+  BG.casino = function () {
+    var id = 'q' + (++uid), h = '<defs>' + lg(id + 'g', '#1e4a34', '#0a1a12') + blurDef(id + 'b', 7) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    h += '<g filter="url(#' + id + 'b)">' + [[70, 50, 26, '#ffd36a'], [190, 30, 18, '#ffe9a8'], [330, 60, 30, '#ffc04a'], [260, 120, 16, '#ff8a5a'], [40, 150, 22, '#e3b23c']].map(function (b) { return '<circle cx="' + b[0] + '" cy="' + b[1] + '" r="' + b[2] + '" fill="' + b[3] + '" opacity="0.55"/>'; }).join('') + '</g>';
+    h += '<ellipse cx="200" cy="250" rx="240" ry="70" fill="#2f7a4a"/><ellipse cx="200" cy="250" rx="240" ry="70" fill="none" stroke="#e3b23c" stroke-width="3"/>';
+    [[120, 214], [160, 222], [250, 216], [290, 226]].forEach(function (c) { h += '<ellipse cx="' + c[0] + '" cy="' + c[1] + '" rx="11" ry="4" fill="#c8343a" stroke="#fff" stroke-width="1.4"/>'; });
+    return sc(h);
+  };
+  BG.garden = function () {
+    var id = 'o' + (++uid), h = '<defs>' + lg(id + 's', '#f0b07a', '#7a4a6a') + blurDef(id + 'b', 2) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 's)"/><circle cx="300" cy="120" r="30" fill="#ffd9a0" opacity="0.8"/>';
+    h += '<path d="M0 170Q100 140 200 160T400 150V260H0Z" fill="#6a5a7a" opacity="0.6" filter="url(#' + id + 'b)"/>';
+    h += '<path d="M0 200Q120 180 230 196T400 190V260H0Z" fill="#4a4a3a"/>';
+    [[60, 168, 1], [150, 176, 0.8], [340, 172, 1.1]].forEach(function (t) { h += '<g transform="translate(' + t[0] + ' ' + t[1] + ') scale(' + t[2] + ')"><path d="M-2 0V30H2V0Z" fill="#3a2a20"/><ellipse cx="0" cy="-8" rx="26" ry="18" fill="#6a7a4a"/><ellipse cx="-8" cy="-14" rx="12" ry="8" fill="#8a9a5a"/></g>'; });
+    h += '<rect x="230" y="120" width="120" height="76" fill="#e8d2b0"/><path d="M222 122L290 90L358 122Z" fill="#b0503a"/>' + [0, 1, 2].map(function (i) { return '<rect x="' + (244 + i * 34) + '" y="138" width="16" height="22" fill="#ffd36a"/>'; }).join('');
+    return sc(h);
+  };
+  BG.lobby = function () {
+    var id = 'y' + (++uid), h = '<defs>' + lg(id + 'g', '#f2d8b0', '#8a5a3a') + blurDef(id + 'b', 6) + '</defs>';
+    h += '<rect width="400" height="260" fill="url(#' + id + 'g)"/>';
+    for (var i = 0; i < 5; i++) h += '<rect x="' + (20 + i * 80) + '" y="40" width="20" height="200" fill="#e8c890" opacity="0.6"/>';
+    h += '<g filter="url(#' + id + 'b)"><circle cx="200" cy="40" r="40" fill="#fff4d0" opacity="0.8"/></g>';
+    h += '<path d="M200 0V20" stroke="#c9a23c" stroke-width="2"/>' + [-30, -15, 0, 15, 30].map(function (d) { return '<circle cx="' + (200 + d) + '" cy="' + (36 + Math.abs(d) / 3) + '" r="3" fill="#fffbe8"/>'; }).join('');
+    h += '<rect y="220" width="400" height="40" fill="#7a2a2a"/><rect x="120" y="226" width="160" height="34" fill="#a83a3a"/>';
+    return sc(h);
+  };
+
+  function background(kind) {
+    var src = (window.KIOUKAN_IMAGES || {})['bg:' + kind];
+    return src ? '<img src="' + src + '" alt="">' : (BG[kind] || BG.warm)();
+  }
+
+  window.KioukanWT = { bust: bust, portrait: portrait, background: background, slug: slug };
 })();
 
 </script>
@@ -1384,7 +1712,7 @@ window.addEventListener('error', function (e) {
   var tl = E.timeLabel;
 
   /* Plans (viewBox 350 x 210) et vocabulaire propres à chaque décor */
-  var Art = window.KioukanArt;
+  var Art = window.KioukanArt, WT = window.KioukanWT;
   var SCENE_UI = {
     manoir: {
       label: 'Manoir', plan: 'Plan du manoir',
@@ -1617,7 +1945,7 @@ window.addEventListener('error', function (e) {
       chips += '<button type="button" class="chip' + (i === P.crime.t ? ' crime' : '') + '" data-act="time" data-t="' + i +
         '" aria-pressed="' + (i === t) + '">' + tl(i) + '</button>';
     }
-    svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' à ' + tl(t) + '">' + Art.defs();
+    svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' à ' + tl(t) + '">' + Art.defs() + '<defs><clipPath id="tokc"><circle r="10.4"/></clipPath></defs>';
     for (r = 0; r < ROOMS.length; r++) {
       var G = GEO[r];
       svg += '<rect x="' + G.x + '" y="' + G.y + '" width="' + G.w + '" height="' + G.h + '" fill="url(#pf-' + G.f + ')"/>';
@@ -1659,7 +1987,8 @@ window.addEventListener('error', function (e) {
         var cul = state.solved && t === P.crime.t && sid === P.culprit;
         svg += '<g class="tok s' + sid + (cul ? ' culprit' : '') + '" transform="translate(' + x + ',' + y + ')">' +
           '<circle class="halo" r="12.5"/><circle class="face" r="10.4"/>' +
-          '<g transform="translate(-9.6 -9.6) scale(0.3)" clip-path="url(#tokclip)">' + Art.avatarInner(SUSPECTS[sid].name) + '</g>' +
+          (WT ? '<g clip-path="url(#tokc)"><svg x="-10.4" y="-8.6" width="20.8" height="25" viewBox="14 22 72 86">' + WT.bust(SUSPECTS[sid].name, 'neutre') + '</svg></g>'
+            : '<g transform="translate(-9.6 -9.6) scale(0.3)" clip-path="url(#tokclip)">' + Art.avatarInner(SUSPECTS[sid].name) + '</g>') +
           '<circle class="ring" r="10.4"/></g>';
       });
     });
@@ -1671,17 +2000,18 @@ window.addEventListener('error', function (e) {
   }
 
   function pola(sid, extra) {
-    return '<figure class="pola s' + sid + '" title="' + SUSPECTS[sid].name + '"><div class="pola-img">' + Art.avatar(SUSPECTS[sid].name) + '</div>' +
+    return '<figure class="pola s' + sid + '" title="' + SUSPECTS[sid].name + '"><div class="pola-img">' + face(sid) + '</div>' +
       '<figcaption><span class="pn">' + SUSPECTS[sid].short + '</span>' + (extra || '') + '</figcaption></figure>';
   }
-  function mini(sid) { return '<span class="mini s' + sid + '">' + Art.avatar(SUSPECTS[sid].name) + '</span>'; }
+  function mini(sid) { return '<span class="mini s' + sid + '">' + face(sid) + '</span>'; }
+  function face(sid) { return WT ? WT.portrait(SUSPECTS[sid].name, 'neutre') : Art.avatar(SUSPECTS[sid].name); }
 
   function renderSuspects() {
     var P = state.puz, el = $('suspects'), s, h = '';
     if (!P || isLiar(P)) { el.innerHTML = ''; el.hidden = true; return; }
     el.hidden = false;
     h += '<div class="panel-hd"><h2 class="label">Les suspects</h2><span class="sub">' + P.S + ' personnes</span></div>';
-    h += '<div class="strip" style="--n:' + (P.S <= 4 ? P.S : 3) + ';--N:' + P.S + '">';
+    h += '<div class="fiches" style="--n:' + (P.S <= 4 ? P.S : 3) + ';--N:' + P.S + '">';
     for (s = 0; s < P.S; s++) h += pola(s, '<small>' + SUSPECTS[s].role + '</small>');
     el.innerHTML = h + '</div>';
   }
