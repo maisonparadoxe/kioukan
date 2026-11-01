@@ -1,0 +1,1989 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kioukan · Partie rapide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Yellowtail&display=swap">
+<style>
+/* Concept : boîte de jeu d'enquête. Aplats pastel, polaroïds des suspects, plan vu de dessus, grille sur papier déchiré.
+   Mobile : une colonne (affaire, suspects, plan, chronologie, constats). Large : chronologie à gauche, plan et constats à droite. */
+:root {
+  --bg: #d9ebfb;
+  --panel: #ffffff;
+  --panel-2: #eceffd;
+  --cell: #f3f5ff;
+  --ink: #2b2f55;
+  --ink-2: #666c91;
+  --rule: #e0e5f5;
+  --accent: #6a78c9;
+  --accent-d: #4d5aa8;
+  --accent-ink: #ffffff;
+  --pink: #f4b6c9;
+  --pink-2: #fbdde7;
+  --lav: #e7e3fa;
+  --given: #fbd3df;
+  --ok: #2f9e77;
+  --bad: #dc4f6b;
+  --bad-bg: #ffe1e7;
+  --shadow: 0 6px 16px rgba(60, 80, 140, 0.16);
+  --wall: #2b2f55;
+  --door: #fff3cf;
+  --wood-a: #f7dbe2; --wood-b: #ebbccb;
+  --check-a: #fde9ef; --check-c: #f6c7d6;
+  --tile-a: #e3e7fb; --tile-b: #cdd4f3;
+  --diamond-a: #ece3f8; --diamond-c: #d6c8f0;
+  --grass-a: #cdeac3; --grass-c: #a9d89d;
+  --steel-a: #dde3f2; --steel-b: #bcc6e0;
+  --fu: #f0a3b9; --fu2: #c9bdf0; --fw: #ffffff; --fpot: #b5806a; --fg: #6dbb84; --fg2: #4f9f6c; --ftv: #3a3f6b; --win: #bfe2f7;
+  --s0: #f08a5d;
+  --s1: #3bb39f;
+  --s2: #8e7cf0;
+  --s3: #ee6fa5;
+  --s4: #e8b730;
+  --display: 'Yellowtail', 'Brush Script MT', cursive;
+  --sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: var(--sans);
+  --tw: 46px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171c3d;
+    --panel: #252b57;
+    --panel-2: #323a70;
+    --cell: #1d2348;
+    --ink: #eef0ff;
+    --ink-2: #aeb4da;
+    --rule: #353d6b;
+    --accent: #8d9cf0;
+    --accent-d: #5f6ec9;
+    --accent-ink: #11153a;
+    --pink: #c97b97;
+    --pink-2: #4a2f55;
+    --lav: #343b72;
+    --given: #6b3f66;
+    --ok: #4fd68c;
+    --bad: #ff7d93;
+    --bad-bg: #55243c;
+    --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    --wall: #0b0e24;
+    --door: #ffe9a8;
+    --wood-a: #5b4666; --wood-b: #6e5780;
+    --check-a: #5a4465; --check-c: #6c5379;
+    --tile-a: #3d4676; --tile-b: #4b5590;
+    --diamond-a: #46407a; --diamond-c: #574f90;
+    --grass-a: #3b6b55; --grass-c: #4b806a;
+    --steel-a: #424a78; --steel-b: #545d93;
+    --fu: #c97b97; --fu2: #8d82cf; --fw: #eef0ff; --fg: #58ab78; --fg2: #3f8f5f; --win: #8fc0e8;
+    --s0: #ff9a6e;
+    --s1: #4fd1bb;
+    --s2: #a99aff;
+    --s3: #ff86b8;
+    --s4: #f2c53f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171c3d;
+  --panel: #252b57;
+  --panel-2: #323a70;
+  --cell: #1d2348;
+  --ink: #eef0ff;
+  --ink-2: #aeb4da;
+  --rule: #353d6b;
+  --accent: #8d9cf0;
+  --accent-d: #5f6ec9;
+  --accent-ink: #11153a;
+  --pink: #c97b97;
+  --pink-2: #4a2f55;
+  --lav: #343b72;
+  --given: #6b3f66;
+  --ok: #4fd68c;
+  --bad: #ff7d93;
+  --bad-bg: #55243c;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  --wall: #0b0e24;
+  --door: #ffe9a8;
+  --wood-a: #5b4666; --wood-b: #6e5780;
+  --check-a: #5a4465; --check-c: #6c5379;
+  --tile-a: #3d4676; --tile-b: #4b5590;
+  --diamond-a: #46407a; --diamond-c: #574f90;
+  --grass-a: #3b6b55; --grass-c: #4b806a;
+  --steel-a: #424a78; --steel-b: #545d93;
+  --fu: #c97b97; --fu2: #8d82cf; --fw: #eef0ff; --fg: #58ab78; --fg2: #3f8f5f; --win: #8fc0e8;
+  --s0: #ff9a6e;
+  --s1: #4fd1bb;
+  --s2: #a99aff;
+  --s3: #ff86b8;
+  --s4: #f2c53f;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.4 var(--sans);
+  padding-block: 18px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; }
+.app { max-width: 1040px; margin: 0 auto; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* En-tête */
+.top {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 14px 20px; margin-bottom: 18px;
+}
+.brand { min-width: 0; }
+h1 { margin: 0; font: 400 clamp(60px, 18vw, 84px)/0.9 var(--display); color: var(--ink); text-shadow: 3px 4px 0 var(--pink); }
+.dossier {
+  margin: 8px 0 0; display: inline-block; font: 700 13px/1.2 var(--sans); color: var(--ink);
+  background: var(--panel); padding: 5px 12px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.controls .seg { flex: 1 1 auto; }
+.controls .seg button { flex: 1 1 auto; }
+.seg { display: inline-flex; padding: 4px; gap: 2px; border-radius: 999px; background: var(--panel); box-shadow: var(--shadow); }
+.seg button {
+  border: 0; background: transparent; padding: 8px 14px; min-height: 40px; border-radius: 999px;
+  font: 700 14.5px var(--sans); cursor: pointer; color: var(--ink-2);
+}
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
+
+.btn {
+  border: 0; background: var(--panel); color: var(--ink); box-shadow: var(--shadow);
+  padding: 9px 16px; min-height: 42px; border-radius: 999px; font: 800 14.5px var(--sans); cursor: pointer;
+}
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--bad); color: #fff; box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2); }
+.btn.sm { min-height: 38px; padding: 6px 14px; font-size: 13.5px; }
+.btn:disabled { opacity: 0.45; cursor: default; }
+button:focus-visible, summary:focus-visible, input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Mise en page */
+.layout { display: flex; flex-direction: column; gap: 18px; }
+.col { display: contents; }
+#case { order: 1; } #suspects { order: 2; } #map-panel { order: 3; } #board-panel { order: 4; }
+#verdict { order: 5; } #clues-panel { order: 6; } #rules { order: 7; }
+#suspects[hidden] { display: none; }
+@media (min-width: 700px) {
+  .layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 22px; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  #case, #suspects, #map-panel, #board-panel, #verdict, #clues-panel, #rules { order: 0; }
+}
+@media (min-width: 700px) and (min-height: 520px) {
+  /* indices et plan restent à l'écran pendant qu'on remplit la grille */
+  .layout > .col:last-child { position: sticky; top: 10px; max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 4px 6px 10px; margin: -4px -6px 0; }
+}
+.panel { background: var(--panel); border-radius: 20px; box-shadow: var(--shadow); padding: 14px; min-width: 0; }
+@media (min-width: 480px) { .panel { padding: 18px; } :root { --tw: 60px; } }
+.panel-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.label { margin: 0; font: 800 19px/1.1 var(--sans); color: var(--ink); }
+.sub { font: 700 13px var(--sans); color: var(--ink-2); }
+
+/* L'affaire */
+.eyebrow {
+  display: inline-block; margin: 0 0 8px; padding: 3px 11px; border-radius: 999px; background: var(--pink-2); color: var(--bad);
+  font: 800 12px/1.4 var(--sans); letter-spacing: 0.08em; text-transform: uppercase;
+}
+.case h2 { margin: 0 0 8px; font: 800 21px/1.25 var(--sans); text-wrap: balance; }
+.case h2 em { font-style: normal; background: var(--pink-2); padding: 0 8px; border-radius: 8px; white-space: nowrap; }
+.case p { margin: 0; color: var(--ink-2); max-width: 62ch; }
+.case p b { color: var(--ink); font-weight: 800; }
+
+/* Polaroïds */
+.pola {
+  margin: 0; padding: 5px 5px 0; background: #fff; color: #2b2f55; border: 1.5px solid #2b2f55; border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(43, 47, 85, 0.22); min-width: 0;
+}
+.pola-img { aspect-ratio: 1; overflow: hidden; background: color-mix(in srgb, var(--c) 40%, #fff); border: 1.5px solid rgba(43, 47, 85, 0.5); }
+.pola-img svg { display: block; width: 100%; height: 100%; }
+.pola figcaption { text-align: center; padding: 1px 0 6px; line-height: 1.1; }
+.pola .pn { display: block; font: 400 22px/1.1 var(--display); overflow-wrap: anywhere; }
+.pola small { display: block; font: 700 12px/1.2 var(--sans); color: #666c91; }
+.pola .guilty { color: #dc4f6b; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; }
+.strip { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 12px; padding: 2px 4px 6px; }
+@media (min-width: 600px) { .strip { grid-template-columns: repeat(var(--N), minmax(0, 1fr)); } }
+.strip .pola:nth-child(odd) { transform: rotate(-1.6deg); }
+.strip .pola:nth-child(even) { transform: rotate(1.3deg); }
+.mini { display: inline-block; width: 30px; height: 30px; border-radius: 50%; overflow: hidden; flex: none; background: color-mix(in srgb, var(--c) 45%, #fff); border: 2.5px solid var(--c); }
+.mini svg { display: block; width: 100%; height: 100%; }
+
+/* Plan */
+.chips { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
+.chip {
+  border: 0; background: var(--panel-2); border-radius: 999px; padding: 4px 0; min-height: 34px;
+  font: 700 13px var(--sans); color: var(--ink-2); cursor: pointer; position: relative; font-variant-numeric: tabular-nums;
+}
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
+.chip.crime::after { content: ""; position: absolute; top: -2px; right: -1px; width: 11px; height: 11px; border-radius: 50%; background: var(--bad); border: 2px solid var(--panel); }
+.plan { display: block; width: 100%; height: auto; overflow: visible; }
+.pt-wood .pa-a { fill: var(--wood-a); } .pt-wood .pa-b { stroke: var(--wood-b); fill: none; stroke-width: 0.9; }
+.pt-check .pa-a { fill: var(--check-a); } .pt-check .pa-c { fill: var(--check-c); }
+.pt-tile .pa-a { fill: var(--tile-a); } .pt-tile .pa-b { stroke: var(--tile-b); fill: none; stroke-width: 1; }
+.pt-diamond .pa-a { fill: var(--diamond-a); } .pt-diamond .pa-c { fill: var(--diamond-c); }
+.pt-grass .pa-a { fill: var(--grass-a); } .pt-grass .pa-c { fill: var(--grass-c); }
+.pt-steel .pa-a { fill: var(--steel-a); } .pt-steel .pa-b { stroke: var(--steel-b); fill: none; stroke-width: 0.9; }
+.furn .fu { fill: var(--fu); } .furn .fu2 { fill: var(--fu2); } .furn .fw { fill: var(--fw); } .furn .fpot { fill: var(--fpot); }
+.furn .fg { fill: var(--fg); } .furn .fg2 { fill: var(--fg2); } .furn .ftv { fill: var(--ftv); } .furn .win { fill: var(--win); }
+.furn .fl { stroke: var(--wall); stroke-opacity: 0.35; stroke-width: 0.9; fill: none; }
+.furn rect, .furn ellipse, .furn circle { stroke: var(--wall); stroke-opacity: 0.35; stroke-width: 0.8; }
+.deco .rail { stroke: var(--wall); stroke-width: 2.4; fill: none; stroke-linecap: round; }
+.deco .wheel { fill: var(--panel-2); stroke: var(--wall); stroke-width: 2.4; }
+.wall { fill: none; stroke: var(--wall); stroke-width: 3.4; stroke-linejoin: round; }
+.crimeroom { fill: none; stroke: var(--bad); stroke-width: 2.2; stroke-dasharray: 6 4; }
+.door { fill: var(--door); stroke: var(--wall); stroke-width: 1.2; }
+.pill rect { fill: #fff; stroke: #2b2f55; stroke-width: 1.1; }
+.pill text { font: 800 7.6px var(--sans); letter-spacing: 0.04em; fill: #2b2f55; text-anchor: middle; dominant-baseline: central; }
+.crimemark polygon { fill: var(--bad); stroke: #fff; stroke-width: 1.8; stroke-linejoin: round; }
+.crimemark path { stroke: #fff; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+.tok .halo { fill: #fff; opacity: 0.9; }
+.tok .face { fill: color-mix(in srgb, var(--c) 45%, #fff); }
+.tok .ring { fill: none; stroke: var(--c); stroke-width: 2.4; }
+.tok.culprit .ring { stroke: var(--bad); stroke-width: 3.6; }
+.legend { margin: 12px 0 0; font: 700 13px var(--sans); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.legend span { background: var(--panel-2); border-radius: 999px; padding: 4px 11px; display: inline-flex; align-items: center; }
+.legend i { display: inline-block; margin-right: 7px; }
+.legend .lg-door { width: 16px; height: 8px; background: var(--door); border: 1.5px solid var(--wall); border-radius: 2px; }
+.legend .lg-crime { width: 16px; height: 11px; border: 2px dashed var(--bad); border-radius: 2px; }
+
+/* Chronologie */
+.s0 { --c: var(--s0); } .s1 { --c: var(--s1); } .s2 { --c: var(--s2); } .s3 { --c: var(--s3); } .s4 { --c: var(--s4); }
+.board { display: grid; grid-template-columns: var(--tw) repeat(var(--cols), minmax(0, 1fr)); gap: 6px; align-items: stretch; }
+.who { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; padding: 0 1px 4px; min-width: 0; text-align: center; }
+.who b { font-weight: 800; font-size: 13px; max-width: 100%; overflow-wrap: anywhere; line-height: 1.1; }
+.who small { font-size: 10.5px; color: var(--ink-2); line-height: 1; font-weight: 700; }
+.time {
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px;
+  min-height: 48px; padding: 0 6px; border: 0; border-radius: 12px; background: transparent;
+  font: 800 13px var(--sans); color: var(--ink-2); cursor: pointer; text-align: left; font-variant-numeric: tabular-nums;
+}
+.time.sel { background: var(--panel-2); color: var(--ink); }
+.time small { font: 800 9.5px/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--bad); }
+.cell {
+  position: relative; min-height: 48px; min-width: 0; padding: 2px 3px;
+  border: 2px solid var(--rule); border-radius: 12px; box-shadow: inset 5px 0 0 var(--c);
+  background: var(--cell); color: var(--ink); font: 700 13px var(--sans);
+  cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;
+}
+.board.dense .cell { font-size: 11.5px; }
+.cell.empty { color: var(--ink-2); }
+.cell.empty::before { content: "·"; }
+.cell.given { background: var(--given); border-color: transparent; cursor: default; }
+.cell.given svg { position: absolute; top: 4px; right: 4px; color: var(--ink); opacity: 0.7; }
+.cell.bad { background: var(--bad-bg); border-color: var(--bad); }
+.cell:disabled { color: var(--ink); opacity: 1; }
+.status { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 12px; font: 700 13px var(--sans); color: var(--ink-2); }
+.status .err { color: var(--bad); font-weight: 800; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; cursor: pointer; min-height: 36px; }
+.switch { min-height: 44px; }
+.switch input { width: 22px; height: 22px; accent-color: var(--accent); margin: 0; }
+.loading { padding: 28px 0; text-align: center; font: 700 14px var(--sans); color: var(--ink-2); }
+/* la grille se pose sur une feuille au bord déchiré */
+#board-panel {
+  padding-bottom: 22px; box-shadow: none; border-radius: 16px 16px 0 0;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+
+/* Verdict */
+.verdict { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; border: 3px solid var(--bad); }
+.v-top { display: flex; align-items: center; gap: 18px; width: 100%; }
+.v-top .pola { width: 104px; flex: none; transform: rotate(-3deg); }
+.stamp {
+  display: inline-block; font: 800 25px/1.05 var(--sans); text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--bad); border: 4px double var(--bad); border-radius: 10px; padding: 8px 12px; transform: rotate(-5deg);
+}
+.verdict p { margin: 0; }
+.verdict .sub { color: var(--ink-2); }
+
+/* Constats */
+.opts { margin: -2px 0 8px; }
+.clues { list-style: none; margin: 0; padding: 0; }
+.clue { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 8px 2px; border-top: 2px dashed var(--rule); font-size: 15px; }
+.clues .clue:first-child { border-top: 0; }
+.clue .ico {
+  width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--rule);
+  display: grid; place-items: center; color: var(--accent-ink); background: var(--panel);
+}
+.clue.ok .ico { background: var(--ok); border-color: var(--ok); color: #fff; }
+.clue.bad .ico { background: var(--bad); border-color: var(--bad); color: #fff; }
+.clue.ok .txt { color: var(--ink-2); }
+.clue.bad .txt { color: var(--bad); font-weight: 800; }
+.clue.rule .txt { font-weight: 800; }
+.clue.rule.ok .txt { font-weight: 400; }
+.empty-note { margin: 0; padding: 10px 0 2px; color: var(--ink-2); font-size: 14px; }
+
+/* Règles */
+.rules summary { cursor: pointer; font: 800 19px/1.1 var(--sans); color: var(--ink); list-style-position: inside; padding: 10px 0; min-height: 44px; }
+.rules ol { margin: 12px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; color: var(--ink-2); font-size: 15px; }
+.rules ol b { color: var(--ink); font-weight: 800; }
+
+/* Sélecteur de pièce */
+.scrim { position: fixed; inset: 0; z-index: 20; background: rgba(15, 20, 50, 0.55); }
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; max-width: 560px; margin: 0 auto;
+  background: var(--panel); border-radius: 26px 26px 0 0; box-shadow: 0 -8px 30px rgba(15, 20, 50, 0.3);
+  padding: 16px max(16px, env(safe-area-inset-left, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-reduced-motion: no-preference) { .sheet { animation: rise 0.18s ease-out; } @keyframes rise { from { transform: translateY(24px); opacity: 0; } } }
+.sheet-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.sheet-hd b { font: 800 17px var(--sans); }
+.trail { margin: 0 0 12px; font: 700 13px var(--sans); color: var(--ink-2); overflow-wrap: anywhere; }
+.trail b { color: var(--ink); }
+.room-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.room-btn { overflow-wrap: anywhere;
+  min-height: 52px; padding: 6px 4px; border: 0; border-radius: 14px; background: var(--panel-2);
+  font: 800 14px/1.1 var(--sans); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+}
+.room-btn small { font: 700 11px var(--sans); color: var(--ink-2); }
+.room-btn.far { background: transparent; box-shadow: inset 0 0 0 2px var(--rule); color: var(--ink-2); font-weight: 700; }
+.room-btn.cur { background: var(--accent); color: var(--accent-ink); box-shadow: 0 2px 0 var(--accent-d); }
+.room-btn.cur small { color: var(--accent-ink); }
+.sheet-ft { display: flex; justify-content: space-between; gap: 8px; margin-top: 14px; }
+
+/* Modes « menteur » : polaroïd + bulles */
+.liar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
+.liar-q { font: 400 26px/1 var(--display); color: var(--bad); }
+.liar-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.liar-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 4px 14px 4px 5px; border: 0; border-radius: 999px; background: var(--panel-2); font: 800 14px var(--sans); cursor: pointer; }
+.liar-btn .mini { width: 30px; height: 30px; }
+.liar-btn[aria-pressed="true"] { background: var(--bad); color: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
+.who .liar-badge { color: var(--bad); font-weight: 800; }
+.speaker { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 16px 0 4px; font-size: 15px; }
+.speaker b { font-weight: 800; }
+.tag { display: inline-block; font: 800 11px var(--sans); letter-spacing: 0.02em; color: var(--ink-2); background: var(--panel-2); border-radius: 999px; padding: 2px 8px; margin-top: 3px; white-space: nowrap; }
+.tag.liar-tag { color: #fff; background: var(--bad); }
+.pola .tag { color: #666c91; background: #eceffd; }
+.pola .tag.liar-tag { color: #fff; background: #dc4f6b; }
+.sp { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 14px; align-items: start; margin: 18px 0 6px; }
+.sp .pola { transform: rotate(-1.5deg); }
+.sp:nth-of-type(even) .pola { transform: rotate(1.2deg); }
+.bubbles .clue {
+  --bub: var(--lav); position: relative; margin: 0 0 10px; padding: 9px 12px 9px 10px; background: var(--bub); border: 0;
+  border-radius: 18px; color: var(--ink);
+}
+.bubbles .clue::before { content: ""; position: absolute; left: -7px; top: 14px; border: 8px solid transparent; border-left: 0; border-right-color: var(--bub); }
+.bubbles .clue.bad { --bub: var(--bad-bg); }
+.bubbles .clue .txt, .bubbles .clue.ok .txt { color: var(--ink); }
+.bubbles .clue.bad .txt { color: var(--bad); }
+.bubbles .clue .ico { background: var(--panel); border-color: transparent; color: var(--ink); }
+.bubbles .clue.ok .ico { background: var(--ok); color: #fff; }
+.bubbles .clue.bad .ico { background: var(--bad); color: #fff; }
+.clue.proof .ico { background: var(--given); border-color: transparent; color: var(--ink); }
+.clue.proof .txt { color: var(--ink); }
+.strip .pola .pn { font-size: 19px; overflow-wrap: normal; white-space: nowrap; }
+.strip .pola small, .sp .pola small { overflow-wrap: anywhere; font-size: 11px; }
+@media (min-width: 600px) { .strip .pola .pn { font-size: 22px; } }
+
+/* J'accuse et aide sur la vérification */
+.btn.accuse { background: var(--bad); color: #fff; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }
+.hintline { margin: 10px 0 0; font: 700 12.5px/1.35 var(--sans); color: var(--ink-2); }
+.acc-t { font: 400 34px/1 var(--display); color: var(--bad); }
+.acc-grid { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 10px; padding: 4px 2px; }
+.acc-btn { border: 0; background: transparent; padding: 0; cursor: pointer; min-width: 0; }
+.acc-btn:nth-child(odd) .pola { transform: rotate(-1.6deg); }
+.acc-btn:nth-child(even) .pola { transform: rotate(1.3deg); }
+.acc-btn .pola .pn { font-size: 17px; white-space: nowrap; }
+.acc-btn:active .pola { transform: scale(0.96); }
+.acc-btn.out { opacity: 0.4; cursor: default; }
+.acc-btn.out .pola { filter: grayscale(1); }
+
+</style>
+
+
+</head>
+<body>
+<script>
+window.addEventListener('error', function (e) {
+  var d = document.getElementById('err-banner');
+  if (!d) { d = document.createElement('pre'); d.id = 'err-banner'; d.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:99;margin:0;padding:10px 12px;background:#fff;color:#b00020;font:12px/1.4 monospace;white-space:pre-wrap;border-bottom:3px solid #b00020'; document.body.appendChild(d); }
+  d.textContent += 'Erreur : ' + e.message + (e.lineno ? ' (ligne ' + e.lineno + ')' : '') + '\n';
+});
+</script>
+<noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
+<div style="max-width:1040px;margin:0 auto 10px"><a href="index.html" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8">← Menu</a></div>
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Kioukan</h1>
+      <p class="dossier" id="dossier">Dossier en préparation…</p>
+    </div>
+    <div class="controls">
+      <div class="seg" id="scenes" role="group" aria-label="Décor"></div>
+      <div class="seg" id="modes" role="group" aria-label="Mode de jeu"></div>
+      <div class="seg" id="levels" role="group" aria-label="Difficulté"></div>
+      <button class="btn primary" type="button" data-act="new">Nouvelle affaire</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="col">
+      <section class="panel case" id="case" aria-label="L'affaire"></section>
+      <section class="panel" id="suspects" aria-label="Les suspects" hidden></section>
+      <section class="panel" id="board-panel" aria-label="Chronologie des déplacements"></section>
+      <section id="verdict" aria-live="polite"></section>
+    </div>
+    <div class="col">
+      <section class="panel" id="map-panel" aria-label="Plan du manoir"></section>
+      <section class="panel" id="clues-panel" aria-label="Constats"></section>
+      <details class="panel rules" id="rules">
+        <summary>Comment jouer</summary>
+        <ol id="rules-list"></ol>
+      </details>
+    </div>
+  </div>
+</div>
+<div id="sheet-root"></div>
+
+<script>
+/* Illustrations : portraits plats des suspects, sols et mobilier vus de dessus. */
+(function () {
+  'use strict';
+  var INK = '#2b2f55';
+
+  /* Un portrait par suspect : peau, cheveux, coupe, tenue, accessoires. */
+  var LOOKS = {
+    'Mme Vernet':      { skin: '#f3cdb3', hair: '#d9d9e3', style: 'bun',   shirt: '#7f8fd6', x: ['pearls'] },
+    'Dr Aubry':        { skin: '#ecbd99', hair: '#3a2c2a', style: 'short', shirt: '#f4f6ff', x: ['glasses'] },
+    'Lucas':           { skin: '#e4aa80', hair: '#d9672a', style: 'curly', shirt: '#5bb59a', x: [] },
+    'Colonel Marchal': { skin: '#f0c2a0', hair: '#eceaf2', style: 'short', shirt: '#b3413f', x: ['mustache', 'cap'] },
+    'Inès':            { skin: '#c98b61', hair: '#241c2c', style: 'long',  shirt: '#e7849f', x: ['earrings'] },
+    'Mme Delaunay':    { skin: '#f3cdb3', hair: '#a5482c', style: 'wavy',  shirt: '#3b3f6e', x: ['hat'] },
+    'Dr Moreau':       { skin: '#d9a07a', hair: '#2b2224', style: 'short', shirt: '#6ec0c9', x: ['glasses', 'beard'] },
+    'Baron Voss':      { skin: '#f0c2a0', hair: '#8c8da5', style: 'bald',  shirt: '#2f3157', x: ['mustache', 'tophat', 'bowtie'] },
+    'Roux':            { skin: '#e4aa80', hair: '#4a3427', style: 'short', shirt: '#4c6fb8', x: ['cap'] },
+    'Mlle Ferrand':    { skin: '#f6d6bf', hair: '#f0c75e', style: 'bob',   shirt: '#9a7ee0', x: ['earrings'] },
+    'Mme Lefèvre':     { skin: '#f0c2a0', hair: '#b9bccb', style: 'bun',   shirt: '#d98a86', x: ['glasses'] },
+    'M. Costa':        { skin: '#e0a37b', hair: '#1f1a22', style: 'short', shirt: '#2b2f55', x: ['mustache', 'bowtie'] },
+    'Dr Bellamy':      { skin: '#f3cdb3', hair: '#d8a83a', style: 'short', shirt: '#f4f6ff', x: ['glasses'] },
+    'Mme Okafor':      { skin: '#6d4430', hair: '#1c1620', style: 'afro',  shirt: '#f0a94e', x: ['earrings'] },
+    'Chef Duval':      { skin: '#eab491', hair: '#5a3b2a', style: 'short', shirt: '#ffffff', x: ['mustache', 'toque'] }
+  };
+  var DEFAULT = { skin: '#eab491', hair: '#3a2c2a', style: 'short', shirt: '#7f8fd6', x: [] };
+
+  function has(L, k) { return L.x.indexOf(k) >= 0; }
+
+  function inner(name) {
+    var L = LOOKS[name] || DEFAULT, H = L.hair, S = L.skin, h = '', st = L.style;
+    /* derrière la tête */
+    if (st === 'long') h += '<path d="M16 30Q12 54 20 62L44 62Q52 54 48 30Z" fill="' + H + '"/>';
+    if (st === 'afro') h += '<circle cx="32" cy="24" r="19" fill="' + H + '"/>';
+    if (st === 'bun') h += '<circle cx="32" cy="9" r="6.5" fill="' + H + '"/>';
+    if (st === 'wavy') h += '<path d="M17 28Q12 44 18 54Q22 50 21 44L43 44Q42 50 46 54Q52 44 47 28Z" fill="' + H + '"/>';
+    /* buste */
+    h += '<path d="M5 64Q7 45 32 45Q57 45 59 64Z" fill="' + L.shirt + '"/>';
+    if (has(L, 'bowtie')) h += '<path d="M32 49L24 45L24 53ZM32 49L40 45L40 53Z" fill="#d94a63"/><circle cx="32" cy="49" r="2" fill="#b23550"/>';
+    if (has(L, 'pearls')) h += '<g fill="#fff" stroke="#c9cbe0" stroke-width=".6"><circle cx="24" cy="46.5" r="1.8"/><circle cx="28" cy="48.5" r="1.8"/><circle cx="32" cy="49.2" r="1.8"/><circle cx="36" cy="48.5" r="1.8"/><circle cx="40" cy="46.5" r="1.8"/></g>';
+    /* cou et tête */
+    h += '<rect x="27" y="38" width="10" height="10" rx="3" fill="' + S + '"/>';
+    h += '<ellipse cx="32" cy="29" rx="12" ry="14" fill="' + S + '"/>';
+    h += '<ellipse cx="20" cy="31" rx="2" ry="3" fill="' + S + '"/><ellipse cx="44" cy="31" rx="2" ry="3" fill="' + S + '"/>';
+    /* cheveux de face */
+    if (st === 'short' || st === 'long' || st === 'bun' || st === 'afro') h += '<path d="M19.5 28Q17 11 32 11.5Q47 11 44.5 28Q41 19.5 32 19.5Q23 19.5 19.5 28Z" fill="' + H + '"/>';
+    if (st === 'wavy') h += '<path d="M19 29Q15 10 32 11Q49 10 45 29Q42 20 32 20Q22 20 19 29Z" fill="' + H + '"/>';
+    if (st === 'curly') h += '<g fill="' + H + '"><circle cx="21" cy="19" r="6.5"/><circle cx="28" cy="13" r="7"/><circle cx="37" cy="13" r="7"/><circle cx="43" cy="19" r="6.5"/><circle cx="32" cy="17" r="6"/></g>';
+    if (st === 'bob') h += '<path d="M17.5 36Q13 9 32 10Q51 9 46.5 36Q44 35 44 28Q40 19.5 32 19.5Q24 19.5 20 28Q20 35 17.5 36Z" fill="' + H + '"/>';
+    if (st === 'bald') h += '<path d="M19.5 28Q19 22 22 19Q20 26 20.5 31Z M44.5 28Q45 22 42 19Q44 26 43.5 31Z" fill="' + H + '"/>';
+    /* visage */
+    h += '<circle cx="27" cy="30" r="1.7" fill="' + INK + '"/><circle cx="37" cy="30" r="1.7" fill="' + INK + '"/>';
+    h += '<circle cx="24.5" cy="34.5" r="2.4" fill="#ef8aa1" opacity=".35"/><circle cx="39.5" cy="34.5" r="2.4" fill="#ef8aa1" opacity=".35"/>';
+    if (has(L, 'beard')) h += '<path d="M20.5 32Q21 48 32 48.5Q43 48 43.5 32Q40 41 32 41Q24 41 20.5 32Z" fill="' + H + '"/>';
+    h += '<path d="M29 37.5Q32 40 35 37.5" fill="none" stroke="' + INK + '" stroke-width="1.4" stroke-linecap="round"/>';
+    if (has(L, 'mustache')) h += '<path d="M23.5 36.5Q28 32.5 32 35.5Q36 32.5 40.5 36.5Q36 38 32 36.5Q28 38 23.5 36.5Z" fill="' + H + '"/>';
+    if (has(L, 'glasses')) h += '<g fill="#fff" fill-opacity=".25" stroke="' + INK + '" stroke-width="1.3"><circle cx="27" cy="30" r="4.4"/><circle cx="37" cy="30" r="4.4"/></g><path d="M31.4 30H32.6" stroke="' + INK + '" stroke-width="1.3"/>';
+    if (has(L, 'earrings')) h += '<circle cx="20" cy="36" r="1.8" fill="#f2c14b"/><circle cx="44" cy="36" r="1.8" fill="#f2c14b"/>';
+    /* couvre-chefs */
+    if (has(L, 'cap')) h += '<path d="M19 20Q19 8 32 8Q45 8 45 20Z" fill="' + (L.shirt === '#b3413f' ? '#8f2f2e' : '#2f4a8c') + '"/><rect x="17" y="19" width="30" height="3.5" rx="1.7" fill="#1f2a55"/><circle cx="32" cy="14" r="1.8" fill="#f2c14b"/>';
+    if (has(L, 'tophat')) h += '<rect x="19" y="16" width="26" height="4" rx="2" fill="#1d1f3a"/><rect x="23" y="1" width="18" height="17" rx="2" fill="#1d1f3a"/><rect x="23" y="12" width="18" height="3.2" fill="#d94a63"/>';
+    if (has(L, 'hat')) h += '<ellipse cx="32" cy="14" rx="19" ry="4.5" fill="#e7849f"/><path d="M22 14Q22 4 32 4Q42 4 42 14Z" fill="#e7849f"/><path d="M22 12H42" stroke="#fff" stroke-width="2.4"/><circle cx="40" cy="9" r="2.2" fill="#fff"/>';
+    if (has(L, 'toque')) h += '<rect x="22" y="12" width="20" height="6" fill="#fff" stroke="#d8dbee" stroke-width=".8"/><circle cx="24" cy="9" r="6" fill="#fff" stroke="#d8dbee" stroke-width=".8"/><circle cx="32" cy="6" r="7" fill="#fff" stroke="#d8dbee" stroke-width=".8"/><circle cx="40" cy="9" r="6" fill="#fff" stroke="#d8dbee" stroke-width=".8"/>';
+    return h;
+  }
+  function avatar(name) {
+    return '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">' + inner(name) + '</svg>';
+  }
+
+  /* Sols (motifs répétés) */
+  function defs() {
+    return '<defs>' +
+      '<pattern id="pf-wood" class="pt-wood" width="14" height="12" patternUnits="userSpaceOnUse"><rect class="pa-a" width="14" height="12"/><path class="pa-b" d="M0 .5H14M0 6.5H14M4 .5V6.5M11 6.5V12.5"/></pattern>' +
+      '<pattern id="pf-check" class="pt-check" width="16" height="16" patternUnits="userSpaceOnUse"><rect class="pa-a" width="16" height="16"/><rect class="pa-c" width="8" height="8"/><rect class="pa-c" x="8" y="8" width="8" height="8"/></pattern>' +
+      '<pattern id="pf-tile" class="pt-tile" width="14" height="14" patternUnits="userSpaceOnUse"><rect class="pa-a" width="14" height="14"/><path class="pa-b" d="M0 .5H14M.5 0V14"/></pattern>' +
+      '<pattern id="pf-diamond" class="pt-diamond" width="20" height="20" patternUnits="userSpaceOnUse"><rect class="pa-a" width="20" height="20"/><path class="pa-c" d="M10 2L18 10L10 18L2 10Z"/></pattern>' +
+      '<pattern id="pf-grass" class="pt-grass" width="16" height="16" patternUnits="userSpaceOnUse"><rect class="pa-a" width="16" height="16"/><g class="pa-c"><circle cx="3" cy="4" r="1.3"/><circle cx="11" cy="9" r="1.3"/><circle cx="6" cy="13" r="1.1"/></g></pattern>' +
+      '<pattern id="pf-steel" class="pt-steel" width="12" height="12" patternUnits="userSpaceOnUse"><rect class="pa-a" width="12" height="12"/><path class="pa-b" d="M0 6.5H12"/></pattern>' +
+      '<pattern id="pf-deck" class="pt-wood" width="30" height="8" patternUnits="userSpaceOnUse"><rect class="pa-a" width="30" height="8"/><path class="pa-b" d="M0 .5H30M18 0V8"/></pattern>' +
+      '<pattern id="pf-seats" class="pt-seats" width="12" height="10" patternUnits="userSpaceOnUse"><rect width="12" height="10" fill="#c0505a"/><rect x="2" y="2" width="8" height="6" rx="2" fill="#e07a82"/></pattern>' +
+      '<pattern id="pf-felt" class="pt-felt" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#3f8a5a"/><circle cx="8" cy="8" r="0.8" fill="#5aa874"/></pattern>' +
+      '<clipPath id="tokclip"><circle cx="32" cy="32" r="32"/></clipPath>' +
+      '</defs>';
+  }
+
+  /* Mobilier (x, y, w, h en unités du plan) */
+  function r(c, x, y, w, h, rx) { return '<rect class="' + c + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (rx === undefined ? 2.5 : rx) + '"/>'; }
+  function furn(t, x, y, w, h) {
+    var s = '', m;
+    switch (t) {
+      case 'bed':
+        m = Math.min(w, h);
+        s += r('fu', x, y, w, h, 3);
+        if (w >= h) { s += r('fu2', x + m * 0.55, y, w - m * 0.55, h, 2) + r('fw', x + 2, y + 2, m * 0.42, h - 4, 2); }
+        else { s += r('fu2', x, y + m * 0.55, w, h - m * 0.55, 2) + r('fw', x + 2, y + 2, w - 4, m * 0.42, 2); }
+        break;
+      case 'sofa':
+        s += r('fu', x, y, w, h, 4) + r('fu2', x, y, w, h * 0.38, 4) + r('fu2', x, y, 5, h, 3) + r('fu2', x + w - 5, y, 5, h, 3);
+        break;
+      case 'table':
+        s += (w > h * 1.25) ? r('fu2', x, y, w, h, 4) + r('fw', x + 2, y + 2, w - 4, h - 4, 3) : '<ellipse class="fu2" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" rx="' + w / 2 + '" ry="' + h / 2 + '"/>';
+        break;
+      case 'chair': s += r('fu2', x, y + h * 0.3, w, h * 0.7, 3) + r('fu', x, y, w, h * 0.35, 2); break;
+      case 'plant':
+        s += r('fpot', x + w * 0.28, y + h * 0.66, w * 0.44, h * 0.34, 1.5) +
+          '<circle class="fg" cx="' + (x + w / 2) + '" cy="' + (y + h * 0.4) + '" r="' + Math.min(w, h) * 0.42 + '"/>' +
+          '<circle class="fg2" cx="' + (x + w * 0.38) + '" cy="' + (y + h * 0.36) + '" r="' + Math.min(w, h) * 0.2 + '"/>';
+        break;
+      case 'tv': s += r('ftv', x, y, w, h * 0.78, 2) + r('fu', x + w * 0.35, y + h * 0.78, w * 0.3, h * 0.22, 1); break;
+      case 'shelf':
+        s += r('fu', x, y, w, h, 2);
+        for (m = x + 8; m < x + w - 3; m += 9) s += '<path class="fl" d="M' + m + ' ' + y + 'V' + (y + h) + '"/>';
+        break;
+      case 'counter':
+        s += r('fu', x, y, w, h, 3) + r('fw', x + 1.5, y + 1.5, w - 3, h * 0.4, 2);
+        if (w > 44) for (m = x + 10; m < x + w - 6; m += 14) s += '<circle class="ftv" cx="' + m + '" cy="' + (y + h * 0.72) + '" r="2"/>';
+        break;
+      case 'desk': s += r('fu', x, y, w, h, 3) + r('fw', x + w * 0.3, y + 2.5, w * 0.28, h * 0.4, 1.5) + '<circle class="fu2" cx="' + (x + w * 0.8) + '" cy="' + (y + h * 0.5) + '" r="2.6"/>'; break;
+      case 'crate':
+        s += r('fu2', x, y, w, h, 2.5) + r('fw', x + w / 2 - 1.4, y, 2.8, h, 0) + r('fw', x, y + h / 2 - 1.4, w, 2.8, 0) + '<circle class="fu" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="2.6"/>';
+        break;
+      case 'barrel': s += '<ellipse class="fu" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" rx="' + w / 2 + '" ry="' + h / 2 + '"/><path class="fl" d="M' + (x + 2) + ' ' + (y + h / 2) + 'H' + (x + w - 2) + '"/>'; break;
+      case 'win': s += r('win', x, y, w, h, 1.5); break;
+      case 'tree':
+        s += '<circle class="fg" cx="' + x + '" cy="' + y + '" r="' + w / 2 + '"/><circle class="fg2" cx="' + (x - w * 0.12) + '" cy="' + (y - w * 0.1) + '" r="' + w * 0.26 + '"/>';
+        break;
+      case 'stool': s += '<circle class="fu" cx="' + x + '" cy="' + y + '" r="' + w / 2 + '"/>'; break;
+      case 'vent': s += r('fu2', x, y, w, h, 2) + '<path class="fl" d="M' + (x + 3) + ' ' + (y + h / 2) + 'H' + (x + w - 3) + '"/>'; break;
+      case 'wheel':
+        s += '<circle class="fu2" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 2 + '"/><circle class="fw" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 5 + '"/>';
+        for (m = 0; m < 8; m++) s += '<path class="fl" d="M' + (x + w / 2) + ' ' + (y + h / 2) + 'L' + (x + w / 2 + Math.cos(m * 0.785) * w / 2) + ' ' + (y + h / 2 + Math.sin(m * 0.785) * w / 2) + '"/>';
+        break;
+      case 'piano': s += r('ftv', x, y, w, h, 6) + r('fw', x + 4, y + h - 7, w - 8, 4, 1); break;
+      case 'mirror': s += r('fw', x, y, w, h, 3) + r('win', x + 2, y + 2, w - 4, h - 4, 2); break;
+      case 'roulette':
+        s += '<circle class="fu" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 2 + '"/><circle class="ftv" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 3 + '"/><circle class="fw" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 9 + '"/>';
+        break;
+      case 'safe': s += r('ftv', x, y, w, h, 2) + '<circle class="fw" cx="' + (x + w / 2) + '" cy="' + (y + h / 2) + '" r="' + w / 5 + '"/>'; break;
+      case 'lift': s += r('fu2', x, y, w, h, 2) + '<path class="fl" d="M' + (x + w / 2) + ' ' + y + 'V' + (y + h) + '"/>'; break;
+    }
+    return s;
+  }
+
+  window.AlibisArt = { avatar: avatar, avatarInner: inner, defs: defs, furn: furn };
+})();
+
+</script>
+<script>
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.AlibisEngine = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  /* ---------- Décors ---------- */
+  var SCENES = {
+    manoir: {
+      label: 'Manoir', unit: 'pièce', t0: 19,
+      rooms: [
+        { name: 'Hall', short: 'Hall', the: 'le hall' },
+        { name: 'Salon', short: 'Salon', the: 'le salon' },
+        { name: 'Cuisine', short: 'Cuisine', the: 'la cuisine' },
+        { name: 'Bibliothèque', short: 'Biblio.', the: 'la bibliothèque' },
+        { name: 'Bureau', short: 'Bureau', the: 'le bureau' },
+        { name: 'Cave', short: 'Cave', the: 'la cave' },
+        { name: 'Jardin', short: 'Jardin', the: 'le jardin' }
+      ],
+      doors: [[3, 4], [3, 1], [4, 0], [1, 0], [0, 2], [2, 5], [0, 6], [2, 6]],
+      suspects: [
+        { name: 'Mme Vernet', short: 'Vernet', role: 'gouvernante', f: true },
+        { name: 'Dr Aubry', short: 'Aubry', role: 'médecin', f: false },
+        { name: 'Lucas', short: 'Lucas', role: 'neveu', f: false },
+        { name: 'Colonel Marchal', short: 'Marchal', role: 'militaire', f: false },
+        { name: 'Inès', short: 'Inès', role: 'secrétaire', f: true }
+      ]
+    },
+    train: {
+      label: 'Train', unit: 'voiture', t0: 21,
+      rooms: [
+        { name: 'Fourgon', short: 'Fourgon', the: 'le fourgon' },
+        { name: 'Wagon-lit A', short: 'Lit A', the: 'le wagon-lit A' },
+        { name: 'Wagon-lit B', short: 'Lit B', the: 'le wagon-lit B' },
+        { name: 'Wagon-restaurant', short: 'Resto', the: 'le wagon-restaurant' },
+        { name: 'Voiture-bar', short: 'Bar', the: 'la voiture-bar' },
+        { name: 'Salon-fumoir', short: 'Fumoir', the: 'le salon-fumoir' },
+        { name: 'Toit du train', short: 'Toit', on: 1, the: 'le toit du train' }
+      ],
+      doors: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [6, 2], [6, 4]],
+      suspects: [
+        { name: 'Mme Delaunay', short: 'Delaunay', role: 'veuve', f: true },
+        { name: 'Dr Moreau', short: 'Moreau', role: 'médecin', f: false },
+        { name: 'Baron Voss', short: 'Voss', role: 'baron', f: false },
+        { name: 'Roux', short: 'Roux', role: 'contrôleur', f: false },
+        { name: 'Mlle Ferrand', short: 'Ferrand', role: 'cantatrice', f: true }
+      ]
+    },
+    hotel: {
+      label: 'Hôtel', unit: 'pièce', t0: 20,
+      rooms: [
+        { name: 'Bar', short: 'Bar', the: 'le bar' },
+        { name: 'Réception', short: 'Récep.', the: 'la réception' },
+        { name: 'Restaurant', short: 'Resto', the: 'le restaurant' },
+        { name: 'Cuisines', short: 'Cuisines', the: 'les cuisines' },
+        { name: 'Ascenseur', short: 'Ascens.', the: 'l’ascenseur' },
+        { name: 'Couloir', short: 'Couloir', the: 'le couloir' },
+        { name: 'Suite 12', short: 'Suite 12', the: 'la suite 12' },
+        { name: 'Terrasse', short: 'Terrasse', on: 1, the: 'la terrasse' }
+      ],
+      doors: [[1, 0], [1, 2], [2, 3], [1, 4], [4, 5], [4, 7], [5, 6], [3, 6]],
+      suspects: [
+        { name: 'Mme Lefèvre', short: 'Lefèvre', role: 'gouvernante', f: true },
+        { name: 'M. Costa', short: 'Costa', role: 'barman', f: false },
+        { name: 'Dr Bellamy', short: 'Bellamy', role: 'médecin', f: false },
+        { name: 'Mme Okafor', short: 'Okafor', role: 'cliente', f: true },
+        { name: 'Chef Duval', short: 'Duval', role: 'cuisinier', f: false }
+      ]
+    }
+  };
+
+  var SCENE, SCENE_KEY, ROOMS, DOORS, NR, ALL, ADJ, STEP, UNION, POP, SUSPECTS;
+  function setScene(key) {
+    SCENE_KEY = SCENES[key] ? key : 'manoir';
+    SCENE = SCENES[SCENE_KEY];
+    ROOMS = SCENE.rooms; DOORS = SCENE.doors; SUSPECTS = SCENE.suspects;
+    NR = ROOMS.length;
+    ALL = (1 << NR) - 1;
+    ADJ = ROOMS.map(function () { return []; });
+    DOORS.forEach(function (d) { ADJ[d[0]].push(d[1]); ADJ[d[1]].push(d[0]); });
+    // STEP[r] : pièces atteignables en un créneau (rester ou passer une porte)
+    STEP = ROOMS.map(function (_, r) {
+      return ADJ[r].reduce(function (m, x) { return m | (1 << x); }, 1 << r);
+    });
+    UNION = []; POP = [];
+    for (var m = 0; m <= ALL; m++) {
+      var u = 0, p = 0;
+      for (var r = 0; r < NR; r++) if (m & (1 << r)) { u |= STEP[r]; p++; }
+      UNION[m] = u; POP[m] = p;
+    }
+  }
+  setScene('manoir');
+  function U() { return SCENE.unit; }
+
+  var LEVELS = {
+    facile: {
+      label: 'Facile', S: 3, T: 5, max: 18, k: 6,
+      w: { at: 3, together: 2, apart: 1, stay: 1.5, move: 1.5, moves: 2, notAt: 1, empty: 1, never: 1, visited: 1.5, alone: 1 },
+      drop: ['notAt', 'never', 'empty', 'visited', 'alone', 'apart', 'stay', 'move', 'moves', 'together', 'at']
+    },
+    moyen: {
+      label: 'Moyen', S: 4, T: 5, max: 26, k: 8, atMax: 3,
+      w: { at: 1.2, together: 2, apart: 1.5, stay: 1.5, move: 1.5, moves: 2, notAt: 1, empty: 1.5, never: 1.5, visited: 1.5, alone: 1.5 },
+      drop: ['notAt', 'never', 'empty', 'apart', 'visited', 'alone', 'stay', 'move', 'moves', 'together', 'at']
+    },
+    difficile: {
+      label: 'Difficile', S: 4, T: 6, max: 31, k: 30, atMax: 1,
+      w: { at: 0.5, together: 2, apart: 1.5, stay: 1.5, move: 1.5, moves: 2, notAt: 0.8, empty: 2, never: 2, visited: 2, alone: 2 },
+      drop: ['at', 'notAt', 'apart', 'never', 'empty', 'visited', 'alone', 'stay', 'move', 'moves', 'together']
+    }
+  };
+
+  function timeLabel(t) {
+    return (SCENE.t0 + Math.floor(t / 2)) + 'h' + (t % 2 ? '30' : '00');
+  }
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* ---------- Solveur : propagation + recherche, compte jusqu'à `limit` solutions ---------- */
+  function single(m) { return (m & (m - 1)) === 0; }
+
+  // Traduit un puzzle en domaines de départ + fonction de propagation
+  function compile(puz) {
+    var S = puz.S, T = puz.T, N = S * T;
+    var base = [];
+    for (var i = 0; i < N; i++) base.push(ALL);
+    var pairs = [], visits = [], counts = [];
+    puz.clues.forEach(function (c) {
+      var s, t, o;
+      switch (c.type) {
+        case 'at': base[c.s * T + c.t] &= (1 << c.r); break;
+        case 'notAt': base[c.s * T + c.t] &= ~(1 << c.r); break;
+        case 'never': for (t = 0; t < T; t++) base[c.s * T + t] &= ~(1 << c.r); break;
+        case 'empty': for (s = 0; s < S; s++) base[s * T + c.t] &= ~(1 << c.r); break;
+        case 'together': pairs.push([c.a * T + c.t, c.b * T + c.t, 0]); break;
+        case 'apart': pairs.push([c.a * T + c.t, c.b * T + c.t, 1]); break;
+        case 'stay': pairs.push([c.s * T + c.t, c.s * T + c.t + 1, 0]); break;
+        case 'move': pairs.push([c.s * T + c.t, c.s * T + c.t + 1, 1]); break;
+        case 'alone':
+          for (o = 0; o < S; o++) if (o !== c.s) pairs.push([c.s * T + c.t, o * T + c.t, 1]);
+          break;
+        case 'visited': visits.push([c.s, 1 << c.r]); break;
+        case 'moves': counts.push([c.s, c.n]); break;
+      }
+    });
+    var crimeBit = 1 << puz.crime.room, crimeT = puz.crime.t;
+
+    var iters = 0;
+    function propagate(dom) {
+      var changed = true;
+      iters = 0;
+      function set(i, m) {
+        var nm = dom[i] & m;
+        if (nm === 0) return false;
+        if (nm !== dom[i]) { dom[i] = nm; changed = true; }
+        return true;
+      }
+      var s, t, k, p, v, i;
+      while (changed) {
+        changed = false; iters++;
+        for (s = 0; s < S; s++) {
+          for (t = 0; t < T - 1; t++) {
+            i = s * T + t;
+            if (!set(i + 1, UNION[dom[i]])) return false;
+            if (!set(i, UNION[dom[i + 1]])) return false;
+          }
+        }
+        for (k = 0; k < pairs.length; k++) {
+          p = pairs[k];
+          if (p[2] === 0) {
+            v = dom[p[0]] & dom[p[1]];
+            if (!set(p[0], v) || !set(p[1], v)) return false;
+          } else {
+            if (single(dom[p[0]]) && !set(p[1], ~dom[p[0]] & ALL)) return false;
+            if (single(dom[p[1]]) && !set(p[0], ~dom[p[1]] & ALL)) return false;
+          }
+        }
+        for (k = 0; k < visits.length; k++) {
+          var cnt = 0, last = -1;
+          for (t = 0; t < T; t++) if (dom[visits[k][0] * T + t] & visits[k][1]) { cnt++; last = t; }
+          if (cnt === 0) return false;
+          if (cnt === 1 && !set(visits[k][0] * T + last, visits[k][1])) return false;
+        }
+        for (k = 0; k < counts.length; k++) {
+          var cs = counts[k][0], cn = counts[k][1], dm = 0, ds = 0, a, b;
+          for (t = 0; t < T - 1; t++) {
+            a = dom[cs * T + t]; b = dom[cs * T + t + 1];
+            if (single(a) && single(b)) { if (a !== b) dm++; else ds++; }
+            else if ((a & b) === 0) dm++;
+          }
+          if (dm > cn || (T - 1) - ds < cn) return false;
+          if (dm === cn || (T - 1) - ds === cn) {
+            for (t = 0; t < T - 1; t++) {
+              a = dom[cs * T + t]; b = dom[cs * T + t + 1];
+              var defMove = (single(a) && single(b) && a !== b) || (a & b) === 0;
+              var defStay = single(a) && single(b) && a === b;
+              if (dm === cn && !defMove) {
+                v = a & b;
+                if (!set(cs * T + t, v) || !set(cs * T + t + 1, v)) return false;
+              } else if ((T - 1) - ds === cn && !defStay) {
+                if (single(a) && !set(cs * T + t + 1, ~a & ALL)) return false;
+                if (single(b) && !set(cs * T + t, ~b & ALL)) return false;
+              }
+            }
+          }
+        }
+        // un seul suspect dans la pièce du crime à l'heure du crime
+        var ccnt = 0, clast = -1;
+        for (s = 0; s < S; s++) if (dom[s * T + crimeT] & crimeBit) { ccnt++; clast = s; }
+        if (ccnt === 0) return false;
+        if (ccnt === 1 && !set(clast * T + crimeT, crimeBit)) return false;
+        for (s = 0; s < S; s++) {
+          if (dom[s * T + crimeT] === crimeBit) {
+            for (var o = 0; o < S; o++) if (o !== s && !set(o * T + crimeT, ~crimeBit & ALL)) return false;
+          }
+        }
+      }
+      return true;
+    }
+    return { S: S, T: T, N: N, base: base, propagate: propagate, iters: function () { return iters; } };
+  }
+
+  // Domaines après propagation (null si contradiction), et nombre de passes nécessaires
+  function propagated(puz) {
+    var cp = compile(puz), dom = cp.base.slice(), i;
+    for (i = 0; i < cp.N; i++) if (dom[i] === 0) return null;
+    if (!cp.propagate(dom)) return null;
+    return { dom: dom, iters: cp.iters() };
+  }
+
+  // Somme des tailles de domaine après propagation (plus petit = plus informatif), -1 si contradiction
+  function domainScore(puz) {
+    var cp = compile(puz), dom = cp.base.slice(), i, sum = 0;
+    for (i = 0; i < cp.N; i++) if (dom[i] === 0) return -1;
+    if (!cp.propagate(dom)) return -1;
+    for (i = 0; i < cp.N; i++) sum += POP[dom[i]];
+    return sum;
+  }
+
+  function solve(puz, limit, cap) {
+    limit = limit || 2; cap = cap || 80000;
+    var cp = compile(puz), S = cp.S, T = cp.T, N = cp.N, base = cp.base, propagate = cp.propagate, i;
+    var sols = [], nodes = 0, aborted = false;
+
+    function search(dom) {
+      if (aborted) return;
+      if (++nodes > cap) { aborted = true; return; }
+      if (!propagate(dom)) return;
+      var best = -1, bc = 99, i;
+      for (i = 0; i < N; i++) {
+        var c = POP[dom[i]];
+        if (c > 1 && c < bc) { bc = c; best = i; }
+      }
+      if (best < 0) { sols.push(dom.slice()); return; }
+      for (var r = 0; r < NR; r++) {
+        if (dom[best] & (1 << r)) {
+          var nd = dom.slice(); nd[best] = 1 << r;
+          search(nd);
+          if (sols.length >= limit || aborted) return;
+        }
+      }
+    }
+
+    for (i = 0; i < N; i++) if (base[i] === 0) return { count: 0, aborted: false, sols: [] };
+    search(base);
+    return {
+      count: sols.length, aborted: aborted,
+      sols: sols.map(function (d) { return d.map(function (m) { return Math.log2(m) | 0; }); })
+    };
+  }
+
+  /* ---------- Évaluation d'un constat sur une grille (éventuellement partielle) ---------- */
+  function evalClue(puz, c, g) {
+    var S = puz.S, T = puz.T, t, s, v, w, unk;
+    switch (c.type) {
+      case 'at': v = g(c.s, c.t); return v < 0 ? 'pending' : v === c.r ? 'ok' : 'bad';
+      case 'notAt': v = g(c.s, c.t); return v < 0 ? 'pending' : v !== c.r ? 'ok' : 'bad';
+      case 'together': v = g(c.a, c.t); w = g(c.b, c.t); return v < 0 || w < 0 ? 'pending' : v === w ? 'ok' : 'bad';
+      case 'apart': v = g(c.a, c.t); w = g(c.b, c.t); return v < 0 || w < 0 ? 'pending' : v !== w ? 'ok' : 'bad';
+      case 'stay': v = g(c.s, c.t); w = g(c.s, c.t + 1); return v < 0 || w < 0 ? 'pending' : v === w ? 'ok' : 'bad';
+      case 'move': v = g(c.s, c.t); w = g(c.s, c.t + 1); return v < 0 || w < 0 ? 'pending' : v !== w ? 'ok' : 'bad';
+      case 'moves': {
+        var dm = 0, ds = 0;
+        for (t = 0; t < T - 1; t++) {
+          v = g(c.s, t); w = g(c.s, t + 1);
+          if (v >= 0 && w >= 0) { if (v !== w) dm++; else ds++; }
+        }
+        var possible = (T - 1) - ds;
+        if (dm > c.n || possible < c.n) return 'bad';
+        for (t = 0; t < T; t++) if (g(c.s, t) < 0) return 'pending';
+        return 'ok';
+      }
+      case 'never':
+        unk = false;
+        for (t = 0; t < T; t++) { v = g(c.s, t); if (v === c.r) return 'bad'; if (v < 0) unk = true; }
+        return unk ? 'pending' : 'ok';
+      case 'visited':
+        unk = false;
+        for (t = 0; t < T; t++) { v = g(c.s, t); if (v === c.r) return 'ok'; if (v < 0) unk = true; }
+        return unk ? 'pending' : 'bad';
+      case 'empty':
+        unk = false;
+        for (s = 0; s < S; s++) { v = g(s, c.t); if (v === c.r) return 'bad'; if (v < 0) unk = true; }
+        return unk ? 'pending' : 'ok';
+      case 'alone':
+        v = g(c.s, c.t); if (v < 0) return 'pending';
+        unk = false;
+        for (s = 0; s < S; s++) {
+          if (s === c.s) continue;
+          w = g(s, c.t); if (w === v) return 'bad'; if (w < 0) unk = true;
+        }
+        return unk ? 'pending' : 'ok';
+      case 'crime':
+        var cnt = 0; unk = false;
+        for (s = 0; s < S; s++) {
+          v = g(s, puz.crime.t);
+          if (v === puz.crime.room) cnt++; else if (v < 0) unk = true;
+        }
+        if (cnt > 1) return 'bad';
+        if (unk) return 'pending';
+        return cnt === 1 ? 'ok' : 'bad';
+    }
+    return 'pending';
+  }
+
+  // Cases fautives pour un constat déjà jugé faux
+  function badCells(puz, c, g) {
+    var S = puz.S, T = puz.T, out = [], s, t, v;
+    switch (c.type) {
+      case 'at': case 'notAt': out.push([c.s, c.t]); break;
+      case 'together': case 'apart': out.push([c.a, c.t], [c.b, c.t]); break;
+      case 'stay': case 'move': out.push([c.s, c.t], [c.s, c.t + 1]); break;
+      case 'never': for (t = 0; t < T; t++) if (g(c.s, t) === c.r) out.push([c.s, t]); break;
+      case 'empty': for (s = 0; s < S; s++) if (g(s, c.t) === c.r) out.push([s, c.t]); break;
+      case 'alone':
+        v = g(c.s, c.t); out.push([c.s, c.t]);
+        for (s = 0; s < S; s++) if (s !== c.s && g(s, c.t) === v) out.push([s, c.t]);
+        break;
+      case 'crime':
+        for (s = 0; s < S; s++) if (g(s, puz.crime.t) === puz.crime.room) out.push([s, puz.crime.t]);
+        break;
+    }
+    return out;
+  }
+
+  function clueText(puz, c) {
+    var nm = function (s) { return SUSPECTS[s].name; };
+    var the = function (r) { return ROOMS[r].the; };
+    var loc = function (r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; };
+    switch (c.type) {
+      case 'at': return nm(c.s) + ' était ' + loc(c.r) + ' à ' + timeLabel(c.t) + '.';
+      case 'notAt': return nm(c.s) + " n'était pas " + loc(c.r) + ' à ' + timeLabel(c.t) + '.';
+      case 'together': return nm(c.a) + ' et ' + nm(c.b) + ' étaient dans la même ' + U() + ' à ' + timeLabel(c.t) + '.';
+      case 'apart': return nm(c.a) + ' et ' + nm(c.b) + " n'étaient pas ensemble à " + timeLabel(c.t) + '.';
+      case 'stay': return nm(c.s) + ' est resté' + (SUSPECTS[c.s].f ? 'e' : '') + ' dans la même ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.';
+      case 'move': return nm(c.s) + ' a changé de ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.';
+      case 'moves':
+        return c.n === 0 ? nm(c.s) + " n'a pas bougé de la soirée."
+          : c.n === 1 ? nm(c.s) + " n'a changé de " + U() + " qu'une seule fois."
+          : nm(c.s) + ' a changé de ' + U() + ' ' + c.n + ' fois au total.';
+      case 'never': return nm(c.s) + " n'a jamais mis les pieds " + loc(c.r) + ' de la soirée.';
+      case 'visited': return nm(c.s) + ' a traversé ' + the(c.r) + ' à un moment de la soirée.';
+      case 'empty': return 'Personne ne se trouvait ' + loc(c.r) + ' à ' + timeLabel(c.t) + '.';
+      case 'alone': return nm(c.s) + ' était ' + (SUSPECTS[c.s].f ? 'seule' : 'seul') + ' dans sa ' + U() + ' à ' + timeLabel(c.t) + '.';
+      case 'crime':
+        return 'Un seul suspect se trouvait ' + loc(puz.crime.room) + ' à ' + timeLabel(puz.crime.t) + ' : le meurtrier.';
+    }
+    return '';
+  }
+
+  /* ---------- Génération ---------- */
+  function randomPaths(rng, S, T) {
+    for (var attempt = 0; attempt < 50; attempt++) {
+      var sol = [], good = true;
+      for (var s = 0; s < S; s++) {
+        var r = Math.floor(rng() * NR), seen = {}, row = [r];
+        seen[r] = 1;
+        for (var t = 1; t < T; t++) {
+          if (rng() >= 0.3) {
+            var nb = ADJ[r]; r = nb[Math.floor(rng() * nb.length)];
+          }
+          row.push(r); seen[r] = 1;
+        }
+        if (Object.keys(seen).length < 3) { good = false; break; }
+        sol = sol.concat(row);
+      }
+      if (good) return sol;
+    }
+    return null;
+  }
+
+  function pickCrime(rng, sol, S, T) {
+    var cands = [];
+    for (var t = 1; t < T; t++) {
+      for (var r = 0; r < NR; r++) {
+        var n = 0;
+        for (var s = 0; s < S; s++) if (sol[s * T + t] === r) n++;
+        if (n === 1) cands.push({ room: r, t: t });
+      }
+    }
+    return cands.length ? cands[Math.floor(rng() * cands.length)] : null;
+  }
+
+  function buildPool(sol, S, T) {
+    var pool = [], s, t, r, a, b;
+    var g = function (s, t) { return sol[s * T + t]; };
+    for (s = 0; s < S; s++) {
+      var visitedSet = {};
+      for (t = 0; t < T; t++) {
+        visitedSet[g(s, t)] = 1;
+        pool.push({ type: 'at', s: s, t: t, r: g(s, t) });
+        if (t < T - 1) pool.push({ type: g(s, t) === g(s, t + 1) ? 'stay' : 'move', s: s, t: t });
+        for (r = 0; r < NR; r++) if (r !== g(s, t)) pool.push({ type: 'notAt', s: s, t: t, r: r });
+        var alone = true;
+        for (a = 0; a < S; a++) if (a !== s && g(a, t) === g(s, t)) alone = false;
+        if (alone) pool.push({ type: 'alone', s: s, t: t });
+      }
+      var nmoves = 0;
+      for (t = 0; t < T - 1; t++) if (g(s, t) !== g(s, t + 1)) nmoves++;
+      pool.push({ type: 'moves', s: s, n: nmoves });
+      for (r = 0; r < NR; r++) {
+        pool.push(visitedSet[r] ? { type: 'visited', s: s, r: r } : { type: 'never', s: s, r: r });
+      }
+    }
+    for (t = 0; t < T; t++) {
+      for (a = 0; a < S; a++) for (b = a + 1; b < S; b++) {
+        pool.push(g(a, t) === g(b, t) ? { type: 'together', a: a, b: b, t: t } : { type: 'apart', a: a, b: b, t: t });
+      }
+      for (r = 0; r < NR; r++) {
+        var occ = false;
+        for (s = 0; s < S; s++) if (g(s, t) === r) occ = true;
+        if (!occ) pool.push({ type: 'empty', t: t, r: r });
+      }
+    }
+    return pool;
+  }
+
+  function weightedOrder(pool, w, rng) {
+    var count = {};
+    pool.forEach(function (c) { count[c.type] = (count[c.type] || 0) + 1; });
+    return pool.map(function (c) {
+      var u = rng() || 1e-9;
+      return { c: c, key: -Math.log(u) / (w[c.type] / count[c.type]) };
+    }).sort(function (x, y) { return x.key - y.key; }).map(function (x) { return x.c; });
+  }
+
+  var TYPE_RANK = { together: 0, apart: 1, alone: 2, moves: 3, stay: 3, move: 4, notAt: 5, empty: 6, never: 7, visited: 8, at: 9 };
+
+  /* Fuites : un constat qui innocente d'emblée un suspect à l'heure du crime (ou désigne le meurtrier)
+     rend l'enquête triviale. On interdit les fuites franches et on plafonne le nombre de suspects
+     innocentés directement à S - 2, pour qu'il reste toujours au moins deux pistes. */
+  function leakOf(e, crime) {
+    if (e.t !== crime.t) return null;
+    switch (e.type) {
+      case 'together': return { bad: true, clr: [e.a, e.b] };
+      case 'at': return e.r === crime.room ? { bad: true, clr: [] } : { clr: [e.s] };
+      case 'notAt': return e.r === crime.room ? { clr: [e.s] } : null;
+    }
+    return null;
+  }
+  function leakOk(e, crime, cleared, S) {
+    var l = leakOf(e, crime);
+    if (!l) return true;
+    if (l.bad) return false;
+    var n = Object.keys(cleared).length;
+    l.clr.forEach(function (x) { if (!cleared[x]) n++; });
+    return n <= S - 2;
+  }
+  function leakMark(e, crime, cleared) {
+    var l = leakOf(e, crime);
+    if (l) l.clr.forEach(function (x) { cleared[x] = 1; });
+  }
+
+  function generate(seed, levelKey, mode) {
+    if (mode === 'liar' || mode === 'half') return generateLiar(seed, levelKey, mode);
+    var L = LEVELS[levelKey] || LEVELS.moyen, S = L.S, T = L.T;
+    for (var attempt = 0; attempt < 80; attempt++) {
+      var rng = mulberry32(seed * 7919 + attempt * 104729 + 17);
+      var sol = randomPaths(rng, S, T);
+      if (!sol) continue;
+      var crime = pickCrime(rng, sol, S, T);
+      if (!crime) continue;
+      var ordered = weightedOrder(buildPool(sol, S, T), L.w, rng);
+      var clues = [], unique = false;
+      // sélection gloutonne : parmi les K prochains candidats (tirés selon les poids du niveau),
+      // on garde celui qui réduit le plus les possibilités après propagation
+      var atCount = 0, cleared = {};
+      for (var step = 0; step < 70 && ordered.length; step++) {
+        var win = [];
+        for (var q = 0; q < ordered.length && win.length < (L.k || 8); q++) {
+          if (ordered[q].type === 'at' && atCount >= (L.atMax == null ? 99 : L.atMax)) continue;
+          if (!leakOk(ordered[q], crime, cleared, S)) continue;
+          win.push(q);
+        }
+        if (!win.length) break;
+        var bestI = win[0], bestScore = Infinity;
+        for (q = 0; q < win.length; q++) {
+          var sc = domainScore({ S: S, T: T, clues: clues.concat([ordered[win[q]]]), crime: crime });
+          if (sc >= 0 && sc < bestScore) { bestScore = sc; bestI = win[q]; }
+        }
+        var picked = ordered.splice(bestI, 1)[0];
+        if (picked.type === 'at') atCount++;
+        leakMark(picked, crime, cleared);
+        clues.push(picked);
+        if (clues.length < 5) continue;
+        var res = solve({ S: S, T: T, clues: clues, crime: crime }, 2, 60000);
+        if (res.count === 1 && !res.aborted) { unique = true; break; }
+      }
+      if (!unique) continue;
+      // élagage : on retire tout constat inutile, ceux du type le moins souhaité d'abord
+      var order = clues.map(function (c) {
+        return { c: c, k: L.drop.indexOf(c.type) + rng() * 0.9 };
+      }).sort(function (x, y) { return x.k - y.k; }).map(function (x) { return x.c; });
+      var cur = clues.slice();
+      for (var j = 0; j < order.length; j++) {
+        var test = cur.filter(function (x) { return x !== order[j]; });
+        var r2 = solve({ S: S, T: T, clues: test, crime: crime }, 2, 60000);
+        if (r2.count === 1 && !r2.aborted) cur = test;
+      }
+      if (cur.length > L.max) continue;
+      cur.sort(function (x, y) {
+        return TYPE_RANK[x.type] - TYPE_RANK[y.type] || (x.t || 0) - (y.t || 0) || (x.s || x.a || 0) - (y.s || y.a || 0);
+      });
+      var culprit = -1;
+      for (var s = 0; s < S; s++) if (sol[s * T + crime.t] === crime.room) culprit = s;
+      return { S: S, T: T, clues: cur, crime: crime, solution: sol, culprit: culprit, level: levelKey, seed: seed };
+    }
+    return generate(seed + 1, levelKey);
+  }
+
+
+  /* ---------- Mode « un seul menteur » ---------- */
+  var NEG = { at: 'notAt', notAt: 'at', together: 'apart', apart: 'together', stay: 'move', move: 'stay', never: 'visited', visited: 'never' };
+  function neg(c) {
+    var o = {}, k;
+    for (k in c) o[k] = c[k];
+    o.type = NEG[c.type];
+    return o;
+  }
+
+  // Contraintes effectives si « L ment » : les déclarations de L sont fausses, les autres vraies,
+  // et le meurtrier (seul dans la pièce du crime à l'heure du crime) est L.
+  function liarClues(puz, L) {
+    var out = puz.clues.map(function (c) { return c.by === undefined ? c : (c.by === L ? neg(c) : c); });
+    out.push({ type: 'at', s: L, t: puz.crime.t, r: puz.crime.room });
+    return out;
+  }
+
+  // Demi-vérités : les autres suspects disent vrai ; L mélange (au moins une déclaration vraie et une fausse).
+  // On parcourt les valeurs de vérité des déclarations de L en élaguant dès qu'une contradiction apparaît.
+  function solveHalf(puz, limit, cap) {
+    var total = [], aborted = false, count = 0, S = puz.S, T = puz.T;
+    var mkp = function (cl) { return { S: S, T: T, crime: puz.crime, clues: cl }; };
+    for (var L = 0; L < S && count < limit; L++) {
+      var base = [], mine = [];
+      puz.clues.forEach(function (c) { if (c.by === L) mine.push(c); else base.push(c); });
+      base.push({ type: 'at', s: L, t: puz.crime.t, r: puz.crime.room });
+      var m = mine.length;
+      if (m < 2 || domainScore(mkp(base)) < 0) continue;
+      var recur = function (i, cl, hasT, hasF, who) {
+        if (count >= limit || aborted) return;
+        if (i === m) {
+          if (!(hasT && hasF)) return;
+          var res = solve(mkp(cl), limit - count, cap);
+          if (res.aborted) aborted = true;
+          res.sols.forEach(function (gr) { total.push({ liar: who, grid: gr }); });
+          count += res.count;
+          return;
+        }
+        var yes = cl.concat([mine[i]]);
+        if (domainScore(mkp(yes)) >= 0) recur(i + 1, yes, true, hasF, who);
+        var no = cl.concat([neg(mine[i])]);
+        if (domainScore(mkp(no)) >= 0) recur(i + 1, no, hasT, true, who);
+      };
+      recur(0, base, false, false, L);
+    }
+    return { count: count, aborted: aborted, sols: total };
+  }
+
+  function solveLiar(puz, limit, cap) {
+    if (puz.mode === 'half') return solveHalf(puz, limit || 2, cap);
+    limit = limit || 2;
+    var total = [], aborted = false, count = 0;
+    for (var L = 0; L < puz.S; L++) {
+      var res = solve({ S: puz.S, T: puz.T, crime: puz.crime, clues: liarClues(puz, L) }, limit - count, cap);
+      if (res.aborted) aborted = true;
+      res.sols.forEach(function (gr) { total.push({ liar: L, grid: gr }); });
+      count += res.count;
+      if (count >= limit) break;
+    }
+    return { count: count, aborted: aborted, sols: total };
+  }
+
+  function domainScoreLiar(puz) {
+    var sum = 0;
+    for (var L = 0; L < puz.S; L++) {
+      var cls;
+      if (puz.mode === 'half') {
+        cls = puz.clues.filter(function (c) { return c.by !== L; });
+        cls.push({ type: 'at', s: L, t: puz.crime.t, r: puz.crime.room });
+      } else cls = liarClues(puz, L);
+      var cp = compile({ S: puz.S, T: puz.T, crime: puz.crime, clues: cls });
+      var dom = cp.base.slice(), ok = true, i;
+      for (i = 0; i < cp.N; i++) if (dom[i] === 0) { ok = false; break; }
+      if (ok && cp.propagate(dom)) for (i = 0; i < cp.N; i++) sum += POP[dom[i]];
+    }
+    return sum;
+  }
+
+  var LIAR_LEVELS = {
+    facile: {
+      S: 3, T: 5, max: 16, k: 10, atMax: 2, minSt: 2,
+      w: { fact: 1.5, at: 1.5, notAt: 0.8, together: 2, apart: 1.2, stay: 1.5, move: 1, never: 1.5, visited: 1.5 },
+      drop: ['notAt', 'apart', 'move', 'visited', 'never', 'stay', 'together', 'at', 'fact']
+    },
+    moyen: {
+      S: 4, T: 5, max: 24, k: 10, atMax: 2, minSt: 2,
+      w: { fact: 1, at: 1.5, notAt: 0.8, together: 2, apart: 1.2, stay: 1.5, move: 1, never: 1.5, visited: 1.5 },
+      drop: ['notAt', 'apart', 'move', 'visited', 'never', 'stay', 'together', 'at', 'fact']
+    },
+    difficile: {
+      S: 4, T: 6, max: 30, k: 20, atMax: 1, minSt: 2,
+      w: { fact: 0.5, at: 1.2, notAt: 0.8, together: 2, apart: 1.2, stay: 1.5, move: 1, never: 1.8, visited: 1.8 },
+      drop: ['fact', 'notAt', 'apart', 'move', 'visited', 'never', 'stay', 'together', 'at']
+    }
+  };
+  var HALF_LEVELS = {
+    facile: Object.assign({}, LIAR_LEVELS.facile, { max: 18, maxSt: 8, atMax: 4, k: 20 }),
+    moyen: Object.assign({}, LIAR_LEVELS.moyen, { max: 24, maxSt: 8, atMax: 8, k: 20 }),
+    difficile: Object.assign({}, LIAR_LEVELS.difficile, { max: 28, maxSt: 8, atMax: 6, k: 40 })
+  };
+  var LIAR_TYPES = { at: 1, notAt: 1, together: 1, apart: 1, stay: 1, move: 1, never: 1, visited: 1 };
+
+  function groupOf(item) { return item.kind === 'fact' ? 'fact' : item.c.type; }
+
+  function generateLiar(seed, levelKey, mode) {
+    mode = mode || 'liar';
+    var half = mode === 'half', table = half ? HALF_LEVELS : LIAR_LEVELS;
+    var L = table[levelKey] || table.moyen, S = L.S, T = L.T, maxSt = L.maxSt || 99;
+    for (var attempt = 0; attempt < 80; attempt++) {
+      var rng = mulberry32(seed * 6007 + attempt * 104729 + (half ? 71 : 29));
+      var sol = randomPaths(rng, S, T);
+      if (!sol) continue;
+      var crime = pickCrime(rng, sol, S, T);
+      if (!crime) continue;
+      var liar = -1, s0, sp;
+      for (s0 = 0; s0 < S; s0++) if (sol[s0 * T + crime.t] === crime.room) liar = s0;
+      var cands = [];
+      buildPool(sol, S, T).forEach(function (f) {
+        if (!LIAR_TYPES[f.type]) return;
+        if (f.type === 'at') cands.push({ kind: 'fact', c: f });
+        for (sp = 0; sp < S; sp++) {
+          if (sp === liar) {
+            if (half) cands.push({ kind: 'st', truth: true, c: Object.assign({}, f, { by: sp }) });
+            cands.push({ kind: 'st', truth: false, c: Object.assign({}, neg(f), { by: sp }) });
+          } else {
+            cands.push({ kind: 'st', truth: true, c: Object.assign({}, f, { by: sp }) });
+          }
+        }
+      });
+      var count = {};
+      cands.forEach(function (it) { var g0 = groupOf(it); count[g0] = (count[g0] || 0) + 1; });
+      var ordered = cands.map(function (it) {
+        var u = rng() || 1e-9;
+        return { it: it, key: -Math.log(u) / (L.w[groupOf(it)] / count[groupOf(it)]) };
+      }).sort(function (x, y) { return x.key - y.key; }).map(function (x) { return x.it; });
+
+      var chosen = [], unique = false, factCount = 0, perSpeaker = {}, cleared = {};
+      var eff = function (it) { return it.kind === 'fact' || it.truth ? it.c : neg(it.c); };
+      var mk = function (items) { return { mode: mode, S: S, T: T, crime: crime, clues: items.map(function (i) { return i.c; }) }; };
+      var take = function (idx) {
+        var it = ordered.splice(idx, 1)[0];
+        leakMark(eff(it), crime, cleared);
+        if (it.kind === 'fact') factCount++;
+        else perSpeaker[it.c.by] = (perSpeaker[it.c.by] || 0) + 1;
+        chosen.push(it);
+      };
+      if (half) {
+        // le meurtrier doit avoir au moins une déclaration vraie et une fausse
+        var iT = -1, iF = -1;
+        for (var z = 0; z < ordered.length && (iT < 0 || iF < 0); z++) {
+          var oz = ordered[z];
+          if (oz.kind === 'st' && oz.c.by === liar && leakOk(eff(oz), crime, {}, S)) {
+            if (oz.truth && iT < 0) iT = z; else if (!oz.truth && iF < 0) iF = z;
+          }
+        }
+        if (iT < 0 || iF < 0) continue;
+        take(Math.max(iT, iF)); take(Math.min(iT, iF));
+      }
+      for (var step = 0; step < 120 && ordered.length; step++) {
+        var win = [];
+        for (var q = 0; q < ordered.length && win.length < L.k; q++) {
+          var cand = ordered[q];
+          if (cand.kind === 'fact' && factCount >= L.atMax) continue;
+          if (cand.kind === 'st' && (perSpeaker[cand.c.by] || 0) >= maxSt) continue;
+          if (!leakOk(eff(cand), crime, cleared, S)) continue;
+          win.push(q);
+        }
+        if (!win.length) break;
+        var bestI = win[0], bestScore = Infinity;
+        for (q = 0; q < win.length; q++) {
+          var sc = domainScoreLiar(mk(chosen.concat([ordered[win[q]]])));
+          if (sc < bestScore) { bestScore = sc; bestI = win[q]; }
+        }
+        take(bestI);
+        if (chosen.length < 5) continue;
+        var res = solveLiar(mk(chosen), 2, 60000);
+        if (res.count === 1 && !res.aborted) { unique = true; break; }
+      }
+      if (!unique) continue;
+
+      var order = chosen.map(function (it) {
+        var k0 = L.drop.indexOf(groupOf(it));
+        return { it: it, k: (k0 < 0 ? 0 : k0) + rng() * 0.9 };
+      }).sort(function (x, y) { return x.k - y.k; }).map(function (x) { return x.it; });
+      var cur = chosen.slice();
+      for (var j = 0; j < order.length; j++) {
+        var it = order[j];
+        if (it.kind === 'st') {
+          var mine = cur.filter(function (x) { return x.kind === 'st' && x.c.by === it.c.by; });
+          if (mine.length <= L.minSt) continue;
+          if (half && it.c.by === liar) {
+            var rest = mine.filter(function (x) { return x !== it; });
+            var hasT = rest.some(function (x) { return x.truth; }), hasF = rest.some(function (x) { return !x.truth; });
+            if (!hasT || !hasF) continue;
+          }
+        }
+        var test = cur.filter(function (x) { return x !== it; });
+        var r2 = solveLiar(mk(test), 2, 60000);
+        if (r2.count === 1 && !r2.aborted) cur = test;
+      }
+      if (cur.length > L.max) continue;
+      var out = cur.map(function (x) { return x.c; });
+      out.sort(function (x, y) {
+        var bx = x.by === undefined ? -1 : x.by, by2 = y.by === undefined ? -1 : y.by;
+        return bx - by2 || TYPE_RANK[x.type] - TYPE_RANK[y.type] || (x.t || 0) - (y.t || 0);
+      });
+      return { mode: mode, S: S, T: T, clues: out, crime: crime, solution: sol, culprit: liar, liar: liar, level: levelKey, seed: seed };
+    }
+    return generateLiar(seed + 1, levelKey, mode);
+  }
+
+  // Déclaration à la première personne quand le sujet est celui qui parle
+  function statementText(puz, c) {
+    var by = c.by, me = function (s) { return s === by; };
+    var nm = function (s) { return SUSPECTS[s].name; };
+    var the = function (r) { return ROOMS[r].the; };
+    var loc = function (r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; };
+    var f = SUSPECTS[by].f, other;
+    switch (c.type) {
+      case 'at': if (me(c.s)) return "J'étais " + loc(c.r) + ' à ' + timeLabel(c.t) + '.'; break;
+      case 'notAt': if (me(c.s)) return "Je n'étais pas " + loc(c.r) + ' à ' + timeLabel(c.t) + '.'; break;
+      case 'together':
+        if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' et moi étions dans la même ' + U() + ' à ' + timeLabel(c.t) + '.'; }
+        break;
+      case 'apart':
+        if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + " et moi n'étions pas ensemble à " + timeLabel(c.t) + '.'; }
+        break;
+      case 'stay': if (me(c.s)) return 'Je suis resté' + (f ? 'e' : '') + ' dans la même ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.'; break;
+      case 'move': if (me(c.s)) return "J'ai changé de " + U() + " entre " + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.'; break;
+      case 'never': if (me(c.s)) return "Je n'ai jamais mis les pieds " + loc(c.r) + ' de la soirée.'; break;
+      case 'visited': if (me(c.s)) return "J'ai traversé " + the(c.r) + ' à un moment de la soirée.'; break;
+    }
+    return clueText(puz, c);
+  }
+
+  return {
+    get ROOMS() { return ROOMS; }, get DOORS() { return DOORS; }, get ADJ() { return ADJ; },
+    get STEP() { return STEP; }, get SUSPECTS() { return SUSPECTS; }, get SCENE() { return SCENE; },
+    SCENES: SCENES, setScene: setScene, LEVELS: LEVELS, propagated: propagated, get POP() { return POP; }, get NR() { return NR; },
+    timeLabel: timeLabel, solve: solve, evalClue: evalClue, badCells: badCells,
+    clueText: clueText, generate: generate,
+    statementText: statementText, solveLiar: solveLiar, neg: neg, LIAR_LEVELS: LIAR_LEVELS, HALF_LEVELS: HALF_LEVELS
+  };
+});
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var E = window.AlibisEngine;
+  var ROOMS, SUSPECTS, STEP, DOORS, GEO, SC;
+  var LEVELS = E.LEVELS;
+  var tl = E.timeLabel;
+
+  /* Plans (viewBox 350 x 210) et vocabulaire propres à chaque décor */
+  var Art = window.AlibisArt;
+  var SCENE_UI = {
+    manoir: {
+      label: 'Manoir', plan: 'Plan du manoir',
+      dead: 'Le maître des lieux a été retrouvé mort', watch: 'Sa montre s’est arrêtée à', where: 'dans le manoir ce soir-là',
+      geo: [
+        { x: 120, y: 80, w: 110, h: 70, f: 'check', fu: [['plant', 90, 34, 16, 26], ['table', 8, 46, 28, 16]] },
+        { x: 10, y: 80, w: 110, h: 70, f: 'wood', fu: [['sofa', 8, 46, 48, 18], ['tv', 80, 52, 22, 10], ['plant', 92, 24, 14, 22]] },
+        { x: 230, y: 80, w: 110, h: 70, f: 'tile', fu: [['counter', 6, 50, 98, 14], ['table', 78, 24, 26, 16]] },
+        { x: 10, y: 10, w: 110, h: 70, f: 'wood', fu: [['shelf', 6, 52, 98, 12], ['chair', 84, 28, 14, 14], ['plant', 8, 26, 14, 22]] },
+        { x: 120, y: 10, w: 110, h: 70, f: 'diamond', fu: [['desk', 30, 48, 50, 16], ['plant', 90, 30, 14, 24]] },
+        { x: 230, y: 10, w: 110, h: 70, f: 'steel', fu: [['crate', 8, 44, 20, 20], ['crate', 82, 44, 20, 20], ['barrel', 46, 48, 18, 16]] },
+        { x: 10, y: 150, w: 330, h: 50, f: 'grass', out: 1, fu: [['tree', 24, 34, 18], ['tree', 306, 34, 18], ['plant', 100, 28, 12, 18], ['plant', 230, 28, 12, 18]] }
+      ]
+    },
+    train: {
+      label: 'Train', plan: 'Plan du train',
+      dead: 'Un riche voyageur a été retrouvé mort', watch: 'Sa montre à gousset s’est arrêtée à', where: 'à bord de l’express cette nuit-là',
+      geo: [
+        { x: 10, y: 60, w: 55, h: 100, l: 'FOURGON', f: 'steel', fu: [['crate', 5, 68, 20, 20], ['crate', 30, 68, 20, 20], ['crate', 17, 40, 18, 18]] },
+        { x: 65, y: 60, w: 55, h: 100, l: 'LIT A', f: 'wood', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['bed', 6, 66, 43, 26]] },
+        { x: 120, y: 60, w: 55, h: 100, l: 'LIT B', f: 'wood', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['bed', 6, 66, 43, 26]] },
+        { x: 175, y: 60, w: 55, h: 100, l: 'RESTO', f: 'check', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['table', 5, 68, 20, 16], ['table', 30, 68, 20, 16]] },
+        { x: 230, y: 60, w: 55, h: 100, l: 'BAR', f: 'tile', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['counter', 5, 74, 45, 14], ['stool', 13, 68, 8], ['stool', 27, 68, 8], ['stool', 41, 68, 8]] },
+        { x: 285, y: 60, w: 55, h: 100, l: 'FUMOIR', f: 'diamond', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['sofa', 5, 70, 45, 20]] },
+        { x: 120, y: 22, w: 165, h: 38, l: 'TOIT', f: 'steel', out: 1, fu: [['vent', 14, 22, 18, 10], ['vent', 74, 22, 18, 10], ['vent', 134, 22, 18, 10]] }
+      ],
+      deco: '<path class="rail" d="M4 176H346M4 182H346"/>' +
+        [37, 92, 147, 202, 257, 312].map(function (x) { return '<circle class="wheel" cx="' + x + '" cy="166" r="6"/>'; }).join('')
+    },
+    hotel: {
+      label: 'Hôtel', plan: 'Plan de l’hôtel',
+      dead: 'Le directeur de l’hôtel a été retrouvé mort', watch: 'Sa montre s’est arrêtée à', where: 'dans l’hôtel ce soir-là',
+      geo: [
+        { x: 10, y: 125, w: 85, h: 75, l: 'BAR', f: 'wood', fu: [['counter', 6, 56, 73, 14], ['stool', 16, 48, 9], ['stool', 40, 48, 9], ['stool', 64, 48, 9]] },
+        { x: 95, y: 125, w: 95, h: 75, l: 'RÉCEPTION', f: 'check', fu: [['desk', 20, 54, 55, 16], ['plant', 78, 26, 14, 22]] },
+        { x: 190, y: 125, w: 80, h: 75, l: 'RESTAURANT', f: 'diamond', fu: [['table', 6, 52, 24, 16], ['table', 48, 52, 24, 16], ['plant', 34, 28, 12, 18]] },
+        { x: 270, y: 125, w: 70, h: 75, l: 'CUISINES', f: 'tile', fu: [['counter', 5, 58, 60, 13], ['table', 38, 26, 22, 14]] },
+        { x: 95, y: 55, w: 45, h: 70, l: 'ASC.', f: 'steel', fu: [['lift', 10, 46, 25, 18]] },
+        { x: 140, y: 55, w: 130, h: 70, l: 'COULOIR', f: 'diamond', fu: [['plant', 8, 36, 14, 24], ['plant', 108, 36, 14, 24]] },
+        { x: 270, y: 55, w: 70, h: 70, l: 'SUITE 12', f: 'wood', fu: [['bed', 6, 44, 38, 20], ['plant', 52, 28, 12, 20]] },
+        { x: 95, y: 10, w: 245, h: 45, l: 'TERRASSE', f: 'grass', out: 1, fu: [['tree', 22, 32, 18], ['table', 112, 28, 22, 12], ['stool', 108, 22, 7], ['stool', 138, 22, 7], ['tree', 222, 32, 18]] }
+      ]
+    }
+  };
+  function bindScene() {
+    E.setScene(state.scene);
+    ROOMS = E.ROOMS; SUSPECTS = E.SUSPECTS; STEP = E.STEP; DOORS = E.DOORS;
+    SC = SCENE_UI[state.scene]; GEO = SC.geo;
+  }
+  function inRoom(r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; }
+  function unitize(str) { return str.replace(/pièce/g, E.SCENE.unit); }
+  function doorRect(a, b) {
+    var A = GEO[a], B = GEO[b];
+    var x1 = Math.max(A.x, B.x), x2 = Math.min(A.x + A.w, B.x + B.w);
+    var y1 = Math.max(A.y, B.y), y2 = Math.min(A.y + A.h, B.y + B.h);
+    if (x2 > x1) {
+      var wy = (A.y + A.h === B.y) ? B.y : A.y, cx = (x1 + x2) / 2;
+      return { x: cx - 11, y: wy - 3, w: 22, h: 6 };
+    }
+    var wx = (A.x + A.w === B.x) ? B.x : A.x, cy = (y1 + y2) / 2;
+    return { x: wx - 3, y: cy - 11, w: 6, h: 22 };
+  }
+
+  var ICON = {
+    ok: '<svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    bad: '<svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    pending: '',
+    'true': null, 'false': null,
+    lock: '<svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M3.4 5.4V4a2.6 2.6 0 0 1 5.2 0v1.4M2.4 5.4h7.2v5.2H2.4z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>'
+  };
+  ICON['true'] = ICON.ok; ICON['false'] = ICON.bad;
+  var NUMWORD = { 3: 'Trois', 4: 'Quatre', 5: 'Cinq' };
+
+  var state = {
+    scene: 'manoir', mode: 'classic', liarGuess: -1, level: 'moyen', puz: null, grid: [], given: [], selT: 0,
+    live: true, checked: false, hideOk: false, picker: null,
+    hints: 0, solved: false, accuse: false, accused: [], wrong: 0, early: 0
+  };
+
+  function isLiar(P) { return P.mode === 'liar' || P.mode === 'half'; }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* stockage indisponible */ } }
+  function $(id) { return document.getElementById(id); }
+  function pad4(n) { return ('0000' + n).slice(-4); }
+  function g(s, t) { return state.grid[s * state.puz.T + t]; }
+
+  /* ---------- Analyse de la grille ---------- */
+  function showMarks() { return state.live || state.checked; }
+
+  function analyse() {
+    var P = state.puz, T = P.T, bad = {}, errors = 0, s, t, a, b, liarMode = isLiar(P), half = P.mode === 'half', L = state.liarGuess;
+    for (s = 0; s < P.S; s++) {
+      for (t = 1; t < T; t++) {
+        a = g(s, t - 1); b = g(s, t);
+        if (a >= 0 && b >= 0 && !((STEP[a] >> b) & 1)) { bad[s * T + t - 1] = 1; bad[s * T + t] = 1; errors++; }
+      }
+    }
+    var items = [];
+    if (!liarMode) {
+      var list = [{ type: 'crime' }].concat(P.clues.filter(function (c) { return c.type !== 'at'; }));
+      items = list.map(function (c) {
+        var st = E.evalClue(P, c, g);
+        if (st === 'bad') {
+          errors++;
+          E.badCells(P, c, g).forEach(function (rc) { bad[rc[0] * T + rc[1]] = 1; });
+        }
+        return { c: c, st: st };
+      });
+    } else {
+      var crimeSt = E.evalClue(P, { type: 'crime' }, g), gl = L >= 0 ? g(L, P.crime.t) : -1, rst = 'pending';
+      if (crimeSt === 'bad' || (L >= 0 && gl >= 0 && gl !== P.crime.room)) rst = 'bad';
+      else if (crimeSt === 'ok' && L >= 0 && gl === P.crime.room) rst = 'ok';
+      if (rst === 'bad') {
+        errors++;
+        if (crimeSt === 'bad') E.badCells(P, { type: 'crime' }, g).forEach(function (rc) { bad[rc[0] * T + rc[1]] = 1; });
+        if (L >= 0 && gl >= 0 && gl !== P.crime.room) bad[L * T + P.crime.t] = 1;
+      }
+      items.push({ c: { type: 'crime' }, st: rst, rule: true });
+      P.clues.forEach(function (c) {
+        if (c.by === undefined) return;
+        var tv = E.evalClue(P, c, g), st;
+        if (tv === 'pending') st = 'pending';
+        else if (L < 0 || (half && c.by === L)) st = tv === 'ok' ? 'true' : 'false';
+        else st = ((tv === 'ok') === (c.by !== L)) ? 'ok' : 'bad';
+        if (st === 'bad') {
+          errors++;
+          E.badCells(P, c, g).forEach(function (rc) { bad[rc[0] * T + rc[1]] = 1; });
+        }
+        items.push({ c: c, st: st });
+      });
+      if (half && L >= 0) {
+        var nt = 0, nf = 0, nu = 0;
+        P.clues.forEach(function (c) {
+          if (c.by !== L) return;
+          var tv2 = E.evalClue(P, c, g);
+          if (tv2 === 'pending') nu++; else if (tv2 === 'ok') nt++; else nf++;
+        });
+        var mst = (nt >= 1 && nf >= 1) ? 'ok' : (nu === 0 ? 'bad' : 'pending');
+        if (mst === 'bad') errors++;
+        items.push({ c: null, st: mst, mix: true });
+      }
+    }
+    var okCount = 0, filled = 0;
+    items.forEach(function (it) { if (it.st === 'ok') okCount++; });
+    state.grid.forEach(function (v) { if (v >= 0) filled++; });
+    return { bad: bad, errors: errors, items: items, okCount: okCount, filled: filled };
+  }
+
+  function gridCorrect() {
+    var sol = state.puz.solution;
+    return state.grid.every(function (v, i) { return v === sol[i]; });
+  }
+
+  /* ---------- Rendu ---------- */
+  function renderLevels() {
+    $('levels').innerHTML = Object.keys(LEVELS).map(function (k) {
+      return '<button type="button" data-act="level" data-level="' + k + '" aria-pressed="' + (k === state.level) + '">' + LEVELS[k].label + '</button>';
+    }).join('');
+  }
+
+  function renderScenes() {
+    $('scenes').innerHTML = Object.keys(SCENE_UI).map(function (k) {
+      return '<button type="button" data-act="scene" data-scene="' + k + '" aria-pressed="' + (k === state.scene) + '">' + SCENE_UI[k].label + '</button>';
+    }).join('');
+  }
+
+  function renderModes() {
+    var M = { classic: 'Classique', liar: 'Un menteur', half: 'Demi-vérités' };
+    $('modes').innerHTML = Object.keys(M).map(function (k) {
+      return '<button type="button" data-act="mode" data-mode="' + k + '" aria-pressed="' + (k === state.mode) + '">' + M[k] + '</button>';
+    }).join('');
+  }
+
+  var RULES = {
+    classic: [
+      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Touche une case pour choisir la pièce.',
+      'Entre deux heures, un suspect <b>reste sur place</b> ou <b>passe une porte</b> (les traits colorés du plan). Un mur sans porte ne se traverse pas.',
+      'Tous les <b>constats</b> sont vrais. Il n’existe qu’une seule chronologie qui les respecte tous.',
+      'À l’heure du crime, un seul suspect se trouvait dans la pièce du crime : c’est le <b>meurtrier</b>. Complète la grille pour le démasquer.',
+      'Touche une heure pour voir qui était où sur le plan. Les cases au fond doré sont des alibis déjà confirmés.'
+    ],
+    liar: [
+      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.',
+      'Chaque suspect fait des <b>déclarations</b>. Les innocents disent la vérité. <b>Un seul suspect ment</b>, et toutes ses déclarations sont fausses.',
+      'Le menteur est le <b>meurtrier</b> : c’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.',
+      'Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>, puis remplis la grille. Chaque déclaration se vérifie sur la chronologie : essaie un suspect, change d’avis si ça coince.',
+      'Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.'
+    ],
+    half: [
+      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.',
+      'Chaque suspect fait des <b>déclarations</b>. Les innocents disent toujours la vérité.',
+      'Le <b>meurtrier</b> mélange le vrai et le faux : <b>au moins une</b> de ses déclarations est vraie et <b>au moins une</b> est fausse. C’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.',
+      'Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>. Ses déclarations s’affichent alors comme vraies ou fausses d’après ta grille, et il doit en avoir des deux sortes.',
+      'Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.'
+    ]
+  };
+  function renderRules() {
+    var extra = [
+      isLiar(state.puz || { mode: state.mode })
+        ? 'Dans ce mode, le coupable est le menteur. <b>Qui ment ?</b> sert à tester une hypothèse (les déclarations se colorent). <b>J’accuse !</b> sert à la valider : une bonne accusation gagne tout de suite.'
+        : 'Pas besoin de tout remplir : dès que tu es sûr, touche <b>J’accuse !</b> et désigne le coupable. Une bonne accusation gagne tout de suite. Une mauvaise est comptée comme une erreur et le suspect est écarté.',
+      '<b>Vérification en direct</b> : cochée, les erreurs apparaissent aussitôt en rouge (une case qui contredit un constat, ou un trajet impossible). Décochée, rien ne s’affiche pendant que tu joues : le bouton <b>Vérifier</b> contrôle alors toute la grille d’un coup, à la demande. C’est le mode sans filet.'
+    ];
+    $('rules-list').innerHTML = RULES[state.mode].concat(extra).map(function (r) { return '<li>' + unitize(r) + '</li>'; }).join('');
+  }
+
+  function renderCase() {
+    var P = state.puz;
+    var liarMode = isLiar(P), half = P.mode === 'half';
+    $('dossier').textContent = 'Dossier n° ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' créneaux' + (liarMode ? (half ? ' · demi-vérités' : ' · un menteur') : '');
+    $('case').innerHTML =
+      '<p class="eyebrow">L’affaire</p>' +
+      '<h2>' + SC.dead + ' ' + (ROOMS[P.crime.room].on ? 'sur' : 'dans') + ' <em>' + ROOMS[P.crime.room].the + '</em>.</h2>' +
+      '<p>' + SC.watch + ' <b class="mono">' + tl(P.crime.t) + '</b>. ' + NUMWORD[P.S] +
+      (liarMode
+        ? (half
+          ? ' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a mêlé le vrai et le faux : au moins une de ses déclarations est vraie, au moins une est fausse. Démasque-le.</p>'
+          : ' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a menti dans chacune de ses déclarations. Démasque-le.</p>')
+        : ' suspects se trouvaient ' + SC.where + ', et un seul d’entre eux était avec lui à cet instant. Reconstitue leurs déplacements pour trouver lequel.</p>');
+  }
+
+  function pill(x, y, text) {
+    var w = Math.round(text.length * 5.8 + 12);
+    return '<g class="pill"><rect x="' + (x - w / 2) + '" y="' + (y - 6.5) + '" width="' + w + '" height="13" rx="6.5"/><text x="' + x + '" y="' + (y + 0.4) + '">' + text + '</text></g>';
+  }
+
+  function renderMap() {
+    var P = state.puz, T = P.T, t = state.selT, r, s, i, svg = '', chips = '';
+    for (i = 0; i < T; i++) {
+      chips += '<button type="button" class="chip' + (i === P.crime.t ? ' crime' : '') + '" data-act="time" data-t="' + i +
+        '" aria-pressed="' + (i === t) + '">' + tl(i) + '</button>';
+    }
+    svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' à ' + tl(t) + '">' + Art.defs();
+    for (r = 0; r < ROOMS.length; r++) {
+      var G = GEO[r];
+      svg += '<rect x="' + G.x + '" y="' + G.y + '" width="' + G.w + '" height="' + G.h + '" fill="url(#pf-' + G.f + ')"/>';
+    }
+    svg += SC.deco ? '<g class="deco">' + SC.deco + '</g>' : '';
+    for (r = 0; r < ROOMS.length; r++) {
+      var G1 = GEO[r];
+      svg += '<g class="furn">' + G1.fu.map(function (f) { return Art.furn(f[0], G1.x + f[1], G1.y + f[2], f[3], f[4]); }).join('') + '</g>';
+    }
+    for (r = 0; r < ROOMS.length; r++) {
+      var G3 = GEO[r];
+      svg += '<rect class="wall" x="' + G3.x + '" y="' + G3.y + '" width="' + G3.w + '" height="' + G3.h + '"/>';
+    }
+    var cr = GEO[P.crime.room];
+    svg += '<rect class="crimeroom" x="' + (cr.x + 3) + '" y="' + (cr.y + 3) + '" width="' + (cr.w - 6) + '" height="' + (cr.h - 6) + '" rx="3"/>';
+    DOORS.forEach(function (d) {
+      var R = doorRect(d[0], d[1]);
+      svg += '<rect class="door" x="' + R.x + '" y="' + R.y + '" width="' + R.w + '" height="' + R.h + '" rx="2"/>';
+    });
+    for (r = 0; r < ROOMS.length; r++) {
+      var G4 = GEO[r];
+      svg += pill(G4.x + G4.w / 2, G4.y + 11, G4.l || ROOMS[r].name.toUpperCase());
+    }
+    var burst = [], bi, br;
+    for (bi = 0; bi < 12; bi++) { br = bi % 2 ? 6.5 : 11; burst.push((Math.sin(bi * Math.PI / 6) * br).toFixed(1) + ',' + (-Math.cos(bi * Math.PI / 6) * br).toFixed(1)); }
+    svg += '<g class="crimemark" transform="translate(' + (cr.x + cr.w / 2) + ',' + (cr.y + cr.h - 12) + ')"><polygon points="' + burst.join(' ') + '"/><path d="M-2.6 -2.6L2.6 2.6M2.6 -2.6L-2.6 2.6"/></g>';
+    var occ = ROOMS.map(function () { return []; });
+    for (s = 0; s < P.S; s++) { var v = g(s, t); if (v >= 0) occ[v].push(s); }
+    occ.forEach(function (list, room) {
+      var G2 = GEO[room], n = list.length, isC = room === P.crime.room;
+      var cols = Math.max(1, Math.min(n, Math.floor((G2.w - 4) / 24)));
+      var rows = Math.ceil(n / cols);
+      var top = G2.y + 20, bottom = G2.y + G2.h - (isC ? 20 : 4), avail = bottom - top;
+      var step = Math.min(23, rows > 1 ? (avail - 21) / (rows - 1) : 23);
+      var y0 = top + (avail - (21 + (rows - 1) * step)) / 2 + 10.5;
+      list.forEach(function (sid, k) {
+        var row = Math.floor(k / cols), col = k % cols, inRow = Math.min(cols, n - row * cols);
+        var x = G2.x + G2.w / 2 + (col - (inRow - 1) / 2) * 24, y = y0 + row * step;
+        var cul = state.solved && t === P.crime.t && sid === P.culprit;
+        svg += '<g class="tok s' + sid + (cul ? ' culprit' : '') + '" transform="translate(' + x + ',' + y + ')">' +
+          '<circle class="halo" r="12.5"/><circle class="face" r="10.4"/>' +
+          '<g transform="translate(-9.6 -9.6) scale(0.3)" clip-path="url(#tokclip)">' + Art.avatarInner(SUSPECTS[sid].name) + '</g>' +
+          '<circle class="ring" r="10.4"/></g>';
+      });
+    });
+    svg += '</svg>';
+    $('map-panel').innerHTML =
+      '<div class="panel-hd"><h2 class="label">' + SC.plan + '</h2><span class="sub">à ' + tl(t) + '</span></div>' +
+      '<div class="chips" style="--n:' + T + '">' + chips + '</div>' + svg +
+      '<p class="legend"><span><i class="lg-door"></i>porte</span><span><i class="lg-crime"></i>scène du crime</span></p>';
+  }
+
+  function pola(sid, extra) {
+    return '<figure class="pola s' + sid + '" title="' + SUSPECTS[sid].name + '"><div class="pola-img">' + Art.avatar(SUSPECTS[sid].name) + '</div>' +
+      '<figcaption><span class="pn">' + SUSPECTS[sid].short + '</span>' + (extra || '') + '</figcaption></figure>';
+  }
+  function mini(sid) { return '<span class="mini s' + sid + '">' + Art.avatar(SUSPECTS[sid].name) + '</span>'; }
+
+  function renderSuspects() {
+    var P = state.puz, el = $('suspects'), s, h = '';
+    if (!P || isLiar(P)) { el.innerHTML = ''; el.hidden = true; return; }
+    el.hidden = false;
+    h += '<div class="panel-hd"><h2 class="label">Les suspects</h2><span class="sub">' + P.S + ' personnes</span></div>';
+    h += '<div class="strip" style="--n:' + (P.S <= 4 ? P.S : 3) + ';--N:' + P.S + '">';
+    for (s = 0; s < P.S; s++) h += pola(s, '<small>' + SUSPECTS[s].role + '</small>');
+    el.innerHTML = h + '</div>';
+  }
+
+  function renderBoard() {
+    var P = state.puz, S = P.S, T = P.T, A = analyse(), show = showMarks(), s, t, h = '';
+    h += '<div class="panel-hd"><h2 class="label">Chronologie</h2><span class="sub">touche une case</span></div>';
+    h += '<div class="board' + (S >= 5 ? ' dense' : '') + '" style="--cols:' + S + '"><div></div>';
+    for (s = 0; s < S; s++) {
+      h += '<div class="who s' + s + '">' + mini(s) + '<b>' + SUSPECTS[s].short + '</b>' +
+        (isLiar(P) && state.liarGuess === s ? '<small class="liar-badge">menteur ?</small>' : (S <= 4 ? '<small>' + SUSPECTS[s].role + '</small>' : '')) + '</div>';
+    }
+    for (t = 0; t < T; t++) {
+      var isCrime = t === P.crime.t;
+      h += '<button type="button" class="time' + (t === state.selT ? ' sel' : '') + '" data-act="time" data-t="' + t + '">' + tl(t) + (isCrime ? '<small>crime</small>' : '') + '</button>';
+      for (s = 0; s < S; s++) {
+        var idx = s * T + t, v = state.grid[idx], given = state.given[idx];
+        var cls = 'cell s' + s + (v < 0 ? ' empty' : '') + (given ? ' given' : '') + (show && !given && A.bad[idx] ? ' bad' : '');
+        var label = SUSPECTS[s].name + ', ' + tl(t) + ' : ' + (v < 0 ? 'vide' : ROOMS[v].name) + (given ? ' (confirmé)' : '');
+        h += '<button type="button" class="' + cls + '" data-act="cell" data-s="' + s + '" data-t="' + t + '" aria-label="' + label + '"' +
+          (given || state.solved ? ' disabled' : '') + '>' + (v < 0 ? '' : ROOMS[v].short) + (given ? ICON.lock : '') + '</button>';
+      }
+    }
+    h += '</div>';
+    if (isLiar(P) && !state.solved) {
+      h += '<div class="liar"><span class="liar-q">Qui ment ?</span><div class="liar-btns">';
+      for (s = 0; s < S; s++) {
+        h += '<button type="button" class="liar-btn s' + s + '" data-act="liar" data-s="' + s + '" aria-pressed="' + (state.liarGuess === s) + '">' + mini(s) + SUSPECTS[s].short + '</button>';
+      }
+      h += '</div></div>';
+    }
+    h += '<div class="status"><span>' + A.filled + '/' + (S * T) + ' cases</span>' +
+      (show ? '<span class="' + (A.errors ? 'err' : '') + '">' + A.errors + ' contradiction' + (A.errors > 1 ? 's' : '') + '</span>' : '<span>vérification en direct désactivée</span>') +
+      (isLiar(P) && !state.solved && state.liarGuess < 0 && gridCorrect() ? '<span class="err">chronologie complète : désigne le menteur</span>' : '') +
+      (state.wrong && !state.solved ? '<span class="err">' + state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + ' (' + state.accused.map(function (x) { return SUSPECTS[x].short; }).join(', ') + ' : innocent)</span>' : '') +
+      '</div>';
+    if (!state.solved) {
+      h += '<div class="actions"><label class="switch"><input type="checkbox" id="live"' + (state.live ? ' checked' : '') + '><span>Vérification en direct</span></label>' +
+        '<div class="btns">' +
+        (state.live ? '' : '<button type="button" class="btn sm" data-act="check" title="Contrôle toute la grille d’un coup">Vérifier</button>') +
+        '<button type="button" class="btn sm" data-act="hint">Indice</button>' +
+        '<button type="button" class="btn sm" data-act="reset">Effacer</button>' +
+        '<button type="button" class="btn sm accuse" data-act="accuse">J’accuse !</button></div></div>' +
+        '<p class="hintline">' + (state.live
+          ? 'Vérification en direct : les erreurs s’affichent tout de suite en rouge.'
+          : 'Vérification manuelle : rien ne s’affiche tant que tu n’appuies pas sur « Vérifier », qui contrôle toute la grille d’un coup.') + '</p>';
+    }
+    $('board-panel').innerHTML = h;
+  }
+
+  function renderCluesLiar() {
+    var P = state.puz, A = analyse(), show = showMarks(), L = state.liarGuess, S = P.S, s, h = '';
+    var total = A.items.length;
+    h += '<div class="panel-hd"><h2 class="label">Déclarations</h2><span class="sub">' +
+      (show ? (L < 0 ? 'désigne un menteur' : A.okCount + '/' + total + ' confirmées') : total + ' constats') + '</span></div>';
+    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>Masquer les déclarations confirmées</span></label>';
+    function li(it, text) {
+      var st = show ? it.st : 'pending';
+      if (state.hideOk && st === 'ok') return '';
+      var tag = (st === 'true' || st === 'false') ? '<span class="tag">' + (st === 'true' ? 'vrai' : 'faux') + '</span>' : '';
+      return '<li class="clue ' + st + (it.rule ? ' rule' : '') + '"><span class="ico">' + ICON[st] + '</span><span class="txt">' + text + ' ' + tag + '</span></li>';
+    }
+    var rule = A.items.filter(function (it) { return it.rule; })[0];
+    h += '<ul class="clues">' + li(rule, 'Le menteur est le meurtrier : lui seul se trouvait ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) + '.') + '</ul>';
+    var facts = P.clues.filter(function (c) { return c.by === undefined; });
+    if (facts.length) {
+      h += '<div class="speaker"><b>Preuves</b><span class="tag">certaines</span></div><ul class="clues proof-list">' +
+        facts.map(function (c) { return '<li class="clue ok proof"><span class="ico">' + ICON.lock + '</span><span class="txt">' + E.clueText(P, c) + '</span></li>'; }).join('') + '</ul>';
+    }
+    for (s = 0; s < S; s++) {
+      var mix = (P.mode === 'half' && L === s) ? A.items.filter(function (it) { return it.mix; })[0] : null;
+      var rows = (mix ? li(mix, 'Au moins une de ses déclarations est vraie et au moins une est fausse.') : '') + A.items.filter(function (it) { return !it.rule && !it.mix && it.c.by === s; }).map(function (it) {
+        return li(it, '« ' + E.statementText(P, it.c) + ' »');
+      }).join('');
+      var who = L < 0 ? '' : (L === s ? '<span class="tag liar-tag">' + (P.mode === 'half' ? 'ment en partie' : 'ment : tout est faux') + '</span>' : '<span class="tag">dit vrai</span>');
+      h += '<div class="sp s' + s + '">' + pola(s, '<small>' + SUSPECTS[s].role + '</small>' + who) +
+        (rows ? '<ul class="clues bubbles">' + rows + '</ul>' : '<p class="empty-note">Toutes ses déclarations sont confirmées.</p>') + '</div>';
+    }
+    $('clues-panel').innerHTML = h;
+  }
+
+  function renderClues() {
+    if (isLiar(state.puz)) { renderCluesLiar(); return; }
+    var A = analyse(), show = showMarks();
+    var h = '<div class="panel-hd"><h2 class="label">Constats</h2><span class="sub">' +
+      (show ? A.okCount + '/' + A.items.length + ' confirmés' : A.items.length + ' constats') + '</span></div>';
+    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>Masquer les constats confirmés</span></label>';
+    var rows = A.items.map(function (it) {
+      var st = show ? it.st : 'pending';
+      if (state.hideOk && st === 'ok') return '';
+      return '<li class="clue ' + st + (it.c.type === 'crime' ? ' rule' : '') + '"><span class="ico">' + ICON[st] + '</span><span class="txt">' + E.clueText(state.puz, it.c) + '</span></li>';
+    }).join('');
+    h += rows ? '<ul class="clues">' + rows + '</ul>' : '<p class="empty-note">Tous les constats sont confirmés.</p>';
+    $('clues-panel').innerHTML = h;
+  }
+
+  function mineCount() {
+    var P = state.puz;
+    return P.clues.filter(function (c) { return c.by === P.liar; }).length;
+  }
+  function falseCount() {
+    var P = state.puz, gs = function (s, t) { return P.solution[s * P.T + t]; };
+    return P.clues.filter(function (c) { return c.by === P.liar && E.evalClue(P, c, gs) !== 'ok'; }).length;
+  }
+
+  function renderVerdict() {
+    var P = state.puz, el = $('verdict');
+    if (!state.solved) { el.innerHTML = ''; return; }
+    var c = SUSPECTS[P.culprit];
+    el.innerHTML = '<div class="panel verdict"><div class="v-top">' + pola(P.culprit, '<small class="guilty">coupable</small>') + '<div class="stamp">Affaire classée</div></div>' +
+      (P.mode === 'half'
+        ? '<p><b>' + c.name + '</b> mêlait le vrai et le faux : ' + falseCount() + ' de ' + (c.f ? 'ses' : 'ses') + ' ' + mineCount() + ' déclarations ' + (falseCount() > 1 ? 'étaient fausses' : 'était fausse') + '. ' + (c.f ? 'Elle' : 'Il') + ' était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
+          '. Les autres suspects disaient toujours vrai.</p>'
+        : P.mode === 'liar'
+        ? '<p><b>' + c.name + '</b> mentait. ' + (c.f ? 'Elle' : 'Il') + ' était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
+          ', et chacune de ses déclarations était fausse. Les autres suspects disaient vrai.</p>'
+        : '<p><b>' + c.name + '</b> était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
+          '. Tous les autres alibis tiennent.</p>') +
+      '<p class="sub">' + (state.early ? 'Accusation exacte alors que ' + state.early + ' case' + (state.early > 1 ? 's' : '') + ' de la chronologie restaient à remplir. ' : '') +
+      (state.hints ? state.hints + ' indice' + (state.hints > 1 ? 's' : '') + ' utilisé' + (state.hints > 1 ? 's' : '') + '. ' : 'Aucun indice utilisé. ') +
+      (state.wrong ? state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'Aucune fausse accusation.') + '</p>' +
+      '<button type="button" class="btn primary" data-act="new">Affaire suivante</button></div>';
+  }
+
+  function renderSheet() {
+    var root = $('sheet-root'), p = state.picker;
+    if (state.accuse && state.puz) {
+      var P0 = state.puz, ab = '';
+      for (var q0 = 0; q0 < P0.S; q0++) {
+        var out = state.accused.indexOf(q0) >= 0;
+        ab += '<button type="button" class="acc-btn s' + q0 + (out ? ' out' : '') + '" data-act="accpick" data-s="' + q0 + '"' + (out ? ' disabled' : '') + '>' +
+          pola(q0, '<small>' + (out ? 'innocent' : SUSPECTS[q0].role) + '</small>') + '</button>';
+      }
+      root.innerHTML = '<div class="scrim" data-act="close"></div>' +
+        '<div class="sheet" role="dialog" aria-modal="true" aria-label="Désigner le coupable">' +
+        '<div class="sheet-hd"><b class="acc-t">J’accuse…</b></div>' +
+        '<p class="trail">Qui est le meurtrier ? Une mauvaise réponse est comptée comme une erreur.</p>' +
+        '<div class="acc-grid" style="--n:' + (P0.S <= 4 ? P0.S : 3) + '">' + ab + '</div>' +
+        '<div class="sheet-ft"><button type="button" class="btn sm" data-act="close">Annuler</button></div></div>';
+      var f0 = root.querySelector('.acc-btn:not(:disabled)'); if (f0) f0.focus();
+      return;
+    }
+    if (!p) { root.innerHTML = ''; return; }
+    var P = state.puz, T = P.T, s = p.s, t = p.t, cur = g(s, t);
+    var prev = t > 0 ? g(s, t - 1) : -1, next = t < T - 1 ? g(s, t + 1) : -1;
+    var trail = [];
+    if (t > 0) trail.push(tl(t - 1) + ' ' + (prev >= 0 ? ROOMS[prev].name : '?'));
+    trail.push('<b>' + tl(t) + ' ?</b>');
+    if (t < T - 1) trail.push(tl(t + 1) + ' ' + (next >= 0 ? ROOMS[next].name : '?'));
+    var btns = ROOMS.map(function (room, r) {
+      var far = (prev >= 0 && !((STEP[prev] >> r) & 1)) || (next >= 0 && !((STEP[r] >> next) & 1));
+      return '<button type="button" class="room-btn' + (r === cur ? ' cur' : '') + (far ? ' far' : '') + '" data-act="pick" data-r="' + r + '">' +
+        room.name + (far ? '<small>trop loin</small>' : '') + '</button>';
+    }).join('');
+    root.innerHTML = '<div class="scrim" data-act="close"></div>' +
+      '<div class="sheet s' + s + '" role="dialog" aria-modal="true" aria-label="Choisir une ' + E.SCENE.unit + '">' +
+      '<div class="sheet-hd">' + mini(s) + '<b>' + SUSPECTS[s].name + '</b></div>' +
+      '<p class="trail">' + trail.join(' → ') + '</p>' +
+      '<div class="room-grid">' + btns + '</div>' +
+      '<div class="sheet-ft"><button type="button" class="btn sm" data-act="clear">Effacer la case</button><button type="button" class="btn sm" data-act="close">Fermer</button></div></div>';
+    var first = root.querySelector('.room-btn.cur') || root.querySelector('.room-btn');
+    if (first) first.focus();
+  }
+
+  function renderAll() {
+    renderScenes(); renderModes(); renderLevels(); renderRules(); renderCase(); renderSuspects(); renderMap(); renderBoard(); renderVerdict(); renderClues(); renderSheet();
+  }
+
+  /* ---------- Actions ---------- */
+  function newCase(level, seed, mode, scene) {
+    state.scene = scene || state.scene;
+    state.level = level || state.level;
+    state.mode = mode || state.mode;
+    lsSet('alibis.level', state.level);
+    lsSet('alibis.mode', state.mode);
+    lsSet('alibis.scene', state.scene);
+    renderScenes(); renderModes(); renderLevels();
+    $('board-panel').innerHTML = '<p class="loading">Instruction du dossier…</p>';
+    $('case').innerHTML = ''; $('suspects').innerHTML = ''; $('map-panel').innerHTML = ''; $('clues-panel').innerHTML = ''; $('verdict').innerHTML = '';
+    state.picker = null; renderSheet();
+    setTimeout(function () {
+      var sd = seed || (Math.floor(Math.random() * 9000) + 1000);
+      bindScene();
+      var P = E.generate(sd, state.level, state.mode);
+      state.puz = P;
+      state.grid = []; state.given = [];
+      for (var i = 0; i < P.S * P.T; i++) { state.grid.push(-1); state.given.push(false); }
+      P.clues.forEach(function (c) { if (c.type === 'at' && c.by === undefined) { state.grid[c.s * P.T + c.t] = c.r; state.given[c.s * P.T + c.t] = true; } });
+      state.selT = 0; state.checked = false; state.hints = 0; state.solved = false; state.liarGuess = -1; state.accuse = false; state.accused = []; state.wrong = 0; state.early = 0;
+      renderAll();
+    }, 30);
+  }
+
+  function afterChange() {
+    state.checked = false;
+    var P = state.puz;
+    if (!state.solved && gridCorrect() && (!isLiar(P) || state.liarGuess === P.liar)) {
+      state.solved = true;
+      state.selT = P.crime.t;
+    }
+    renderMap(); renderBoard(); renderVerdict(); renderClues();
+  }
+
+  function setCell(s, t, v) {
+    var idx = s * state.puz.T + t;
+    if (state.given[idx] || state.solved) return;
+    state.grid[idx] = v;
+    afterChange();
+  }
+
+  function closeSheet() {
+    var p = state.picker;
+    state.picker = null; state.accuse = false; renderSheet();
+    if (p) {
+      var el = document.querySelector('.cell[data-s="' + p.s + '"][data-t="' + p.t + '"]');
+      if (el && !el.disabled) el.focus();
+    }
+  }
+
+  function hint() {
+    var P = state.puz, wrong = [];
+    state.grid.forEach(function (v, i) { if (v !== P.solution[i]) wrong.push(i); });
+    if (!wrong.length) return;
+    var i = wrong[Math.floor(Math.random() * wrong.length)];
+    state.grid[i] = P.solution[i]; state.given[i] = true; state.hints++;
+    state.selT = i % P.T;
+    afterChange();
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest ? e.target.closest('[data-act]') : null;
+    if (!el || !state.puz && el.getAttribute('data-act') !== 'new' && el.getAttribute('data-act') !== 'level') return;
+    var act = el.getAttribute('data-act');
+    switch (act) {
+      case 'new': newCase(state.level); break;
+      case 'mode': if (el.getAttribute('data-mode') !== state.mode) newCase(state.level, null, el.getAttribute('data-mode')); break;
+      case 'liar':
+        var ls = +el.getAttribute('data-s');
+        state.liarGuess = state.liarGuess === ls ? -1 : ls;
+        afterChange();
+        break;
+      case 'scene': if (el.getAttribute('data-scene') !== state.scene) newCase(state.level, null, null, el.getAttribute('data-scene')); break;
+      case 'level': newCase(el.getAttribute('data-level')); break;
+      case 'time': state.selT = +el.getAttribute('data-t'); renderMap(); renderBoard(); break;
+      case 'cell':
+        if (el.disabled) break;
+        state.picker = { s: +el.getAttribute('data-s'), t: +el.getAttribute('data-t') };
+        state.selT = state.picker.t;
+        renderMap(); renderBoard(); renderSheet();
+        break;
+      case 'pick':
+        if (state.picker) { var p = state.picker; setCell(p.s, p.t, +el.getAttribute('data-r')); closeSheet(); }
+        break;
+      case 'clear':
+        if (state.picker) { var q = state.picker; setCell(q.s, q.t, -1); closeSheet(); }
+        break;
+      case 'close': closeSheet(); break;
+      case 'check': state.checked = true; renderBoard(); renderClues(); break;
+      case 'hint': hint(); break;
+      case 'accuse': if (!state.solved) { state.accuse = true; renderSheet(); } break;
+      case 'accpick':
+        var as = +el.getAttribute('data-s'), P2 = state.puz;
+        state.accuse = false;
+        if (as === P2.culprit) {
+          var emp = 0;
+          state.grid.forEach(function (v, i) { if (v !== P2.solution[i]) emp++; });
+          state.early = emp; state.grid = P2.solution.slice(); state.solved = true; state.selT = P2.crime.t;
+          if (isLiar(P2)) state.liarGuess = P2.culprit;
+        } else { state.wrong++; state.accused.push(as); }
+        renderSheet(); renderMap(); renderBoard(); renderVerdict(); renderClues();
+        break;
+      case 'reset':
+        state.grid = state.grid.map(function (v, i) { return state.given[i] ? v : -1; });
+        state.liarGuess = -1;
+        afterChange();
+        break;
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    if (e.target.id === 'live') { state.live = e.target.checked; state.checked = false; renderBoard(); renderClues(); }
+    if (e.target.id === 'hideok') { state.hideOk = e.target.checked; renderClues(); }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && (state.picker || state.accuse)) closeSheet();
+  });
+
+  /* ---------- Démarrage ---------- */
+  var saved = lsGet('alibis.level');
+  if (saved && LEVELS[saved]) state.level = saved;
+  var savedMode = lsGet('alibis.mode');
+  if (savedMode === 'liar' || savedMode === 'half' || savedMode === 'classic') state.mode = savedMode;
+  var savedScene = lsGet('alibis.scene');
+  if (SCENE_UI[savedScene]) state.scene = savedScene;
+  var rules = $('rules');
+  if (!lsGet('alibis.seen')) { rules.open = true; lsSet('alibis.seen', '1'); }
+  window.Alibis = { state: state, newCase: newCase };
+  newCase(state.level);
+})();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kioukan · Qui ? Où ? Quand ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Patrick+Hand&family=Nunito:wght@400;700;800&display=swap">
+<style>
+:root {
+  --bg: #efe5cc; --paper: #fbf5e6; --ink: #1c1b22; --ink-2: #5d5747; --frame: #1c1b22;
+  --red: #c8343a; --accent: #25426f; --cap: #f6dd9a; --ok: #2f7d4f;
+  --title: 'Alfa Slab One', 'Rockwell', Georgia, serif;
+  --letter: 'Patrick Hand', 'Comic Sans MS', cursive;
+  --sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #141a28; --paper: #1f2738; --ink: #f4ead2; --ink-2: #b9b09a; --frame: #05070c; --red: #ff6b5e; --accent: #8fb0ea; --ok: #5fd39b; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #141a28; --paper: #1f2738; --ink: #f4ead2; --ink-2: #b9b09a; --frame: #05070c; --red: #ff6b5e; --accent: #8fb0ea; --ok: #5fd39b; color-scheme: dark; }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 var(--sans); padding: 28px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+[class] { font-variant-ligatures: none; }
+.menu { max-width: 760px; margin: 0 auto; }
+.logo { margin: 0; font: 400 clamp(46px, 14.5vw, 100px)/0.9 var(--title); text-transform: uppercase; letter-spacing: 0.02em; color: var(--red); -webkit-text-stroke: 2.5px var(--frame); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--frame); }
+.motto { margin: 14px 0 0; font: 400 clamp(22px, 6vw, 30px)/1.1 var(--title); letter-spacing: 0.04em; color: var(--frame); }
+.tagline { margin: 8px 0 26px; max-width: 34ch; font: 400 20px/1.25 var(--letter); color: var(--ink-2); }
+.cards { display: grid; gap: 18px; }
+@media (min-width: 640px) { .cards { grid-template-columns: 1fr 1fr; } }
+.card { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--paper); border: 3px solid var(--frame); box-shadow: 5px 5px 0 var(--frame); transition: transform 0.08s, box-shadow 0.08s; }
+.card:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--frame); }
+.card:focus-visible { outline: 3px solid #e3b23c; outline-offset: 3px; }
+.art { position: relative; height: 170px; overflow: hidden; border-bottom: 3px solid var(--frame); background: #22345a; }
+.art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.art .who { position: absolute; bottom: -6px; width: 118px; }
+.art .who svg { position: static; display: block; width: 100%; height: auto; }
+.body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.kick { margin: 0; font: 400 16px var(--letter); color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.card h2 { margin: 0; font: 400 26px/1.1 var(--title); }
+.card p { margin: 0; color: var(--ink-2); }
+.go { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.btn { display: inline-block; padding: 8px 16px; border: 2px solid var(--frame); background: var(--accent); color: #fbf5e6; font: 800 15px var(--sans); box-shadow: 2px 2px 0 var(--frame); }
+.card.quick .btn { background: var(--red); color: #fff; }
+.done { font: 400 16px var(--letter); color: var(--ok); }
+.quick .art { background: #c9a46e; }
+.foot { margin: 28px 0 0; font: 400 15px var(--letter); color: var(--ink-2); }
+</style>
+
+
+</head>
+<body>
+<script>
+window.addEventListener('error', function (e) {
+  var d = document.getElementById('err-banner');
+  if (!d) { d = document.createElement('pre'); d.id = 'err-banner'; d.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:99;margin:0;padding:10px 12px;background:#fff;color:#b00020;font:12px/1.4 monospace;white-space:pre-wrap;border-bottom:3px solid #b00020'; document.body.appendChild(d); }
+  d.textContent += 'Erreur : ' + e.message + (e.lineno ? ' (ligne ' + e.lineno + ')' : '') + '\n';
+});
+</script>
+<noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
+<main class="menu">
+  <h1 class="logo">Kioukan</h1>
+  <p class="motto">Qui ? Où ? Quand ?</p>
+  <p class="tagline">Résolvez les crimes en reconstituant les emplois du temps des suspects.</p>
+  <div class="cards">
+    <a class="card story" href="histoire.html">
+      <div class="art" id="art-story"></div>
+      <div class="body">
+        <p class="kick">Mode histoire</p>
+        <h2>Le Hibou</h2>
+        <p>Suivez Hortense Lafleur, détective à ses heures, du train de nuit au casino de Monte-Carlo : 6 chapitres, 42 épisodes.</p>
+        <div class="go"><span class="btn">Commencer</span><span class="done" id="story-done"></span></div>
+      </div>
+    </a>
+    <a class="card quick" href="partie.html">
+      <div class="art" id="art-quick"></div>
+      <div class="body">
+        <p class="kick">Partie rapide</p>
+        <h2>Une affaire au hasard</h2>
+        <p>Manoir, train ou hôtel. Trois modes, trois niveaux, des énigmes toujours nouvelles.</p>
+        <div class="go"><span class="btn">Jouer</span></div>
+      </div>
+    </a>
+  </div>
+  <p class="foot">Ta progression dans le mode histoire est enregistrée sur cet appareil.</p>
+</main>
+
+<script>
+/* Illustrations « ligne claire » : trait noir uniforme, aplats, pas d'ombrage. */
+(function () {
+  'use strict';
+  var K = '#1c1b22';
+  var SW = ' stroke="' + K + '" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"';
+  function P(d, f, extra) { return '<path d="' + d + '" fill="' + (f || 'none') + '"' + SW + (extra || '') + '/>'; }
+  function C(x, y, r, f, extra) { return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + f + '"' + SW + (extra || '') + '/>'; }
+  function El(x, y, rx, ry, f, extra) { return '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="' + f + '"' + SW + (extra || '') + '/>'; }
+  function R(x, y, w, h, f, rx, extra) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (rx || 0) + '" fill="' + f + '"' + SW + (extra || '') + '/>'; }
+  function Dot(x, y, r, f) { return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + (f || K) + '"/>'; }
+
+  /* ---------- Portraits ---------- */
+  var LOOKS = {
+    'Hortense Lafleur':   { skin: '#f4d6be', hair: '#d9d9de', style: 'bun',   coat: '#2e7d6f', shirt: '#f3ead2', x: ['glasses', 'cloche', 'brooch'] },
+    'Comtesse Adélaïde':  { skin: '#f6dac6', hair: '#fbfbfb', style: 'curls', coat: '#7a4b9c', shirt: '#7a4b9c', x: ['pearls', 'tiara', 'lips'] },
+    'Hubert de Valcourt': { skin: '#f1cba8', hair: '#e9bf45', style: 'slick', coat: '#25426f', shirt: '#ffffff', x: ['bowtie', 'mustacheThin'] },
+    'Iris Delorme':       { skin: '#f4cfb2', hair: '#b8432a', style: 'waves', coat: '#2f8a5b', shirt: '#2f8a5b', x: ['earrings', 'lips', 'mole'] },
+    'Gaston Pujol':       { skin: '#e8b68e', hair: '#5b3a25', style: 'short', coat: '#fbf7ec', shirt: '#fbf7ec', x: ['mustacheBig', 'cap', 'buttons'] },
+    'Pr Anselme Kessler': { skin: '#efc6a3', hair: '#ececec', style: 'bald',  coat: '#9a7a4a', shirt: '#ffffff', x: ['beard', 'glasses'] },
+    'Mlle Rose Tardieu':  { skin: '#f6d9c4', hair: '#2b2230', style: 'bob',   coat: '#d9675f', shirt: '#ffffff', x: ['earrings'] }
+  };
+  var DEF = { skin: '#efc6a3', hair: '#4a3427', style: 'short', coat: '#5878b8', shirt: '#ffffff', x: [] };
+
+  function bust(name) {
+    var L = LOOKS[name] || DEF, H = L.hair, S = L.skin, st = L.style, x = L.x, h = '';
+    var has = function (k) { return x.indexOf(k) >= 0; };
+    // cheveux derrière
+    if (st === 'waves') h += P('M18 26Q12 46 16 58L48 58Q52 46 46 26Z', H);
+    if (st === 'bun') h += C(32, 11, 6, H);
+    if (st === 'curls') h += C(20, 22, 5.5, H) + C(44, 22, 5.5, H);
+    // buste
+    h += P('M5 64Q7 45 32 45Q57 45 59 64Z', L.coat);
+    if (L.shirt !== L.coat) h += P('M25 45.5L32 57L39 45.5Z', L.shirt);
+    else h += P('M26 46Q32 52 38 46', 'none');
+    if (has('buttons')) h += Dot(32, 53, 1.2, '#d4a62a') + Dot(32, 59, 1.2, '#d4a62a');
+    if (has('brooch')) h += C(44, 53, 2.2, '#e0b33a');
+    if (has('pearls')) for (var i = 0; i < 7; i++) h += C(23 + i * 3, 47 + Math.sin(i / 6 * Math.PI) * 3.2, 1.4, '#ffffff', ' stroke-width="0.8"');
+    // cou, tête, oreilles
+    h += P('M27 37L27 46Q32 49 37 46L37 37Z', S);
+    h += El(20.5, 29, 2.4, 3.4, S) + El(43.5, 29, 2.4, 3.4, S);
+    h += El(32, 28, 12, 13.5, S);
+    // cheveux devant
+    if (st === 'bun' || st === 'short') h += P('M20 25Q19 13 32 13Q45 13 44 25Q40 18.5 32 18.5Q24 18.5 20 25Z', H);
+    if (st === 'slick') h += P('M20 25Q19 12 33 12.5Q45 13 44 25Q41 18 34 17.5L30 17.6Q24 19 20 25Z', H) + P('M30 13.5Q29 16 30 17.6', 'none');
+    if (st === 'waves') h += P('M19.5 28Q18 12 32 12.5Q46 12 44.5 28Q42 20 36 18Q30 22 23 20Q20 23 19.5 28Z', H);
+    if (st === 'curls') h += C(24, 16, 5.5, H) + C(32, 13.5, 6, H) + C(40, 16, 5.5, H);
+    if (st === 'bob') h += P('M17.5 35Q14 11 32 11.5Q50 11 46.5 35L44 35Q44 22 32 19.5Q20 22 20 35Z', H);
+    if (st === 'bald') h += P('M20 30Q19 22 22 18Q21 26 21.5 31Z', H) + P('M44 30Q45 22 42 18Q43 26 42.5 31Z', H);
+    // visage : sourcils, yeux points, nez, bouche
+    h += P('M24.5 22.5Q27 21.3 29.5 22.5', 'none') + P('M34.5 22.5Q37 21.3 39.5 22.5', 'none');
+    h += El(27, 27, 1.2, 1.7, K, ' stroke="none"') + El(37, 27, 1.2, 1.7, K, ' stroke="none"');
+    h += P('M32 28.5Q30.2 32.4 32.6 32.8', 'none');
+    if (has('beard')) h += P('M20.5 31Q21 47 32 47.5Q43 47 43.5 31Q40 38.5 32 38.5Q24 38.5 20.5 31Z', H);
+    if (has('lips')) h += P('M29 36.4Q32 35 35 36.4Q32 39 29 36.4Z', '#c8343a', ' stroke-width="1"');
+    else h += P('M29.2 36.5Q32 38.6 34.8 36.5', 'none');
+    if (has('mustacheThin')) h += P('M28 34.4Q32 33 36 34.4', 'none', ' stroke-width="1.8"');
+    if (has('mustacheBig')) h += P('M24 35.8Q28.5 31.8 32 34.4Q35.5 31.8 40 35.8Q36 37.2 32 35.6Q28 37.2 24 35.8Z', H);
+    if (has('mole')) h += Dot(36.5, 34, 0.8);
+    if (has('glasses')) h += C(27, 27, 4.3, 'rgba(255,255,255,0.25)') + C(37, 27, 4.3, 'rgba(255,255,255,0.25)') + P('M31.3 27H32.7', 'none');
+    if (has('earrings')) h += C(20.5, 34.5, 1.7, '#e3b23c', ' stroke-width="1"') + C(43.5, 34.5, 1.7, '#e3b23c', ' stroke-width="1"');
+    if (has('bowtie')) h += P('M32 48.5L25 45L25 52ZM32 48.5L39 45L39 52Z', '#c8343a') + C(32, 48.5, 1.6, '#a3242b', ' stroke-width="1"');
+    // couvre-chefs
+    if (has('cloche')) h += P('M17 21Q17 7 32 7Q47 7 47 21Q32 16 17 21Z', '#8a3f4f') + P('M18 19.5Q32 15 46 19.5', 'none');
+    if (has('tiara')) h += P('M24 11L27 7L30 10.5L32 6L34 10.5L37 7L40 11Z', '#e3b23c', ' stroke-width="1.1"');
+    if (has('cap')) h += P('M19 20Q19 8 32 8Q45 8 45 20Z', '#7a4a2a') + R(17, 18.5, 30, 4, '#3b2a20', 2) + R(26, 12, 12, 3.4, '#e3b23c', 1, ' stroke-width="0.9"');
+    return h;
+  }
+  function avatar(name) { return '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">' + bust(name) + '</svg>'; }
+
+  /* ---------- Le train en coupe ---------- */
+  var PITCH = 58, CW = 50, X0 = 7, IY = 96, IH = 62, FLOOR = IY + IH;
+  function carX(i) { return X0 + i * PITCH; }
+  var ROOF = { x: carX(2) - 2, y: 52, w: carX(4) + CW + 2 - (carX(2) - 2), h: 34 };
+  function roomBox(r) {
+    if (r === 6) return { x: ROOF.x, y: ROOF.y, w: ROOF.w, h: ROOF.h, floor: 86 };
+    return { x: carX(r), y: IY, w: CW, h: IH, floor: FLOOR };
+  }
+  var WALLS = ['#d79c63', '#c9a46e', '#c9a46e', '#e1c48f', '#a9764b', '#9c5a46'];
+
+  function furniture(i) {
+    var x = carX(i), h = '';
+    switch (i) {
+      case 0: // fourgon : malles et sacs postaux
+        h += R(x + 4, FLOOR - 18, 22, 18, '#8a5a35', 2) + P('M' + (x + 4) + ' ' + (FLOOR - 12) + 'H' + (x + 26)) + R(x + 12, FLOOR - 21, 6, 3, '#e3b23c', 1, ' stroke-width="1"');
+        h += R(x + 29, FLOOR - 14, 16, 14, '#c2934f', 1) + P('M' + (x + 29) + ' ' + (FLOOR - 14) + 'L' + (x + 45) + ' ' + FLOOR + 'M' + (x + 45) + ' ' + (FLOOR - 14) + 'L' + (x + 29) + ' ' + FLOOR);
+        h += El(x + 37, FLOOR - 19, 7, 5, '#e9dfc4');
+        break;
+      case 1: case 2: // wagon-lit : couchettes superposées
+        h += R(x + 3, FLOOR - 14, 30, 5, '#ffffff', 1) + R(x + 3, FLOOR - 9, 30, 9, '#7a3b2e', 1);
+        h += R(x + 3, FLOOR - 33, 30, 5, '#ffffff', 1) + R(x + 3, FLOOR - 28, 30, 4, '#7a3b2e', 1);
+        h += El(x + 9, FLOOR - 16, 4.5, 2.2, '#ffffff') + El(x + 9, FLOOR - 35, 4.5, 2.2, '#ffffff');
+        if (i === 1) h += R(x + 37, FLOOR - 14, 10, 14, '#8a5a35', 1) + R(x + 38.5, FLOOR - 19, 7, 5, '#c8343a', 1.5, ' stroke-width="1.1"') + Dot(x + 42, FLOOR - 16.5, 0.9, '#e3b23c');
+        else h += R(x + 37, FLOOR - 10, 10, 10, '#8a5a35', 1);
+        // échelle vers la trappe du toit
+        if (i === 2) h += P('M' + (x + 44) + ' ' + IY + 'V' + (IY + 24) + 'M' + (x + 48) + ' ' + IY + 'V' + (IY + 24) + 'M' + (x + 44) + ' ' + (IY + 6) + 'H' + (x + 48) + 'M' + (x + 44) + ' ' + (IY + 13) + 'H' + (x + 48) + 'M' + (x + 44) + ' ' + (IY + 20) + 'H' + (x + 48));
+        break;
+      case 3: // wagon-restaurant : deux tables nappées et leurs lampes
+        [x + 4, x + 27].forEach(function (tx) {
+          h += P('M' + tx + ' ' + (FLOOR - 15) + 'H' + (tx + 19) + 'L' + (tx + 17) + ' ' + (FLOOR - 7) + 'H' + (tx + 2) + 'Z', '#ffffff');
+          h += P('M' + (tx + 9.5) + ' ' + (FLOOR - 7) + 'V' + FLOOR);
+          h += P('M' + (tx + 9.5) + ' ' + (FLOOR - 15) + 'V' + (FLOOR - 20)) + P('M' + (tx + 6) + ' ' + (FLOOR - 20) + 'H' + (tx + 13) + 'L' + (tx + 11.5) + ' ' + (FLOOR - 25) + 'H' + (tx + 7.5) + 'Z', '#f0c548');
+        });
+        break;
+      case 4: // voiture-bar : comptoir, tabourets, bouteilles
+        h += R(x + 18, FLOOR - 20, 30, 20, '#6f3f25', 1) + R(x + 16, FLOOR - 22, 34, 3, '#c9a46e', 1);
+        h += P('M' + (x + 8) + ' ' + (FLOOR - 13) + 'V' + FLOOR) + El(x + 8, FLOOR - 14, 5, 1.6, '#c8343a');
+        h += R(x + 20, IY + 26, 26, 2, '#6f3f25');
+        ['#2f8a5b', '#c8343a', '#e3b23c', '#25426f'].forEach(function (c, k) { h += R(x + 22 + k * 6, IY + 18, 3.6, 8, c, 1, ' stroke-width="1"'); });
+        h += P('M' + (x + 42) + ' ' + IY + 'V' + (IY + 14) + 'M' + (x + 46) + ' ' + IY + 'V' + (IY + 14) + 'M' + (x + 42) + ' ' + (IY + 5) + 'H' + (x + 46) + 'M' + (x + 42) + ' ' + (IY + 10) + 'H' + (x + 46));
+        break;
+      case 5: // salon-fumoir : fauteuil club, lampe, plante
+        h += R(x + 4, FLOOR - 16, 24, 16, '#a3242b', 4) + R(x + 4, FLOOR - 24, 7, 24, '#a3242b', 3) + R(x + 8, FLOOR - 10, 20, 4, '#c8343a', 2);
+        h += P('M' + (x + 38) + ' ' + FLOOR + 'V' + (FLOOR - 24)) + P('M' + (x + 33) + ' ' + (FLOOR - 24) + 'H' + (x + 43) + 'L' + (x + 41) + ' ' + (FLOOR - 31) + 'H' + (x + 35) + 'Z', '#f0c548');
+        h += R(x + 42, FLOOR - 8, 6, 8, '#8a5a35', 1) + C(x + 45, FLOOR - 12, 4.5, '#3f8f4f');
+        break;
+    }
+    return h;
+  }
+
+  function train(o) {
+    var h = '<svg class="lc-train" viewBox="0 42 360 156" role="img" aria-label="' + (o.label || 'Le train en coupe') + '">', i, k;
+    // nuit : ciel, lune, étoiles, collines
+    h += '<rect y="40" width="360" height="160" fill="#22345a"/>';
+    [[22, 52], [70, 62], [104, 48], [300, 50], [338, 66], [96, 74], [320, 78]].forEach(function (s) { h += Dot(s[0], s[1], 1.1, '#f4ead2'); });
+    h += C(40, 62, 11, '#f4ead2') + C(45, 58.5, 9.5, '#22345a', ' stroke="none"');
+    h += P('M0 92Q40 70 90 88T190 84T290 80T360 86V200H0Z', '#1a2a47', ' stroke="none"');
+    // toit accessible
+    var rf = o.crime === 6 ? ' stroke="#e2483d" stroke-dasharray="5 3" stroke-width="2"' : '';
+    h += '<rect x="' + ROOF.x + '" y="' + ROOF.y + '" width="' + ROOF.w + '" height="' + ROOF.h + '" rx="3" fill="rgba(244,234,210,0.08)" stroke="rgba(244,234,210,0.35)" stroke-dasharray="3 3"/>' ;
+    if (rf) h += '<rect x="' + (ROOF.x + 2) + '" y="' + (ROOF.y + 2) + '" width="' + (ROOF.w - 4) + '" height="' + (ROOF.h - 4) + '" rx="3" fill="none"' + rf + '/>';
+    h += '<text class="lc-roof-t" x="' + (ROOF.x + ROOF.w / 2) + '" y="' + (ROOF.y + 10) + '">TOIT</text>';
+    // voitures
+    for (i = 0; i < 6; i++) {
+      var x = carX(i);
+      // caisse et toit bombé
+      h += P('M' + (x - 2) + ' ' + IY + 'Q' + (x - 2) + ' 86 ' + (x + 7) + ' 86H' + (x + CW - 7) + 'Q' + (x + CW + 2) + ' 86 ' + (x + CW + 2) + ' ' + IY + 'Z', '#4b4b55');
+      if (i === 2 || i === 4) h += R(x + CW - 9, 85, 9, 3, '#e3b23c', 1, ' stroke-width="1"');
+      h += R(x, IY, CW, IH, WALLS[i]);
+      // fenêtres de nuit
+      [x + 6, x + CW - 20].forEach(function (wx) {
+        h += R(wx, IY + 6, 14, 15, '#2c4a7a', 2) + Dot(wx + 4, IY + 11, 0.8, '#f4ead2') + P('M' + wx + ' ' + (IY + 6) + 'q3 7 0 15', '#c8343a', ' stroke-width="1"');
+      });
+      h += furniture(i);
+      // jupe de caisse, filet doré, plaque
+      h += R(x - 2, FLOOR, CW + 4, 12, '#25426f') + P('M' + (x - 2) + ' ' + (FLOOR + 3) + 'H' + (x + CW + 2), 'none', ' stroke="#e3b23c" stroke-width="1"');
+      var crime = o.crime === i;
+      h += R(x + CW / 2 - 19, FLOOR + 2, 38, 9, crime ? '#e2483d' : '#f4ead2', 1.5, ' stroke-width="1.1"');
+      h += '<text class="lc-plate' + (crime ? ' crime' : '') + '" x="' + (x + CW / 2) + '" y="' + (FLOOR + 7) + '">' + o.labels[i] + '</text>';
+      if (crime) h += '<rect x="' + (x + 1.5) + '" y="' + (IY + 1.5) + '" width="' + (CW - 3) + '" height="' + (IH - 3) + '" fill="none" stroke="#e2483d" stroke-width="2" stroke-dasharray="5 3"/>';
+      // bogies
+      h += R(x + 4, FLOOR + 12, CW - 8, 4, '#2a2a30', 1) + C(x + 11, FLOOR + 19, 5.5, '#4b4b55') + C(x + CW - 11, FLOOR + 19, 5.5, '#4b4b55') + Dot(x + 11, FLOOR + 19, 1.2, '#e3b23c') + Dot(x + CW - 11, FLOOR + 19, 1.2, '#e3b23c');
+      // soufflets entre voitures (passages)
+      if (i < 5) {
+        var gx = x + CW + 2;
+        h += R(gx, IY + 14, PITCH - CW - 4, IH - 14, '#2a2a30') + P('M' + (gx + 2) + ' ' + (IY + 16) + 'V' + (FLOOR - 2) + 'M' + (gx + 4) + ' ' + (IY + 16) + 'V' + (FLOOR - 2), 'none', ' stroke="#6b6b75" stroke-width="0.8"');
+      }
+    }
+    h += P('M0 188H360', 'none', ' stroke="#c9c2ae" stroke-width="2"') + P('M0 192H360', 'none', ' stroke="#7b6a52" stroke-width="2"');
+    // personnages
+    (o.occ || []).forEach(function (list, room) {
+      var b = roomBox(room), n = list.length;
+      list.forEach(function (sid, k2) {
+        var span = Math.min(24, (b.w - 18) / Math.max(1, n - 1));
+        var cx = b.x + b.w / 2 + (k2 - (n - 1) / 2) * span;
+        var sc = 0.5, sz = 64 * sc;
+        var cls = 'lc-tok s' + sid + (o.culprit === sid ? ' culprit' : '');
+        if (o.tok) h += '<g class="' + cls + '">' + o.tok(o.names[sid], cx, b.floor) + '</g>';
+        else h += '<g class="' + cls + '" transform="translate(' + (cx - sz / 2) + ' ' + (b.floor - sz) + ') scale(' + sc + ')">' + bust(o.names[sid]) + '</g>';
+      });
+    });
+    return h + '</svg>';
+  }
+
+  /* ---------- Décors des cases de BD ---------- */
+  function nightPanel() {
+    var h = '<svg viewBox="0 0 360 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+    h += '<rect width="360" height="170" fill="#22345a"/>';
+    [[30, 20], [80, 40], [130, 14], [190, 30], [240, 12], [300, 26], [340, 50], [160, 56]].forEach(function (s) { h += Dot(s[0], s[1], 1.2, '#f4ead2'); });
+    h += C(300, 46, 16, '#f4ead2') + C(307, 41, 14, '#22345a', ' stroke="none"');
+    h += P('M0 110Q60 84 130 104T250 98T360 104V170H0Z', '#1a2a47', ' stroke="none"');
+    // viaduc
+    h += R(0, 128, 360, 8, '#8f8574');
+    for (var i = 0; i < 6; i++) h += P('M' + (i * 64 + 6) + ' 170V146Q' + (i * 64 + 32) + ' 128 ' + (i * 64 + 58) + ' 146V170', '#6f6656');
+    // locomotive
+    h += R(36, 98, 70, 26, '#2a2a30', 3) + R(84, 86, 26, 38, '#2a2a30', 2) + R(88, 92, 14, 12, '#f0c548', 1) + R(46, 86, 10, 12, '#2a2a30') + R(30, 116, 10, 8, '#a3242b', 1);
+    [50, 70, 92].forEach(function (x) { h += C(x, 126, 7, '#a3242b') + Dot(x, 126, 1.6, '#e3b23c'); });
+    // fumée
+    h += C(52, 76, 8, '#f4ead2') + C(40, 64, 10, '#f4ead2') + C(24, 52, 12, '#f4ead2');
+    // voitures éclairées
+    for (var j = 0; j < 4; j++) {
+      var x = 114 + j * 62;
+      h += R(x, 94, 58, 30, '#25426f', 3) + P('M' + x + ' 99H' + (x + 58), 'none', ' stroke="#e3b23c" stroke-width="1"');
+      for (var w = 0; w < 4; w++) h += R(x + 5 + w * 13, 102, 9, 9, '#f0c548', 1);
+      h += C(x + 12, 126, 5.5, '#4b4b55') + C(x + 46, 126, 5.5, '#4b4b55');
+    }
+    return h + '</svg>';
+  }
+  function compartmentPanel() {
+    var h = '<svg viewBox="0 0 360 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+    h += '<rect width="360" height="220" fill="#c9a46e"/>';
+    for (var i = 0; i < 8; i++) h += P('M' + (i * 46 + 10) + ' 0V220', 'none', ' stroke="#b38c57" stroke-width="2"');
+    // fenêtre
+    h += R(196, 26, 120, 84, '#2c4a7a', 6) + C(286, 52, 10, '#f4ead2') + C(291, 49, 9, '#2c4a7a', ' stroke="none"') + Dot(222, 44, 1.2, '#f4ead2') + Dot(250, 70, 1.2, '#f4ead2');
+    h += P('M196 26q16 40 0 84', '#c8343a') + P('M316 26q-16 40 0 84', '#c8343a');
+    // porte-bagages
+    h += P('M10 22H170', 'none', ' stroke-width="3"') + R(26, 4, 40, 18, '#8a5a35', 2) + R(80, 8, 30, 14, '#2f8a5b', 2);
+    // banquette
+    h += R(0, 170, 360, 50, '#7a3b2e');
+    return h + '</svg>';
+  }
+  function corridorPanel() {
+    var h = '<svg viewBox="0 0 360 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">';
+    h += '<rect width="360" height="220" fill="#e1c48f"/>';
+    for (var i = 0; i < 4; i++) h += R(10 + i * 90, 30, 70, 60, '#2c4a7a', 6) + Dot(30 + i * 90, 50, 1.2, '#f4ead2');
+    h += R(0, 110, 360, 110, '#9c5a46') + P('M0 112H360', 'none', ' stroke="#e3b23c" stroke-width="2"');
+    return h + '</svg>';
+  }
+
+  window.AlibisLC = {
+    bust: bust, avatar: avatar, train: train, roomBox: roomBox,
+    nightPanel: nightPanel, compartmentPanel: compartmentPanel, corridorPanel: corridorPanel
+  };
+})();
+
+</script>
+<script>
+(function () {
+  var LC = window.AlibisLC;
+  document.getElementById('art-story').innerHTML = LC.nightPanel() + '<div class="who" style="right:6px">' + LC.avatar('Hortense Lafleur') + '</div>';
+  document.getElementById('art-quick').innerHTML = LC.compartmentPanel() +
+    '<div class="who" style="left:4px;width:104px">' + LC.avatar('Iris Delorme') + '</div>' +
+    '<div class="who" style="left:36%;width:104px">' + LC.avatar('Gaston Pujol') + '</div>' +
+    '<div class="who" style="right:4px;width:104px">' + LC.avatar('Hubert de Valcourt') + '</div>';
+  try { var pr = JSON.parse(localStorage.getItem('alibi.histoire') || '{}'), n = Object.keys(pr.solved || {}).length; if (n) document.getElementById('story-done').textContent = n + ' / 42 épisodes'; } catch (e) { /* stockage indisponible */ }
+})();
+</script>
+
+</body>
+</html>
