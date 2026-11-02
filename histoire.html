@@ -1603,6 +1603,17 @@ window.addEventListener('error', function (e) {
 
   function train(o) {
     var h = '<svg class="lc-train" viewBox="0 42 360 156" role="img" aria-label="' + (o.label || 'Le train en coupe') + '">', i, k;
+    if (o.img) {
+      // train dessiné à la main : le jeu ne pose que les plaques, le lieu des faits et les personnages
+      h += '<image href="' + o.img + '" x="0" y="42" width="360" height="156" preserveAspectRatio="xMidYMid slice"/>';
+      if (o.crime === 6) h += '<rect x="' + (ROOF.x + 2) + '" y="' + (ROOF.y + 2) + '" width="' + (ROOF.w - 4) + '" height="' + (ROOF.h - 4) + '" rx="3" fill="none" stroke="#e2483d" stroke-dasharray="5 3" stroke-width="2"/>';
+      for (i = 0; i < 6; i++) {
+        var xi = carX(i), cri = o.crime === i;
+        h += R(xi + CW / 2 - 19, FLOOR + 2, 38, 9, cri ? '#e2483d' : '#f4ead2', 1.5, ' stroke-width="1.1"');
+        h += '<text class="lc-plate' + (cri ? ' crime' : '') + '" x="' + (xi + CW / 2) + '" y="' + (FLOOR + 7) + '">' + o.labels[i] + '</text>';
+        if (cri) h += '<rect x="' + (xi + 1.5) + '" y="' + (IY + 1.5) + '" width="' + (CW - 3) + '" height="' + (IH - 3) + '" fill="none" stroke="#e2483d" stroke-width="2" stroke-dasharray="5 3"/>';
+      }
+    } else {
     // nuit : ciel, lune, étoiles, collines
     h += '<rect y="40" width="360" height="160" fill="#22345a"/>';
     [[22, 52], [70, 62], [104, 48], [300, 50], [338, 66], [96, 74], [320, 78]].forEach(function (s) { h += Dot(s[0], s[1], 1.1, '#f4ead2'); });
@@ -1640,6 +1651,7 @@ window.addEventListener('error', function (e) {
       }
     }
     h += P('M0 188H360', 'none', ' stroke="#c9c2ae" stroke-width="2"') + P('M0 192H360', 'none', ' stroke="#7b6a52" stroke-width="2"');
+    }
     // personnages
     (o.occ || []).forEach(function (list, room) {
       var b = roomBox(room), n = list.length;
@@ -1749,7 +1761,23 @@ window.addEventListener('error', function (e) {
     'Sam Souffle':              { sex: 'm', skin: '#f2d2bc', hair: ['#c0522e', '#7a2a14'], style: 'short', eye: '#3a6a5a', cloth: ['#6a5a4a', '#3a2e24'], x: ['glasses'] },
     'René Vaplu':               { sex: 'm', skin: '#e8b996', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#2a3a3a', cloth: ['#1a3a2a', '#0a1e14'], x: ['shirt', 'bowtie'] },
     'Jacques Potte':            { sex: 'm', skin: '#f1d0b8', hair: ['#9a9aa6', '#5c5c66'], style: 'bald',  eye: '#3a3a3a', cloth: ['#2a2a35', '#121218'], x: ['shirt', 'bowtie', 'monocle'], age: 1 },
-    'Bernadette Banco':         { sex: 'f', skin: '#f4d2bc', hair: ['#f2a65a', '#b8682a'], style: 'waves', eye: '#3a6a3a', cloth: ['#b8323d', '#7a1c24'], x: ['earrings', 'lips', 'straps'] }
+    'Bernadette Banco':         { sex: 'f', skin: '#f4d2bc', hair: ['#f2a65a', '#b8682a'], style: 'waves', eye: '#3a6a3a', cloth: ['#b8323d', '#7a1c24'], x: ['earrings', 'lips', 'straps'] },
+    // Partie rapide
+    'Mme Vernet':               { sex: 'f', skin: '#f6dccb', hair: ['#d9d9de', '#9a9aa6'], style: 'bun',   eye: '#5a5a6a', cloth: ['#2a2a35', '#121218'], x: ['collar', 'brooch'], age: 1 },
+    'Dr Aubry':                 { sex: 'm', skin: '#f1d0b8', hair: ['#7a5236', '#3e2718'], style: 'swept', eye: '#4a5a7a', cloth: ['#f4f6fb', '#d0d6e2'], x: ['glasses', 'shirt'] },
+    'Lucas':                    { sex: 'm', skin: '#f5d7c3', hair: ['#c0522e', '#7a2a14'], style: 'swept', eye: '#3f7a5a', cloth: ['#3f7a5a', '#245038'], x: ['shirt'] },
+    'Colonel Marchal':          { sex: 'm', skin: '#e9c0a2', hair: ['#f2f2f2', '#b9b9c2'], style: 'short', eye: '#4a5a6a', cloth: ['#5a6a3a', '#36421f'], x: ['cap', 'mustache', 'buttons'], age: 1 },
+    'Inès':                     { sex: 'f', skin: '#c99272', hair: ['#2a2024', '#0e0a0c'], style: 'bob',   eye: '#3a2a20', cloth: ['#8a5bb3', '#5a3680'], x: ['earrings', 'glasses'] },
+    'Mme Delaunay':             { sex: 'f', skin: '#f8e1d4', hair: ['#2a2024', '#0e0a0c'], style: 'waves', eye: '#5a3a6a', cloth: ['#1e1e28', '#0c0c12'], x: ['pearls', 'lips'], age: 1 },
+    'Dr Moreau':                { sex: 'm', skin: '#f2cfb6', hair: ['#9a9aa6', '#5c5c66'], style: 'bald',  eye: '#4a5a7a', cloth: ['#4a4a55', '#24242c'], x: ['glasses', 'beard', 'shirt'], age: 1 },
+    'Baron Voss':               { sex: 'm', skin: '#f8e4d8', hair: ['#f6dc8c', '#c9993e'], style: 'swept', eye: '#6a9ac4', cloth: ['#3a1c4a', '#1e0a28'], x: ['monocle', 'shirt', 'bowtie'] },
+    'Roux':                     { sex: 'm', skin: '#e2b08c', hair: ['#5a3b2a', '#2e1c14'], style: 'short', eye: '#5a4a3a', cloth: ['#3a4f8a', '#22305a'], x: ['cap', 'buttons'] },
+    'Mlle Ferrand':             { sex: 'f', skin: '#f7dccb', hair: ['#f4d27a', '#c99a2e'], style: 'bob',   eye: '#3f7ac4', cloth: ['#c2414f', '#7a1c24'], x: ['lips', 'earrings'] },
+    'Mme Lefèvre':              { sex: 'f', skin: '#f6d8c6', hair: ['#a0522d', '#5a2a14'], style: 'curls', eye: '#3f9a6c', cloth: ['#2f8a62', '#195a3e'], x: ['pearls'] },
+    'M. Costa':                 { sex: 'm', skin: '#dcae8c', hair: ['#2a2024', '#0e0a0c'], style: 'swept', eye: '#3a2a20', cloth: ['#1a3a2a', '#0a1e14'], x: ['shirt', 'bowtie', 'mustache'] },
+    'Dr Bellamy':               { sex: 'f', skin: '#f2cbb2', hair: ['#4a3a30', '#221a14'], style: 'bun',   eye: '#4a7a6a', cloth: ['#f4f6fb', '#d0d6e2'], x: ['glasses', 'collar'] },
+    'Mme Okafor':               { sex: 'f', skin: '#8a5a40', hair: ['#1a1418', '#000000'], style: 'curls', eye: '#3a2a20', cloth: ['#e3b23c', '#a87c18'], x: ['earrings', 'lips'] },
+    'Chef Duval':               { sex: 'm', skin: '#e8b996', hair: ['#9a9aa6', '#5c5c66'], style: 'short', eye: '#5a5a6a', cloth: ['#ffffff', '#e2dccf'], x: ['toque', 'mustache', 'buttons'], age: 1 }
   };
   var DEF = { sex: 'f', skin: '#f6dccb', hair: ['#6b4a3a', '#3a2620'], style: 'waves', eye: '#6b4a3a', cloth: ['#7a8ab8', '#4c5a86'], x: [] };
 
@@ -3543,20 +3571,23 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
 
   function planSVG(occ, t) {
     var P = state.puz, G = PLACE.geo, h = '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="Plan à ' + tl(t) + '">' + ART.defs(), r;
-    (PLACE.empty || []).forEach(function (e) {
+    var IMG = (window.KIOUKAN_IMAGES || {})['plan:' + CH.place];
+    // plan dessiné à la main : l'image remplace sols, meubles, murs et portes ; le jeu garde étiquettes, lieu des faits et personnages
+    if (IMG) h += '<image href="' + IMG + '" x="0" y="0" width="350" height="210" preserveAspectRatio="xMidYMid slice"/>';
+    if (!IMG) (PLACE.empty || []).forEach(function (e) {
       var fill = e.kind === 'sea' ? '#5b7fb8' : e.kind === 'curtain' ? '#9c2a36' : '#ddd';
       h += '<rect x="' + e.x + '" y="' + e.y + '" width="' + e.w + '" height="' + e.h + '" fill="' + fill + '" opacity="0.55" rx="4"/>';
       if (e.kind === 'sea') for (var k = 0; k < 4; k++) h += '<path d="M' + (e.x + 8) + ' ' + (e.y + 18 + k * 18) + 'q8 -4 16 0t16 0t16 0" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.6"/>';
     });
-    for (r = 0; r < ROOMS.length; r++) h += '<rect x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '" fill="url(#pf-' + G[r].f + ')"/>';
-    for (r = 0; r < ROOMS.length; r++) {
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) h += '<rect x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '" fill="url(#pf-' + G[r].f + ')"/>';
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G1 = G[r];
       h += '<g class="furn">' + (G1.fu || []).map(function (f) { return ART.furn(f[0], G1.x + f[1], G1.y + f[2], f[3], f[4]); }).join('') + '</g>';
     }
-    for (r = 0; r < ROOMS.length; r++) h += '<rect class="wall" x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '"/>';
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) h += '<rect class="wall" x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '"/>';
     var cr = G[P.crime.room];
     h += '<rect class="crimeroom" x="' + (cr.x + 3) + '" y="' + (cr.y + 3) + '" width="' + (cr.w - 6) + '" height="' + (cr.h - 6) + '" rx="3"/>';
-    DOORS.forEach(function (d) { var R = doorRect(G, d[0], d[1]); h += '<rect class="door" x="' + R.x + '" y="' + R.y + '" width="' + R.w + '" height="' + R.h + '" rx="2"/>'; });
+    if (!IMG) DOORS.forEach(function (d) { var R = doorRect(G, d[0], d[1]); h += '<rect class="door" x="' + R.x + '" y="' + R.y + '" width="' + R.w + '" height="' + R.h + '" rx="2"/>'; });
     for (r = 0; r < ROOMS.length; r++) {
       var lab = G[r].l || ROOMS[r].name.toUpperCase(), w = Math.round(lab.length * 5.6 + 12), cx = G[r].x + G[r].w / 2, cy = G[r].y + 10;
       h += '<g class="pill"><rect x="' + (cx - w / 2) + '" y="' + (cy - 6) + '" width="' + w + '" height="12" rx="6"/><text x="' + cx + '" y="' + (cy + 0.4) + '">' + lab + '</text></g>';
@@ -3577,7 +3608,7 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
     var occ = ROOMS.map(function () { return []; });
     for (s = 0; s < P.S; s++) { var v = g(s, t); if (v >= 0) occ[v].push(s); }
     var svg = PLACE.view === 'train'
-      ? LC.train({ tok: tok, occ: occ, crime: P.crime.room, labels: PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: PLACE.label + ' à ' + tl(t) })
+      ? LC.train({ img: (window.KIOUKAN_IMAGES || {})['plan:' + CH.place], tok: tok, occ: occ, crime: P.crime.room, labels: PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: PLACE.label + ' à ' + tl(t) })
       : planSVG(occ, t);
     $('map-panel').innerHTML = '<div class="panel-hd"><h2 class="label">' + esc(PLACE.label) + '</h2><span class="sub">à ' + tl(t) + '</span></div>' +
       '<div class="chips" style="--n:' + T + '">' + chips + '</div><div class="train-frame">' + svg + '</div>' +

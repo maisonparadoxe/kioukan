@@ -1946,22 +1946,25 @@ window.addEventListener('error', function (e) {
         '" aria-pressed="' + (i === t) + '">' + tl(i) + '</button>';
     }
     svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' à ' + tl(t) + '">' + Art.defs() + '<defs><clipPath id="tokc"><circle r="10.4"/></clipPath></defs>';
-    for (r = 0; r < ROOMS.length; r++) {
+    // plan dessiné à la main (mêmes plans que le mode histoire pour le manoir et l'hôtel)
+    var IMG = (window.KIOUKAN_IMAGES || {})['plan:' + ({ manoir: 'manoir', hotel: 'palace', train: 'train' })[state.scene]];
+    if (IMG) svg += '<image href="' + IMG + '" x="0" y="0" width="350" height="210" preserveAspectRatio="xMidYMid slice"/>';
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G = GEO[r];
       svg += '<rect x="' + G.x + '" y="' + G.y + '" width="' + G.w + '" height="' + G.h + '" fill="url(#pf-' + G.f + ')"/>';
     }
-    svg += SC.deco ? '<g class="deco">' + SC.deco + '</g>' : '';
-    for (r = 0; r < ROOMS.length; r++) {
+    svg += SC.deco && !IMG ? '<g class="deco">' + SC.deco + '</g>' : '';
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G1 = GEO[r];
       svg += '<g class="furn">' + G1.fu.map(function (f) { return Art.furn(f[0], G1.x + f[1], G1.y + f[2], f[3], f[4]); }).join('') + '</g>';
     }
-    for (r = 0; r < ROOMS.length; r++) {
+    if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G3 = GEO[r];
       svg += '<rect class="wall" x="' + G3.x + '" y="' + G3.y + '" width="' + G3.w + '" height="' + G3.h + '"/>';
     }
     var cr = GEO[P.crime.room];
     svg += '<rect class="crimeroom" x="' + (cr.x + 3) + '" y="' + (cr.y + 3) + '" width="' + (cr.w - 6) + '" height="' + (cr.h - 6) + '" rx="3"/>';
-    DOORS.forEach(function (d) {
+    if (!IMG) DOORS.forEach(function (d) {
       var R = doorRect(d[0], d[1]);
       svg += '<rect class="door" x="' + R.x + '" y="' + R.y + '" width="' + R.w + '" height="' + R.h + '" rx="2"/>';
     });
