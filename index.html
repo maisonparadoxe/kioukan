@@ -148,6 +148,10 @@ body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;tex
 body::before{animation:demoroll 9s ease-in-out infinite}
 @keyframes demoroll{0%,60%{opacity:1;transform:rotate(45deg) scale(1,1)}70%{opacity:1;transform:rotate(45deg) scale(.15,1.8)}74%,84%{opacity:0;transform:rotate(45deg) scale(.02,1.8)}94%,100%{opacity:1;transform:rotate(45deg) scale(1,1)}}
 @media (prefers-reduced-motion:reduce){body::before{animation:none}}
+
+.howto{text-align:center;color:var(--ink-2);font-size:14px;margin:6px 0 14px}
+.howto a,.foot a{color:var(--accent);font-weight:700}
+.howto-btn{background:var(--paper)}
 </style>
 </head>
 <body>
@@ -192,7 +196,7 @@ window.addEventListener('error', function (e) {
       </div>
     </a>
   </div>
-  <p class="foot">Votre progression est enregistrée sur cet appareil.</p>
+  <p class="foot"><a href="histoire.html#rules">Comment jouer ?</a> · Votre progression est enregistrée sur cet appareil.</p>
 </main>
 
 <script src="img/images.js"></script>

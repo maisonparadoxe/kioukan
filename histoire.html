@@ -438,6 +438,10 @@ body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;tex
 body::before{animation:demoroll 9s ease-in-out infinite}
 @keyframes demoroll{0%,60%{opacity:1;transform:rotate(45deg) scale(1,1)}70%{opacity:1;transform:rotate(45deg) scale(.15,1.8)}74%,84%{opacity:0;transform:rotate(45deg) scale(.02,1.8)}94%,100%{opacity:1;transform:rotate(45deg) scale(1,1)}}
 @media (prefers-reduced-motion:reduce){body::before{animation:none}}
+
+.howto{text-align:center;color:var(--ink-2);font-size:14px;margin:6px 0 14px}
+.howto a,.foot a{color:var(--accent);font-weight:700}
+.howto-btn{background:var(--paper)}
 </style>
 </head>
 <body>
@@ -449,7 +453,7 @@ window.addEventListener('error', function (e) {
 });
 </script>
 <noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
-<div style="max-width:1040px;margin:0 auto 10px"><a href="index.html" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8">← Menu</a></div>
+<div style="max-width:1040px;margin:0 auto 10px;display:flex;gap:10px;align-items:center"><a href="index.html" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8">← Menu</a><a href="#rules" class="howto-btn" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8" onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">? Comment jouer</a></div>
 <div class="app" id="app">
   <header class="top">
     <h1>Kioukan</h1>
@@ -3622,7 +3626,8 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
       (first ? '<p class="blurb">' + esc(CH.blurb) + '</p>' : '') +
       '<h2 class="lvl-title"><span>Épisode ' + state.ep + ' · ' + MODE_LABEL[LV.mode] + '</span>' + esc(LV.title) + '</h2></div>' +
       storyText(LV.intro) +
-      '<p class="go"><a class="btn primary" href="#case">Ouvrir l’enquête</a></p>';
+      '<p class="go"><a class="btn primary" href="#case">Ouvrir l’enquête</a></p>' +
+      (state.ep === 1 ? '<p class="howto">Première enquête ? <a href="#rules" onclick="var r=document.getElementById(\'rules\');r.open=true;r.scrollIntoView({behavior:\'smooth\',block:\'start\'});return false">Lis d’abord « Comment jouer »</a>.</p>' : '');
   }
 
   /* ---------- Analyse ---------- */
@@ -3938,7 +3943,7 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
     lsSet('kioukan.histoire.ep', String(n));
     if (location.hash !== '#e' + n) { try { history.replaceState(null, '', '#e' + n); } catch (e) { /* fichier local */ } }
     document.title = 'Kioukan · ' + LV.title;
-    renderList(); renderIntro(); renderGame();
+    renderList(); renderIntro(); renderGame(); if (location.hash === '#rules') { var rr = $('rules'); if (rr) { rr.open = true; rr.scrollIntoView(); } }
   }
 
   function win(early) {
