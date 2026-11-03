@@ -9,6 +9,7 @@ window.KIOUKAN_IMAGES = {
   // 'plan:express': 'img/plan-express.png',
   'remi-sansou': 'img/remi-sansou-carte.webp',
   'aria-vibrato': 'img/aria-vibrato-carte.webp',
+  'pr-hector-tumulus': 'img/pr-hector-tumulus-carte.webp',
   'ernest-couchette': 'img/ernest-couchette-carte.webp',
   'bg:night': 'img/bg-night.webp',
   'bg:box': 'img/bg-box.webp',
@@ -122,4 +123,4 @@ window.KIOUKAN_IMAGES = {
   _: 0
 };
 
-window.KIOUKAN_FACES = {"ernest-couchette":[0.399,0.382,0.465],"hortense-lafleur":[0.463,0.445,0.536],"aria-vibrato":[0.436,0.43,0.566],"jean-bilet":[0.549,0.409,0.412],"comtesse-diane-de-carat":[0.357,0.492,0.479],"remi-sansou":[0.604,0.436,0.494],"chef-duval":[0.576,0.424,0.526],"mme-okafor":[0.565,0.537,0.532],"dr-bellamy":[0.462,0.333,0.461],"m-costa":[0.601,0.446,0.549],"mme-lefevre":[0.543,0.428,0.529],"roux":[0.501,0.472,0.559],"mlle-ferrand":[0.5,0.46,0.55],"baron-voss":[0.307,0.435,0.494],"dr-moreau":[0.444,0.579,0.628],"mme-delaunay":[0.628,0.412,0.444],"ines":[0.441,0.375,0.586],"colonel-marchal":[0.624,0.427,0.419],"lucas":[0.69,0.472,0.398],"dr-aubry":[0.525,0.458,0.642],"mme-vernet":[0.55,0.43,0.42]};
+window.KIOUKAN_FACES = {"pr-hector-tumulus":[0.54,0.43,0.55],"ernest-couchette":[0.399,0.382,0.465],"hortense-lafleur":[0.463,0.445,0.536],"aria-vibrato":[0.436,0.43,0.566],"jean-bilet":[0.549,0.409,0.412],"comtesse-diane-de-carat":[0.357,0.492,0.479],"remi-sansou":[0.604,0.436,0.494],"chef-duval":[0.576,0.424,0.526],"mme-okafor":[0.565,0.537,0.532],"dr-bellamy":[0.462,0.333,0.461],"m-costa":[0.601,0.446,0.549],"mme-lefevre":[0.543,0.428,0.529],"roux":[0.501,0.472,0.559],"mlle-ferrand":[0.5,0.46,0.55],"baron-voss":[0.307,0.435,0.494],"dr-moreau":[0.444,0.579,0.628],"mme-delaunay":[0.628,0.412,0.444],"ines":[0.441,0.375,0.586],"colonel-marchal":[0.624,0.427,0.419],"lucas":[0.69,0.472,0.398],"dr-aubry":[0.525,0.458,0.642],"mme-vernet":[0.55,0.43,0.42]};
