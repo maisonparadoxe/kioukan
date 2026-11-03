@@ -131,6 +131,14 @@ body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;tex
 .cover.ep-banner .kicker,.cover.ep-banner .blurb,.cover.ep-banner .lvl-title,.cover.ep-banner .lvl-title span{color:#fbf7ec!important;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .cover.ep-banner .lvl-title span{color:#f2c46a!important}
 .cover.ep-banner .blurb{font-style:italic}
+/* carte « partie rapide » : trois portraits encadrés, fonds conservés */
+#scene-quick{aspect-ratio:auto!important;background:var(--panel-2)!important;display:flex;gap:12px;justify-content:center;align-items:flex-start;padding:18px 14px 16px}
+#scene-quick .wbg,#scene-quick::after{display:none!important}
+#scene-quick .bust{position:static!important;transform:rotate(var(--r,0deg))!important;width:30%!important;left:auto!important}
+#scene-quick .bust:nth-child(2){--r:-2deg}
+#scene-quick .bust:nth-child(3){--r:1.5deg;margin-top:6px}
+#scene-quick .bust:nth-child(4){--r:-1deg}
+#scene-quick .bust .pcard{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink)!important}
 </style>
 </head>
 <body>
