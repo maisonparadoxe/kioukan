@@ -152,6 +152,35 @@ body::before{animation:demoroll 9s ease-in-out infinite}
 .howto{text-align:center;color:var(--ink-2);font-size:14px;margin:6px 0 14px}
 .howto a,.foot a{color:var(--accent);font-weight:700}
 .howto-btn{background:var(--paper)}
+
+/* Menu : survols plus marqués */
+.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.pill{display:inline-flex;align-items:center;min-height:42px;padding:8px 18px;border:2px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:700 14px var(--sans);text-decoration:none;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s,background .15s,color .15s}
+.pill:hover,.pill:focus-visible{transform:translate(-2px,-2px) rotate(-1.5deg);box-shadow:5px 5px 0 var(--accent);background:var(--accent);color:var(--accent-ink)}
+.pill:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.file{transition:transform .22s cubic-bezier(.3,1.6,.5,1),box-shadow .22s}
+.file:hover,.file:focus-visible{transform:translate(-4px,-6px) rotate(-.8deg);box-shadow:10px 10px 0 var(--ink)!important}
+.file:nth-child(2):hover,.file:nth-child(2):focus-visible{transform:translate(-4px,-6px) rotate(.8deg)}
+.file .scene{overflow:hidden}
+.file .scene .wbg,.file .scene .bust{transition:transform .5s ease}
+.file:hover .scene .wbg{transform:scale(1.1)}
+.file:hover .scene .bust{transform:translateX(-50%) translateY(-6px) scale(1.04)}
+.file .btn{transition:transform .2s,background .2s,box-shadow .2s;position:relative}
+.file .btn::after{content:"→";margin-left:8px;display:inline-block;transition:transform .2s}
+.file:hover .btn{transform:scale(1.06);box-shadow:3px 3px 0 var(--ink)}
+.file:hover .btn::after{transform:translateX(6px)}
+.file:hover h2{color:var(--accent)}
+.file .chip{transition:transform .2s}
+.file:hover .chip{transform:translateY(-2px) rotate(-2deg)}
+.file:hover .chip:nth-child(even){transform:translateY(-2px) rotate(2deg)}
+.logo{cursor:default}
+.logo span{display:inline-block;transition:transform .2s}
+.logo:hover span{animation:logohop .6s ease-in-out calc(var(--i) * 55ms) 1}
+.logo:hover{text-shadow:5px 5px 0 var(--accent-2)}
+@keyframes logohop{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-14px) rotate(-6deg)}65%{transform:translateY(2px) rotate(3deg)}}
+.rule svg{transition:transform .4s}
+.cover:hover .rule svg{transform:scale(1.3) rotate(-8deg)}
+@media (prefers-reduced-motion:reduce){.file,.file *,.pill,.logo span,.rule svg{transition:none!important;animation:none!important}.file:hover,.pill:hover{transform:none!important}}
 </style>
 </head>
 <body>
@@ -172,6 +201,10 @@ window.addEventListener('error', function (e) {
     </div>
     <p class="motto">Qui&nbsp;? Où&nbsp;? Quand&nbsp;?</p>
     <p class="tagline">Résolvez les crimes en reconstituant les emplois du temps des suspects.</p>
+    <nav class="toolbar" aria-label="Aide et contact">
+      <a class="pill" href="histoire.html#rules">? Comment jouer</a>
+      <a class="pill" href="mailto:maisonparadoxe@gmail.com?subject=Kioukan%20-%20contact">✉ Contact</a>
+    </nav>
   </header>
 
   <div class="files">
@@ -196,7 +229,7 @@ window.addEventListener('error', function (e) {
       </div>
     </a>
   </div>
-  <p class="foot"><a href="histoire.html#rules">Comment jouer ?</a> · Votre progression est enregistrée sur cet appareil.</p>
+  <p class="foot">Votre progression est enregistrée sur cet appareil.</p>
 </main>
 
 <script src="img/images.js"></script>
@@ -579,6 +612,8 @@ window.addEventListener('error', function (e) {
     people.forEach(function (p) { h += '<div class="bust" style="left:' + p[2] + '%;width:' + p[3] + '%">' + W.portrait(p[0], p[1]) + '</div>'; });
     document.getElementById(id).innerHTML = h;
   }
+  var lg = document.querySelector('.logo');
+  if (lg) { lg.setAttribute('aria-label', 'Kioukan'); lg.innerHTML = lg.textContent.split('').map(function (c, i) { return '<span aria-hidden="true" style="--i:' + i + '">' + c + '</span>'; }).join(''); }
   scene('scene-story', 'night', []);
   scene('scene-quick', 'lobby', [['Rémi Sansou', 'sourire', 22, 38], ['Aria Vibrato', 'neutre', 78, 38], ['Ernest Couchette', 'gene', 50, 40]]);
   try {
