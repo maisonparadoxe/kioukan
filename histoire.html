@@ -336,9 +336,92 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 .board.dense .who b, .board[style*="--cols:4"] .who b { font-size: 13px; }
 .fiche figcaption .sub { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Portraits « carte » : image sur fond papier, sans détourage */
+.wchar .pcard { border-radius: 10px 10px 0 0; border: 3px solid #fffaf0; border-bottom: 0; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(60, 40, 30, 0.35); background: #f5e9d2; }
+.fiche-img img.pcard { object-position: 50% 18%; }
+.mini img.pcard { transform: scale(1.35) translateY(4%); object-position: 50% 30%; }
+
+/* Introduction en texte */
+.story-text { margin: 4px 0 8px; display: grid; gap: 10px; }
+.snar { margin: 0; font: 400 16px/1.55 var(--sans); color: var(--ink); }
+.sline { margin: 0; display: flex; gap: 10px; align-items: flex-start; }
+.sline .mini { width: 44px; height: 44px; margin-top: 2px; }
+.sline .sq { font: italic 400 16px/1.5 var(--serif); }
+.sline .sq b { font: 700 12px var(--sans); letter-spacing: .06em; text-transform: uppercase; font-style: normal; color: var(--ink-2); margin-right: 4px; }
+/* Portraits noir et blanc : le blanc prend la couleur du suspect */
+.pbw { mix-blend-mode: multiply; }
+.fiche-img img.pbw { object-position: 50% 12%; }
+.mini img.pbw { transform: scale(1.25) translateY(2%); object-position: 50% 20%; }
+.wchar .pbw { mix-blend-mode: normal; background: #fffdf8; }
+
 </style>
 
 
+<script>window.KIOUKAN_DEMO_CH=1</script>
+<style id="skin">@font-face{font-family:'Abril Fatface';src:url(fonts/abril.woff2) format('woff2');font-display:swap}
+/* ===== Habillage « carnet d'enquête » — encre, papier, aplats ===== */
+:root{
+  --bg:#eee7d8; --paper:#fbf7ec; --panel-2:#e6dcc8; --cell:#f7f1e2; --gutter:#fbf7ec;
+  --ink:#171d2e; --ink-2:#55596b; --line:#171d2e; --line-2:#b9ad93;
+  --accent:#a8232f; --accent-ink:#fbf7ec; --accent-2:#1d6f7a; --ok:#2b7a57;
+  --shadow:4px 4px 0 #171d2e;
+  --display:'Abril Fatface','Playfair Display',Georgia,serif;
+  --given:#f2dc9c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
+  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
+  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}}
+:root[data-theme="dark"]{
+  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
+  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
+  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}
+body{background:var(--bg) radial-gradient(rgba(23,29,46,.07) 1px,transparent 1.4px) 0 0/6px 6px;}
+/* titres : affiche années 30 */
+.logo,h1,.lvl-title,h2.label{font-family:var(--display)!important;font-weight:400!important;font-style:normal!important;letter-spacing:.04em}
+.logo{letter-spacing:.1em;color:var(--accent);text-shadow:3px 3px 0 var(--ink)}
+h1{color:var(--accent)}
+.motto{font-family:var(--serif);font-style:italic}
+.collection,.label{color:var(--accent-2)}
+/* cartes, boutons : trait franc, ombre portée dure */
+.card,.mode,.scene,.fiche,.panel,details,.ep-picker,select,.lvl-select{border:2px solid var(--ink)!important;border-radius:8px!important;box-shadow:var(--shadow)!important}
+button,.btn,a.btn,.cta{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink);font-weight:700;text-transform:none;transition:transform .08s,box-shadow .08s}
+button:active,.btn:active,.cta:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.pcard{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink)!important}
+.mini{border:2px solid var(--ink)!important}
+.story-text .sq b{font-family:var(--display);font-weight:400;color:var(--accent);letter-spacing:.05em}
+.snar{color:var(--ink-2)}
+
+/* dialogues façon pièce de théâtre */
+.story-text .sline{display:block;margin:14px 0 4px}
+.story-text .sline .mini{display:none}
+.story-text .sline .sq{display:block}
+.story-text .sline .sq b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1px}
+.story-text .sline .sq i,.story-text .sline .sq{font-family:var(--serif);font-size:17px;line-height:1.45;color:var(--ink)}
+.story-text .sline .sq{padding-left:14px;border-left:3px solid var(--accent)}
+.story-text .snar{font-style:italic;color:var(--ink-2);margin:10px 0}
+
+button.time{box-shadow:2px 2px 0 var(--ink);padding-left:3px;padding-right:3px;font-size:13px;letter-spacing:-.02em;white-space:nowrap;overflow:visible}
+
+/* démo */
+body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;text-align:center;transform:rotate(45deg);background:var(--accent);color:var(--accent-ink);font:700 12px var(--sans);letter-spacing:.2em;padding:4px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);z-index:50;pointer-events:none}
+.demo-end{margin:18px 0 6px;padding:16px 18px;border:2px solid var(--ink);border-radius:8px;background:var(--panel-2);box-shadow:3px 3px 0 var(--ink)}
+.demo-end h3{margin:0 0 6px;font:400 24px var(--display);color:var(--accent)}
+.demo-end p{margin:6px 0}
+.demo-soon h3 span{color:var(--ink-2)}
+.demo-soon p{margin:4px 0 0;color:var(--ink-2);font-style:italic}
+.seg{border:0!important;background:transparent!important;padding:0!important;gap:8px!important;box-shadow:none!important}
+.seg button{box-shadow:2px 2px 0 var(--ink);margin:0}
+
+/* bandeau d'ambiance */
+.cover.ep-banner{position:relative;margin:6px 0 18px;padding:76px 18px 18px;border:2px solid var(--ink);border-radius:8px;box-shadow:var(--shadow);background-size:cover;background-position:center;overflow:hidden;text-align:left}
+.cover.ep-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,26,.88) 8%,rgba(10,14,26,.2) 70%)}
+.cover.ep-banner>*{position:relative}
+.cover.ep-banner .kicker,.cover.ep-banner .blurb,.cover.ep-banner .lvl-title,.cover.ep-banner .lvl-title span{color:#fbf7ec!important;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.cover.ep-banner .lvl-title span{color:#f2c46a!important}
+.cover.ep-banner .blurb{font-style:italic}
+</style>
 </head>
 <body>
 <script>
@@ -1918,7 +2001,7 @@ window.addEventListener('error', function (e) {
 
   function portrait(name, expr, cls) {
     var key = slug(name) + ':' + (expr || 'neutre'), src = (window.KIOUKAN_IMAGES || {})[key] || (window.KIOUKAN_IMAGES || {})[slug(name)];
-    if (src) return '<img class="' + (cls || 'pimg') + '" src="' + src + '" alt="">';
+    if (src) return '<img class="' + (cls || 'pimg') + (/-carte\./.test(src) ? ' pcard' : '') + (/-nb\./.test(src) ? ' pbw' : '') + '" src="' + src + '" alt="">';
     return '<svg class="' + (cls || 'pimg') + '" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' + bust(name, expr) + '</svg>';
   }
   function slug(name) { return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]+/g, '-').replace(/^-|-$/g, ''); }
@@ -3407,7 +3490,8 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
   'use strict';
   var E = window.KioukanEngine, LC = window.KioukanLC, ART = window.KioukanArt, WT = window.KioukanWT;
   var SPEC = window.KioukanSpec, PUZ = window.KioukanPuzzles, WORLD = window.KioukanWorld, FLAVOR = window.KioukanFlavor || {};
-  var N = SPEC.levels.length, tl = E.timeLabel;
+  var DEMO = window.KIOUKAN_DEMO_CH || 0;
+  var N = DEMO ? SPEC.levels.filter(function (l) { return l.ch <= DEMO; }).length : SPEC.levels.length, tl = E.timeLabel;
   var ROOMS, SUSPECTS, STEP, DOORS, PLACE, LV, CH;
 
   var ICON = {
@@ -3449,7 +3533,20 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
   function crimeText(c) { return E.clueText(state.puz, c).replace('le meurtrier', LV.word); }
   function idxOf(name) { for (var i = 0; i < SUSPECTS.length; i++) if (SUSPECTS[i].name === name) return i; return -1; }
 
-  /* ---------- Cases façon webtoon ---------- */
+  /* ---------- Introduction en texte (remplace les cases BD) ---------- */
+  function storyText(beats) {
+    var h = '<div class="story-text">';
+    (beats || []).forEach(function (b) {
+      (b.say || []).forEach(function (q) {
+        var n = nameOf(q.who);
+        h += '<p class="sline"><span class="mini">' + WT.portrait(n, 'neutre') + '</span><span class="sq"><b>' + esc(n) + '</b>' + esc(fmt(q.text)) + '</span></p>';
+      });
+      (b.caps || []).forEach(function (c) { if (DEMO && state.ep >= N && /^Fin du chapitre/.test(c.text)) return; h += '<p class="snar">' + esc(fmt(c.text)) + '</p>'; });
+    });
+    return h + '</div>';
+  }
+
+  /* ---------- Cases façon webtoon (plus utilisées) ---------- */
   function beat(b) {
     var h = '<div class="beat">';
     if (b.say) h += '<div class="says">' + b.say.map(function (q) {
@@ -3469,7 +3566,7 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
     var h = '<button type="button" class="ep-toggle" data-act="list" aria-expanded="' + state.listOpen + '">' +
       '<span>Épisode ' + state.ep + ' / ' + N + '</span><b>' + esc(LV.title) + '</b><i aria-hidden="true">' + (state.listOpen ? '▴' : '▾') + '</i></button>';
     if (state.listOpen) {
-      h += '<div class="ep-list">' + SPEC.chapters.map(function (c) {
+      h += '<div class="ep-list">' + SPEC.chapters.filter(function (c) { return !DEMO || c.n <= DEMO; }).map(function (c) {
         var eps = SPEC.levels.map(function (l, i) { return { l: l, n: i + 1 }; }).filter(function (x) { return x.l.ch === c.n; });
         var nDone = eps.filter(function (x) { return prog.solved[x.n]; }).length;
         return '<section class="ep-ch"><h3><span>Chapitre ' + c.n + '</span>' + esc(c.title) + '<small>' + nDone + '/' + eps.length + '</small></h3><div class="ep-grid">' +
@@ -3478,18 +3575,19 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
             return '<button type="button" class="ep-btn' + (x.n === state.ep ? ' cur' : '') + (done ? ' done' : '') + '" data-act="ep" data-n="' + x.n + '"' + (u ? '' : ' disabled') + '>' +
               '<b>' + x.n + '</b><span>' + (u ? esc(x.l.title) : 'Verrouillé') + '</span><small>' + (done ? (prog.help[x.n] ? 'résolu avec aide' : 'résolu ✓') : MODE_LABEL[x.l.mode]) + '</small></button>';
           }).join('') + '</div></section>';
-      }).join('') + '</div>';
+      }).join('') + (DEMO ? '<section class="ep-ch demo-soon"><h3><span>Bientôt</span>Chapitres 2 à ' + SPEC.chapters.length + '</h3><p>Le reste de l’enquête est encore en développement.</p></section>' : '') + '</div>';
     }
     $('episodes').innerHTML = h;
   }
 
   function renderIntro() {
     var first = SPEC.levels.findIndex(function (l) { return l.ch === LV.ch; }) + 1 === state.ep;
+    var imgs = window.KIOUKAN_IMAGES || {}, bk = (LV.intro || []).map(function (b) { return b.bg; }).filter(function (k) { return imgs['bg:' + k]; }).sort(function (x, y) { return (x === 'night') - (y === 'night'); })[0] || (imgs['bg:night'] ? 'night' : ''), bsrc = bk ? imgs['bg:' + bk] : '';
     $('intro').innerHTML =
-      '<div class="cover"><p class="kicker">Chapitre ' + CH.n + ' · ' + esc(CH.title) + '</p>' +
+      '<div class="cover' + (bsrc ? ' ep-banner' : '') + '"' + (bsrc ? ' style="background-image:url(' + bsrc + ')"' : '') + '><p class="kicker">Chapitre ' + CH.n + ' · ' + esc(CH.title) + '</p>' +
       (first ? '<p class="blurb">' + esc(CH.blurb) + '</p>' : '') +
       '<h2 class="lvl-title"><span>Épisode ' + state.ep + ' · ' + MODE_LABEL[LV.mode] + '</span>' + esc(LV.title) + '</h2></div>' +
-      '<div class="strip">' + LV.intro.map(beat).join('') + '</div>' +
+      storyText(LV.intro) +
       '<p class="go"><a class="btn primary" href="#case">Ouvrir l’enquête</a></p>';
   }
 
@@ -3730,8 +3828,9 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
       '<p class="sub">' + (state.early ? 'Accusation exacte alors que ' + state.early + ' case' + (state.early > 1 ? 's' : '') + ' restaient à remplir. ' : '') +
       (state.hints ? state.hints + ' indice' + (state.hints > 1 ? 's' : '') + ' utilisé' + (state.hints > 1 ? 's' : '') + '. ' : 'Aucun indice utilisé. ') +
       (state.wrong ? state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'Aucune fausse accusation.') + '</p>' +
-      '<div class="strip epi">' + LV.outro.map(beat).join('') + '</div>' +
-      '<p class="next">' + (state.ep < N ? '<button type="button" class="btn primary" data-act="next">Épisode ' + (state.ep + 1) + ' →</button> ' : '<span class="soon">Bravo, l’histoire est terminée !</span> ') +
+      storyText(LV.outro) +
+      (DEMO && state.ep >= N ? '<div class="demo-end"><h3>Fin de la démo</h3><p>Merci d’avoir mené l’enquête ! Le chapitre 1 s’achève ici : le Hibou court toujours, et le reste du jeu (hôtel, manoir, paquebot, opéra et casino) est encore en développement.</p><p>Vos retours sont précieux : dites-nous ce que vous avez aimé, ce qui vous a bloqué, et ce que vous voudriez voir ensuite.</p><p><a class="btn primary" href="mailto:maisonparadoxe@gmail.com?subject=Kioukan%20-%20mes%20retours%20sur%20la%20d%C3%A9mo">Écrire à l’équipe</a></p></div>' : '') +
+      '<p class="next">' + (state.ep < N ? '<button type="button" class="btn primary" data-act="next">Épisode ' + (state.ep + 1) + ' →</button> ' : '<span class="soon">' + (DEMO ? 'Démo terminée, merci !' : 'Bravo, l’histoire est terminée !') + '</span> ') +
       '<button type="button" class="btn" data-act="replay">Rejouer</button></p></div>';
   }
 

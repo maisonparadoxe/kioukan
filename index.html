@@ -45,6 +45,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(-
 .scene .wbg, .scene .wbg svg, .scene .wbg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .scene .bust { position: absolute; bottom: 0; transform: translateX(-50%); }
 .scene .bust svg, .scene .bust img { display: block; width: 100%; height: auto; }
+.scene .bust .pcard { border-radius: 10px 10px 0 0; border: 3px solid #fffaf0; border-bottom: 0; box-shadow: 0 6px 18px rgba(0,0,0,.38), 0 0 0 1px rgba(60,40,30,.35); }
 .scene::after { content: ""; position: absolute; inset: auto 0 0 0; height: 30%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.18)); }
 .file-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .ref { margin: 0; font: 600 11.5px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
@@ -66,6 +67,71 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(-
 </style>
 
 
+<script>window.KIOUKAN_DEMO_CH=1</script>
+<style id="skin">@font-face{font-family:'Abril Fatface';src:url(fonts/abril.woff2) format('woff2');font-display:swap}
+/* ===== Habillage « carnet d'enquête » — encre, papier, aplats ===== */
+:root{
+  --bg:#eee7d8; --paper:#fbf7ec; --panel-2:#e6dcc8; --cell:#f7f1e2; --gutter:#fbf7ec;
+  --ink:#171d2e; --ink-2:#55596b; --line:#171d2e; --line-2:#b9ad93;
+  --accent:#a8232f; --accent-ink:#fbf7ec; --accent-2:#1d6f7a; --ok:#2b7a57;
+  --shadow:4px 4px 0 #171d2e;
+  --display:'Abril Fatface','Playfair Display',Georgia,serif;
+  --given:#f2dc9c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
+  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
+  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}}
+:root[data-theme="dark"]{
+  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
+  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
+  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}
+body{background:var(--bg) radial-gradient(rgba(23,29,46,.07) 1px,transparent 1.4px) 0 0/6px 6px;}
+/* titres : affiche années 30 */
+.logo,h1,.lvl-title,h2.label{font-family:var(--display)!important;font-weight:400!important;font-style:normal!important;letter-spacing:.04em}
+.logo{letter-spacing:.1em;color:var(--accent);text-shadow:3px 3px 0 var(--ink)}
+h1{color:var(--accent)}
+.motto{font-family:var(--serif);font-style:italic}
+.collection,.label{color:var(--accent-2)}
+/* cartes, boutons : trait franc, ombre portée dure */
+.card,.mode,.scene,.fiche,.panel,details,.ep-picker,select,.lvl-select{border:2px solid var(--ink)!important;border-radius:8px!important;box-shadow:var(--shadow)!important}
+button,.btn,a.btn,.cta{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink);font-weight:700;text-transform:none;transition:transform .08s,box-shadow .08s}
+button:active,.btn:active,.cta:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.pcard{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink)!important}
+.mini{border:2px solid var(--ink)!important}
+.story-text .sq b{font-family:var(--display);font-weight:400;color:var(--accent);letter-spacing:.05em}
+.snar{color:var(--ink-2)}
+
+/* dialogues façon pièce de théâtre */
+.story-text .sline{display:block;margin:14px 0 4px}
+.story-text .sline .mini{display:none}
+.story-text .sline .sq{display:block}
+.story-text .sline .sq b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1px}
+.story-text .sline .sq i,.story-text .sline .sq{font-family:var(--serif);font-size:17px;line-height:1.45;color:var(--ink)}
+.story-text .sline .sq{padding-left:14px;border-left:3px solid var(--accent)}
+.story-text .snar{font-style:italic;color:var(--ink-2);margin:10px 0}
+
+button.time{box-shadow:2px 2px 0 var(--ink);padding-left:3px;padding-right:3px;font-size:13px;letter-spacing:-.02em;white-space:nowrap;overflow:visible}
+
+/* démo */
+body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;text-align:center;transform:rotate(45deg);background:var(--accent);color:var(--accent-ink);font:700 12px var(--sans);letter-spacing:.2em;padding:4px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);z-index:50;pointer-events:none}
+.demo-end{margin:18px 0 6px;padding:16px 18px;border:2px solid var(--ink);border-radius:8px;background:var(--panel-2);box-shadow:3px 3px 0 var(--ink)}
+.demo-end h3{margin:0 0 6px;font:400 24px var(--display);color:var(--accent)}
+.demo-end p{margin:6px 0}
+.demo-soon h3 span{color:var(--ink-2)}
+.demo-soon p{margin:4px 0 0;color:var(--ink-2);font-style:italic}
+.seg{border:0!important;background:transparent!important;padding:0!important;gap:8px!important;box-shadow:none!important}
+.seg button{box-shadow:2px 2px 0 var(--ink);margin:0}
+
+/* bandeau d'ambiance */
+.cover.ep-banner{position:relative;margin:6px 0 18px;padding:76px 18px 18px;border:2px solid var(--ink);border-radius:8px;box-shadow:var(--shadow);background-size:cover;background-position:center;overflow:hidden;text-align:left}
+.cover.ep-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,26,.88) 8%,rgba(10,14,26,.2) 70%)}
+.cover.ep-banner>*{position:relative}
+.cover.ep-banner .kicker,.cover.ep-banner .blurb,.cover.ep-banner .lvl-title,.cover.ep-banner .lvl-title span{color:#fbf7ec!important;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.cover.ep-banner .lvl-title span{color:#f2c46a!important}
+.cover.ep-banner .blurb{font-style:italic}
+</style>
 </head>
 <body>
 <script>
@@ -92,7 +158,7 @@ window.addEventListener('error', function (e) {
       <div class="scene" id="scene-story"></div>
       <p class="stamp" id="stamp" hidden></p>
       <div class="file-body">
-        <p class="ref">Mode histoire · 42 épisodes</p>
+        <p class="ref">Mode histoire · démo : chapitre 1</p>
         <h2>Le Hibou</h2>
         <p class="desc">Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.</p>
         <div class="foot-row"><span class="btn" id="story-btn">Commencer l’enquête</span></div>
@@ -311,7 +377,7 @@ window.addEventListener('error', function (e) {
 
   function portrait(name, expr, cls) {
     var key = slug(name) + ':' + (expr || 'neutre'), src = (window.KIOUKAN_IMAGES || {})[key] || (window.KIOUKAN_IMAGES || {})[slug(name)];
-    if (src) return '<img class="' + (cls || 'pimg') + '" src="' + src + '" alt="">';
+    if (src) return '<img class="' + (cls || 'pimg') + (/-carte\./.test(src) ? ' pcard' : '') + (/-nb\./.test(src) ? ' pbw' : '') + '" src="' + src + '" alt="">';
     return '<svg class="' + (cls || 'pimg') + '" viewBox="0 0 100 120" aria-hidden="true" focusable="false">' + bust(name, expr) + '</svg>';
   }
   function slug(name) { return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]+/g, '-').replace(/^-|-$/g, ''); }
@@ -481,9 +547,9 @@ window.addEventListener('error', function (e) {
     var pr = JSON.parse(localStorage.getItem('kioukan.histoire') || '{}'), n = Object.keys(pr.solved || {}).length;
     if (n) {
       var st = document.getElementById('stamp');
-      st.innerHTML = n >= 42 ? 'Affaire<b>classée</b>' : 'Épisode<b>' + Math.min(n + 1, 42) + ' / 42</b>';
+      st.innerHTML = n >= 7 ? 'Démo<b>terminée</b>' : 'Épisode<b>' + Math.min(n + 1, 7) + ' / 7</b>';
       st.hidden = false;
-      document.getElementById('story-btn').textContent = n >= 42 ? 'Relire l’enquête' : 'Reprendre l’enquête';
+      document.getElementById('story-btn').textContent = n >= 7 ? 'Relire l’enquête' : 'Reprendre l’enquête';
     }
   } catch (e) { /* stockage indisponible */ }
 })();
