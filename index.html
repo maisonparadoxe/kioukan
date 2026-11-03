@@ -181,6 +181,18 @@ body::before{animation:demoroll 9s ease-in-out infinite}
 .rule svg{transition:transform .4s}
 .cover:hover .rule svg{transform:scale(1.3) rotate(-8deg)}
 @media (prefers-reduced-motion:reduce){.file,.file *,.pill,.logo span,.rule svg{transition:none!important;animation:none!important}.file:hover,.pill:hover{transform:none!important}}
+
+/* Survols de tous les boutons */
+button:not(:disabled):not(.time):not(.ep-btn),.btn,a.btn,.howto-btn,a[href="index.html"]{transition:transform .18s cubic-bezier(.3,1.6,.5,1),box-shadow .18s,background .15s,color .15s,opacity .15s!important}
+button:not(:disabled):not(.time):not(.ep-btn):hover,button:not(:disabled):not(.time):not(.ep-btn):focus-visible,.btn:hover,a.btn:hover,.btn:focus-visible{transform:translate(-2px,-3px) rotate(-1deg);box-shadow:5px 6px 0 var(--ink)}
+button.primary:hover,.btn.primary:hover,button.accuse:hover,.btn.accuse:hover{box-shadow:5px 6px 0 var(--accent-2)}
+button:not(:disabled):not(.time):active,.btn:active{transform:translate(2px,2px) rotate(0)!important;box-shadow:0 0 0 var(--ink)!important}
+button.time:not(:disabled):hover{transform:translateY(-2px);box-shadow:3px 4px 0 var(--ink)}
+.ep-btn:not(:disabled):hover{transform:translateX(4px)}
+.howto-btn:hover,.howto-btn:focus-visible,a[href="index.html"]:hover,a[href="index.html"]:focus-visible{transform:translate(-2px,-3px) rotate(-1.5deg);box-shadow:4px 5px 0 var(--accent);background:var(--accent)!important;color:var(--accent-ink)!important;opacity:1!important}
+.howto-btn,a[href="index.html"]{box-shadow:2px 2px 0 var(--ink)}
+.pill:hover,.pill:focus-visible{box-shadow:5px 5px 0 var(--accent-2)}
+@media (prefers-reduced-motion:reduce){button,.btn,.howto-btn,a[href="index.html"]{transition:none!important}button:hover,.btn:hover,.howto-btn:hover,a[href="index.html"]:hover{transform:none!important}}
 </style>
 </head>
 <body>
