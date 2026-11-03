@@ -541,7 +541,7 @@ window.addEventListener('error', function (e) {
     people.forEach(function (p) { h += '<div class="bust" style="left:' + p[2] + '%;width:' + p[3] + '%">' + W.portrait(p[0], p[1]) + '</div>'; });
     document.getElementById(id).innerHTML = h;
   }
-  scene('scene-story', 'night', [['Hortense Lafleur', 'serieux', 62, 46]]);
+  scene('scene-story', 'night', []);
   scene('scene-quick', 'lobby', [['Rémi Sansou', 'sourire', 22, 38], ['Aria Vibrato', 'neutre', 78, 38], ['Ernest Couchette', 'gene', 50, 40]]);
   try {
     var pr = JSON.parse(localStorage.getItem('kioukan.histoire') || '{}'), n = Object.keys(pr.solved || {}).length;
