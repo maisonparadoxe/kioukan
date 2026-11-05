@@ -2465,7 +2465,10 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   function renderModes() {
     var M = { classic: TR('Classique'), liar: TR('Un menteur'), half: TR('Demi-vérités') };
     $('modes').innerHTML = Object.keys(M).map(function (k) {
-      return '<button type="button" data-act="mode" data-mode="' + k + '" aria-pressed="' + (k === state.mode) + '">' + M[k] + '</button>';
+      var D = { classic: TR('Tous les indices du carnet sont vrais : il suffit de reconstituer la seule chronologie qui les respecte tous.'),
+        liar: TR('Les suspects font des déclarations. Un seul ment, et c’est le coupable : toutes ses déclarations sont fausses.'),
+        half: TR('Le coupable mêle le vrai et le faux : au moins une de ses déclarations est vraie et au moins une est fausse. Les innocents disent toujours vrai.') };
+      return '<button type="button" data-act="mode" data-mode="' + k + '" aria-pressed="' + (k === state.mode) + '" title="' + D[k] + '">' + M[k] + '</button>';
     }).join('');
   }
 
