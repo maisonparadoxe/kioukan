@@ -787,7 +787,7 @@ body:has(.who.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18){opa
 .ld-list li[aria-selected="true"]:hover,.ld-list li[aria-selected="true"]:focus{color:var(--paper)}
 @keyframes ldin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .mtop nav{display:flex;align-items:center;gap:18px}
-@media (prefers-reduced-motion:reduce){html[lang="en"] .board{--tw:64px}
+html[lang="en"] .board{--tw:64px}
 html[lang="en"] .board .time{font-size:12px;padding-left:4px;padding-right:4px;white-space:nowrap}
 html[lang="en"] body::before{content:"DEMO"}
 
@@ -803,6 +803,7 @@ html[lang="en"] body::before{content:"DEMO"}
 .demo-end .end-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
 .demo-end .end-btns .btn{text-decoration:none;display:inline-flex;align-items:center}
 .share-msg{margin:10px 0 0;font-size:13px;color:var(--accent);min-height:1em}
+.plan .rtint{opacity:.42;pointer-events:none}
 </style>
 </head>
 <body>
@@ -4166,6 +4167,8 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
     $('suspects').innerHTML = h + '</div>';
   }
 
+var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22', '#5b6fa8', '#d07a2f'], OUT_TINT = '#4ea35a';
+  function roomTint(G, r, k) { return G.out ? OUT_TINT : ROOM_TINT[(r - (k || 0)) % ROOM_TINT.length]; }
   function doorRect(G, a, b) {
     var A = G[a], B = G[b];
     var x1 = Math.max(A.x, B.x), x2 = Math.min(A.x + A.w, B.x + B.w), y1 = Math.max(A.y, B.y), y2 = Math.min(A.y + A.h, B.y + B.h);
@@ -4193,6 +4196,7 @@ window.KioukanPuzzles = {"1":{"n":1,"suspects":["Rémi Sansou","Aria Vibrato","E
       var G1 = G[r];
       h += '<g class="furn">' + (G1.fu || []).map(function (f) { return ART.furn(f[0], G1.x + f[1], G1.y + f[2], f[3], f[4]); }).join('') + '</g>';
     }
+    for (r = 0; r < ROOMS.length; r++) h += '<rect class="rtint" x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '" fill="' + roomTint(G[r], r) + '"/>';
     if (!IMG) for (r = 0; r < ROOMS.length; r++) h += '<rect class="wall" x="' + G[r].x + '" y="' + G[r].y + '" width="' + G[r].w + '" height="' + G[r].h + '"/>';
     var cr = G[P.crime.room];
     h += '<rect class="crimeroom" x="' + (cr.x + 3) + '" y="' + (cr.y + 3) + '" width="' + (cr.w - 6) + '" height="' + (cr.h - 6) + '" rx="3"/>';

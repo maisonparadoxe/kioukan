@@ -823,7 +823,7 @@ body:has(.who.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18){opa
 .ld-list li[aria-selected="true"]:hover,.ld-list li[aria-selected="true"]:focus{color:var(--paper)}
 @keyframes ldin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .mtop nav{display:flex;align-items:center;gap:18px}
-@media (prefers-reduced-motion:reduce){html[lang="en"] .board{--tw:64px}
+html[lang="en"] .board{--tw:64px}
 html[lang="en"] .board .time{font-size:12px;padding-left:4px;padding-right:4px;white-space:nowrap}
 html[lang="en"] body::before{content:"DEMO"}
 
@@ -839,6 +839,7 @@ html[lang="en"] body::before{content:"DEMO"}
 .demo-end .end-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
 .demo-end .end-btns .btn{text-decoration:none;display:inline-flex;align-items:center}
 .share-msg{margin:10px 0 0;font-size:13px;color:var(--accent);min-height:1em}
+.plan .rtint{opacity:.42;pointer-events:none}
 </style>
 </head>
 <body>
@@ -2337,6 +2338,8 @@ window.addEventListener('error', function (e) {
     ROOMS = E.ROOMS; SUSPECTS = E.SUSPECTS; STEP = E.STEP; DOORS = E.DOORS;
     SC = SCENE_UI[state.scene]; GEO = SC.geo;
   }
+var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22', '#5b6fa8', '#d07a2f'], OUT_TINT = '#4ea35a';
+  function roomTint(G, r, k) { return G.out ? OUT_TINT : ROOM_TINT[(r - (k || 0)) % ROOM_TINT.length]; }
   function inRoom(r) { return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
   function unitize(str) { return EN ? str.replace(/\{unit\}/g, E.SCENE.unit) : str.replace(/pièce/g, E.SCENE.unit); }
   function doorRect(a, b) {
@@ -2532,6 +2535,10 @@ window.addEventListener('error', function (e) {
     if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G1 = GEO[r];
       svg += '<g class="furn">' + G1.fu.map(function (f) { return Art.furn(f[0], G1.x + f[1], G1.y + f[2], f[3], f[4]); }).join('') + '</g>';
+    }
+    for (r = 0; r < ROOMS.length; r++) {
+      var GT = GEO[r];
+      svg += '<rect class="rtint" x="' + GT.x + '" y="' + GT.y + '" width="' + GT.w + '" height="' + GT.h + '" fill="' + roomTint(GT, r) + '"/>';
     }
     if (!IMG) for (r = 0; r < ROOMS.length; r++) {
       var G3 = GEO[r];
