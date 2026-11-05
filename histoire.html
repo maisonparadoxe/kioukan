@@ -392,7 +392,7 @@ body{background:var(--bg) radial-gradient(rgba(120,90,30,.07) 1px,transparent 1.
 /* navigation */
 .topnav{max-width:1040px;margin:0 auto 12px;display:flex;gap:10px;align-items:center}
 .navbtn{display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;border:1.5px solid var(--ink);border-radius:2px;color:var(--ink);background:transparent;text-decoration:none;font:700 12px var(--label);letter-spacing:.18em;text-transform:uppercase;transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .15s,color .15s}
-.navbtn:hover,.navbtn:focus-visible{background:var(--btn);color:var(--btn-ink);transform:translateY(-2px)}
+.navbtn:hover,.navbtn:focus-visible{background:var(--btn);color:var(--btn-ink);transform:translate(-2px,-3px) rotate(-1.5deg);box-shadow:4px 5px 0 var(--accent)}
 
 /* titres : affiche Art déco */
 .logo,h1,.lvl-title,.demo-end h3{font-family:var(--display)!important;font-weight:400!important;font-style:normal!important}
@@ -413,13 +413,14 @@ details.panel>summary{font:700 14px var(--label);letter-spacing:.2em;text-transf
 button,.btn,a.btn{border:1.5px solid var(--ink)!important;border-radius:2px!important;box-shadow:none!important;font-family:var(--label);font-weight:700;letter-spacing:.06em;
   transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .15s,color .15s,box-shadow .15s}
 .btn,a.btn{text-transform:uppercase;letter-spacing:.14em;font-size:12.5px}
-button:not(:disabled):not(.time):not(.ep-btn):hover,button:not(:disabled):not(.time):not(.ep-btn):focus-visible,.btn:hover,a.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--line-2)!important}
-button:not(:disabled):active,.btn:active{transform:translateY(1px)!important;box-shadow:none!important}
+button:not(:disabled):not(.time):not(.ep-btn):hover,button:not(:disabled):not(.time):not(.ep-btn):focus-visible,.btn:hover,a.btn:hover,.btn:focus-visible{transform:translate(-2px,-3px) rotate(-1deg);box-shadow:4px 5px 0 var(--ink)!important}
+button.primary:hover,.btn.primary:hover{box-shadow:4px 5px 0 var(--gold)!important}
+button:not(:disabled):active,.btn:active{transform:translate(2px,2px)!important;box-shadow:none!important}
 button.primary,.btn.primary{background:var(--btn);border-color:var(--btn)!important;color:var(--btn-ink)}
 button.primary:hover,.btn.primary:hover{background:var(--accent);border-color:var(--accent)!important;color:var(--accent-ink)}
 .btn.accuse{background:var(--accent);border-color:var(--accent)!important;color:var(--accent-ink)}
 button.time{padding-left:3px;padding-right:3px;font-size:13px;letter-spacing:-.02em;white-space:nowrap;overflow:visible}
-button.time:not(:disabled):hover{transform:translateY(-2px)}
+button.time:not(:disabled):hover{transform:translate(-1px,-2px);box-shadow:3px 4px 0 var(--ink)}
 .ep-btn:not(:disabled):hover{transform:translateX(4px)}
 .seg{border:0!important;background:transparent!important;padding:0!important;gap:8px!important;box-shadow:none!important}
 .seg button{margin:0}
