@@ -505,6 +505,48 @@ body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;tex
 .plan .furn,.plan .deco,.plan rect[fill^="url(#pf-"],.plan>image{filter:url(#duo)}
 .plan .wall{stroke:var(--ink)!important}
 @media (prefers-reduced-motion:reduce){button,.btn,.navbtn{transition:none!important}button:hover,.btn:hover,.navbtn:hover{transform:none!important}}
+
+/* une couleur par suspect */
+:root{--s0:#2f64c9; --s1:#1f8a5b; --s2:#c77f10; --s3:#7c4bbd; --s4:#c23f86; --s5:#17899b; --s6:#8a5a36; --s7:#55627a;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s0:#6f9bf2; --s1:#4cc58f; --s2:#f0a63c; --s3:#b28cf0; --s4:#f27cb5; --s5:#4fc3d6; --s6:#c99468; --s7:#9fb0cc;}}
+:root[data-theme="dark"]{--s0:#6f9bf2; --s1:#4cc58f; --s2:#f0a63c; --s3:#b28cf0; --s4:#f27cb5; --s5:#4fc3d6; --s6:#c99468; --s7:#9fb0cc;}
+.s0{--c:var(--s0)} .s1{--c:var(--s1)} .s2{--c:var(--s2)} .s3{--c:var(--s3)} .s4{--c:var(--s4)} .s5{--c:var(--s5)} .s6{--c:var(--s6)} .s7{--c:var(--s7)}
+.mini{border:3px solid var(--c,var(--ink))!important}
+.fiche,.pola{border-bottom:4px solid var(--c,var(--ink))!important;transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,opacity .2s}
+.fiche-img,.pola-img{overflow:hidden}
+.fiche .pcard,.pola .pcard{transition:transform .5s}
+.fiche:hover,.pola:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:0 9px 0 -3px var(--c)!important}
+.fiche:hover .pcard,.pola:hover .pcard{transform:scale(1.05)}
+.cell{box-shadow:inset 0 -4px 0 var(--c,var(--line-2))!important;transition:opacity .2s,transform .15s}
+.cell:not(.empty):not(.given){background:color-mix(in srgb,var(--c) 14%,var(--cell))}
+button.cell:not(:disabled):not(.time):not(.ep-btn):hover{transform:translateY(-1px);box-shadow:inset 0 -4px 0 var(--c,var(--line-2))!important}
+.who,.tok,.lc-tok{transition:opacity .2s}
+.tok .ring{stroke-width:3}
+body:has(.fiche.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0),
+body:has(.pola.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0),
+body:has(.who.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0){opacity:.32}
+body:has(.fiche.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1),
+body:has(.pola.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1),
+body:has(.who.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1){opacity:.32}
+body:has(.fiche.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2),
+body:has(.pola.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2),
+body:has(.who.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2){opacity:.32}
+body:has(.fiche.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3),
+body:has(.pola.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3),
+body:has(.who.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3){opacity:.32}
+body:has(.fiche.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4),
+body:has(.pola.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4),
+body:has(.who.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4){opacity:.32}
+body:has(.fiche.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5),
+body:has(.pola.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5),
+body:has(.who.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5){opacity:.32}
+body:has(.fiche.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6),
+body:has(.pola.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6),
+body:has(.who.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6){opacity:.32}
+body:has(.fiche.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7),
+body:has(.pola.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7),
+body:has(.who.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7){opacity:.32}
+@media (prefers-reduced-motion:reduce){.fiche,.pola,.fiche .pcard,.pola .pcard,.cell{transition:none!important}.fiche:hover,.pola:hover,.fiche:hover .pcard,.pola:hover .pcard{transform:none}}
 </style>
 </head>
 <body>
@@ -1063,6 +1105,18 @@ window.addEventListener('error', function (e) {
   }
 
   window.KioukanWT = { bust: bust, portrait: portrait, faceBadge: faceBadge, background: background, slug: slug };
+})();
+/* Couleur par suspect : fixe pour les personnages récurrents, automatique pour les autres */
+(function(){
+  var FIXED = {'Rémi Sansou':0,'Lise Défait':1,'Ernest Couchette':2,'Pr Hector Tumulus':3,'Aria Vibrato':4,'Jean Bilet':5,'Agathe Crispie':6,'Comtesse Diane de Carat':7};
+  window.kioukanCI = function (names, s) {
+    var used = {}, i, out = [];
+    for (i = 0; i < names.length; i++) if (FIXED[names[i]] != null) used[FIXED[names[i]]] = 1;
+    var free = [], k; for (k = 0; k < 8; k++) if (!used[k]) free.push(k);
+    var f = 0;
+    for (i = 0; i < names.length; i++) out.push(FIXED[names[i]] != null ? FIXED[names[i]] : (free.length ? free[(f++) % free.length] : i % 8));
+    return s == null ? out : out[s];
+  };
 })();
 
 </script>
@@ -2136,7 +2190,7 @@ window.addEventListener('error', function (e) {
         var row = Math.floor(k / cols), col = k % cols, inRow = Math.min(cols, n - row * cols);
         var x = G2.x + G2.w / 2 + (col - (inRow - 1) / 2) * 24, y = y0 + row * step;
         var cul = state.solved && t === P.crime.t && sid === P.culprit;
-        svg += '<g class="tok s' + sid + (cul ? ' culprit' : '') + '" transform="translate(' + x + ',' + y + ')">' +
+        svg += '<g class="tok s' + ci(sid) + (cul ? ' culprit' : '') + '" transform="translate(' + x + ',' + y + ')">' +
           '<circle class="halo" r="12.5"/><circle class="face" r="10.4"/>' +
           (WT ? (WT.faceBadge(SUSPECTS[sid].name, 20.8) || '<g clip-path="url(#tokc)"><svg x="-10.4" y="-8.6" width="20.8" height="25" viewBox="14 22 72 86">' + WT.bust(SUSPECTS[sid].name, 'neutre') + '</svg></g>')
             : '<g transform="translate(-9.6 -9.6) scale(0.3)" clip-path="url(#tokclip)">' + Art.avatarInner(SUSPECTS[sid].name) + '</g>') +
@@ -2151,10 +2205,11 @@ window.addEventListener('error', function (e) {
   }
 
   function pola(sid, extra) {
-    return '<figure class="pola s' + sid + '" title="' + SUSPECTS[sid].name + '"><div class="pola-img">' + face(sid) + '</div>' +
+    return '<figure class="pola s' + ci(sid) + '" title="' + SUSPECTS[sid].name + '"><div class="pola-img">' + face(sid) + '</div>' +
       '<figcaption><span class="pn">' + SUSPECTS[sid].short + '</span>' + (extra || '') + '</figcaption></figure>';
   }
-  function mini(sid) { return '<span class="mini s' + sid + '">' + face(sid) + '</span>'; }
+  function ci(s) { return window.kioukanCI(SUSPECTS.map(function (x) { return x.name; }), s); }
+  function mini(sid) { return '<span class="mini s' + ci(sid) + '">' + face(sid) + '</span>'; }
   function face(sid) { return WT ? WT.portrait(SUSPECTS[sid].name, 'neutre') : Art.avatar(SUSPECTS[sid].name); }
 
   function renderSuspects() {
@@ -2172,7 +2227,7 @@ window.addEventListener('error', function (e) {
     h += '<div class="panel-hd"><h2 class="label">Chronologie</h2><span class="sub">touche une case</span></div>';
     h += '<div class="board' + (S >= 5 ? ' dense' : '') + '" style="--cols:' + S + '"><div></div>';
     for (s = 0; s < S; s++) {
-      h += '<div class="who s' + s + '">' + mini(s) + '<b>' + SUSPECTS[s].short + '</b>' +
+      h += '<div class="who s' + ci(s) + '">' + mini(s) + '<b>' + SUSPECTS[s].short + '</b>' +
         (isLiar(P) && state.liarGuess === s ? '<small class="liar-badge">menteur ?</small>' : (S <= 4 ? '<small>' + SUSPECTS[s].role + '</small>' : '')) + '</div>';
     }
     for (t = 0; t < T; t++) {
@@ -2180,7 +2235,7 @@ window.addEventListener('error', function (e) {
       h += '<button type="button" class="time' + (t === state.selT ? ' sel' : '') + '" data-act="time" data-t="' + t + '">' + tl(t) + (isCrime ? '<small>crime</small>' : '') + '</button>';
       for (s = 0; s < S; s++) {
         var idx = s * T + t, v = state.grid[idx], given = state.given[idx];
-        var cls = 'cell s' + s + (v < 0 ? ' empty' : '') + (given ? ' given' : '') + (show && !given && A.bad[idx] ? ' bad' : '');
+        var cls = 'cell s' + ci(s) + (v < 0 ? ' empty' : '') + (given ? ' given' : '') + (show && !given && A.bad[idx] ? ' bad' : '');
         var label = SUSPECTS[s].name + ', ' + tl(t) + ' : ' + (v < 0 ? 'vide' : ROOMS[v].name) + (given ? ' (confirmé)' : '');
         h += '<button type="button" class="' + cls + '" data-act="cell" data-s="' + s + '" data-t="' + t + '" aria-label="' + label + '"' +
           (given || state.solved ? ' disabled' : '') + '>' + (v < 0 ? '' : ROOMS[v].short) + (given ? ICON.lock : '') + '</button>';
@@ -2190,7 +2245,7 @@ window.addEventListener('error', function (e) {
     if (isLiar(P) && !state.solved) {
       h += '<div class="liar"><span class="liar-q">Qui ment ?</span><div class="liar-btns">';
       for (s = 0; s < S; s++) {
-        h += '<button type="button" class="liar-btn s' + s + '" data-act="liar" data-s="' + s + '" aria-pressed="' + (state.liarGuess === s) + '">' + mini(s) + SUSPECTS[s].short + '</button>';
+        h += '<button type="button" class="liar-btn s' + ci(s) + '" data-act="liar" data-s="' + s + '" aria-pressed="' + (state.liarGuess === s) + '">' + mini(s) + SUSPECTS[s].short + '</button>';
       }
       h += '</div></div>';
     }
@@ -2238,7 +2293,7 @@ window.addEventListener('error', function (e) {
         return li(it, '« ' + E.statementText(P, it.c) + ' »');
       }).join('');
       var who = L < 0 ? '' : (L === s ? '<span class="tag liar-tag">' + (P.mode === 'half' ? 'ment en partie' : 'ment : tout est faux') + '</span>' : '<span class="tag">dit vrai</span>');
-      h += '<div class="sp s' + s + '">' + pola(s, '<small>' + SUSPECTS[s].role + '</small>' + who) +
+      h += '<div class="sp s' + ci(s) + '">' + pola(s, '<small>' + SUSPECTS[s].role + '</small>' + who) +
         (rows ? '<ul class="clues bubbles">' + rows + '</ul>' : '<p class="empty-note">Toutes ses déclarations sont confirmées.</p>') + '</div>';
     }
     $('clues-panel').innerHTML = h;
@@ -2293,7 +2348,7 @@ window.addEventListener('error', function (e) {
       var P0 = state.puz, ab = '';
       for (var q0 = 0; q0 < P0.S; q0++) {
         var out = state.accused.indexOf(q0) >= 0;
-        ab += '<button type="button" class="acc-btn s' + q0 + (out ? ' out' : '') + '" data-act="accpick" data-s="' + q0 + '"' + (out ? ' disabled' : '') + '>' +
+        ab += '<button type="button" class="acc-btn s' + ci(q0) + (out ? ' out' : '') + '" data-act="accpick" data-s="' + q0 + '"' + (out ? ' disabled' : '') + '>' +
           pola(q0, '<small>' + (out ? 'innocent' : SUSPECTS[q0].role) + '</small>') + '</button>';
       }
       root.innerHTML = '<div class="scrim" data-act="close"></div>' +
@@ -2318,7 +2373,7 @@ window.addEventListener('error', function (e) {
         room.name + (far ? '<small>trop loin</small>' : '') + '</button>';
     }).join('');
     root.innerHTML = '<div class="scrim" data-act="close"></div>' +
-      '<div class="sheet s' + s + '" role="dialog" aria-modal="true" aria-label="Choisir une ' + E.SCENE.unit + '">' +
+      '<div class="sheet s' + ci(s) + '" role="dialog" aria-modal="true" aria-label="Choisir une ' + E.SCENE.unit + '">' +
       '<div class="sheet-hd">' + mini(s) + '<b>' + SUSPECTS[s].name + '</b></div>' +
       '<p class="trail">' + trail.join(' → ') + '</p>' +
       '<div class="room-grid">' + btns + '</div>' +

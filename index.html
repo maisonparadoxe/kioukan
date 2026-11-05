@@ -170,6 +170,48 @@ body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;tex
 .plan .furn,.plan .deco,.plan rect[fill^="url(#pf-"],.plan>image{filter:url(#duo)}
 .plan .wall{stroke:var(--ink)!important}
 @media (prefers-reduced-motion:reduce){button,.btn,.navbtn{transition:none!important}button:hover,.btn:hover,.navbtn:hover{transform:none!important}}
+
+/* une couleur par suspect */
+:root{--s0:#2f64c9; --s1:#1f8a5b; --s2:#c77f10; --s3:#7c4bbd; --s4:#c23f86; --s5:#17899b; --s6:#8a5a36; --s7:#55627a;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s0:#6f9bf2; --s1:#4cc58f; --s2:#f0a63c; --s3:#b28cf0; --s4:#f27cb5; --s5:#4fc3d6; --s6:#c99468; --s7:#9fb0cc;}}
+:root[data-theme="dark"]{--s0:#6f9bf2; --s1:#4cc58f; --s2:#f0a63c; --s3:#b28cf0; --s4:#f27cb5; --s5:#4fc3d6; --s6:#c99468; --s7:#9fb0cc;}
+.s0{--c:var(--s0)} .s1{--c:var(--s1)} .s2{--c:var(--s2)} .s3{--c:var(--s3)} .s4{--c:var(--s4)} .s5{--c:var(--s5)} .s6{--c:var(--s6)} .s7{--c:var(--s7)}
+.mini{border:3px solid var(--c,var(--ink))!important}
+.fiche,.pola{border-bottom:4px solid var(--c,var(--ink))!important;transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s,opacity .2s}
+.fiche-img,.pola-img{overflow:hidden}
+.fiche .pcard,.pola .pcard{transition:transform .5s}
+.fiche:hover,.pola:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:0 9px 0 -3px var(--c)!important}
+.fiche:hover .pcard,.pola:hover .pcard{transform:scale(1.05)}
+.cell{box-shadow:inset 0 -4px 0 var(--c,var(--line-2))!important;transition:opacity .2s,transform .15s}
+.cell:not(.empty):not(.given){background:color-mix(in srgb,var(--c) 14%,var(--cell))}
+button.cell:not(:disabled):not(.time):not(.ep-btn):hover{transform:translateY(-1px);box-shadow:inset 0 -4px 0 var(--c,var(--line-2))!important}
+.who,.tok,.lc-tok{transition:opacity .2s}
+.tok .ring{stroke-width:3}
+body:has(.fiche.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0),
+body:has(.pola.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0),
+body:has(.who.s0:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s0){opacity:.32}
+body:has(.fiche.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1),
+body:has(.pola.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1),
+body:has(.who.s1:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s1){opacity:.32}
+body:has(.fiche.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2),
+body:has(.pola.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2),
+body:has(.who.s2:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s2){opacity:.32}
+body:has(.fiche.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3),
+body:has(.pola.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3),
+body:has(.who.s3:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s3){opacity:.32}
+body:has(.fiche.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4),
+body:has(.pola.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4),
+body:has(.who.s4:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s4){opacity:.32}
+body:has(.fiche.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5),
+body:has(.pola.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5),
+body:has(.who.s5:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s5){opacity:.32}
+body:has(.fiche.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6),
+body:has(.pola.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6),
+body:has(.who.s6:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s6){opacity:.32}
+body:has(.fiche.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7),
+body:has(.pola.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7),
+body:has(.who.s7:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s7){opacity:.32}
+@media (prefers-reduced-motion:reduce){.fiche,.pola,.fiche .pcard,.pola .pcard,.cell{transition:none!important}.fiche:hover,.pola:hover,.fiche:hover .pcard,.pola:hover .pcard{transform:none}}
 </style>
 </head>
 <body>
