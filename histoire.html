@@ -4447,6 +4447,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
 
   /* ---------- Chargement d'un épisode ---------- */
   function load(n) {
+    var wantRules = location.hash === '#rules';
     n = Math.max(1, Math.min(N, n | 0));
     if (!unlocked(n)) n = lastUnlocked();
     state.ep = n; LV = SPEC.levels[n - 1]; CH = SPEC.chapters[LV.ch - 1];
@@ -4463,7 +4464,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     lsSet('kioukan.histoire.ep', String(n));
     if (location.hash !== '#e' + n) { try { history.replaceState(null, '', '#e' + n); } catch (e) { /* fichier local */ } }
     document.title = 'Kioukan · ' + TR(LV.title);
-    renderList(); renderIntro(); renderGame(); if (location.hash === '#rules') { var rr = $('rules'); if (rr) { rr.open = true; rr.scrollIntoView(); } }
+    renderList(); renderIntro(); renderGame(); if (wantRules) { var rr = $('rules'); if (rr) { rr.open = true; setTimeout(function () { rr.scrollIntoView({ block: 'start' }); }, 150); } }
   }
 
   function win(early) {
