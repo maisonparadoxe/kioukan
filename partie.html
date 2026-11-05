@@ -394,131 +394,121 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 
 
 <script>window.KIOUKAN_DEMO_CH=1</script>
-<style id="skin">@font-face{font-family:'Abril Fatface';src:url(fonts/abril.woff2) format('woff2');font-display:swap}
-/* ===== Habillage « carnet d'enquête » — encre, papier, aplats ===== */
+<style id="skin">@font-face{font-family:'Limelight';src:url(fonts/limelight-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Josefin Sans';font-weight:400;src:url(fonts/josefin-sans-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Josefin Sans';font-weight:600;src:url(fonts/josefin-sans-latin-600-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Josefin Sans';font-weight:700;src:url(fonts/josefin-sans-latin-700-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Special Elite';src:url(fonts/special-elite-latin-400-normal.woff2) format('woff2');font-display:swap}
+/* ===== Habillage « Wagons-Lits » — Art déco, affiche de voyage, papier de dossier ===== */
 :root{
-  --bg:#eee7d8; --paper:#fbf7ec; --panel-2:#e6dcc8; --cell:#f7f1e2; --gutter:#fbf7ec;
-  --ink:#171d2e; --ink-2:#55596b; --line:#171d2e; --line-2:#b9ad93;
-  --accent:#a8232f; --accent-ink:#fbf7ec; --accent-2:#1d6f7a; --ok:#2b7a57;
-  --shadow:4px 4px 0 #171d2e;
-  --display:'Abril Fatface','Playfair Display',Georgia,serif;
-  --given:#f2dc9c;
+  --bg:#e8d8ac; --paper:#f7eed3; --panel-2:#ecdcb0; --cell:#f3e7c4; --gutter:#f7eed3;
+  --ink:#0b2236; --ink-2:#4a5a66; --line:#cdb987; --line-2:#b49c63;
+  --accent:#b0402b; --accent-ink:#f7eed3; --accent-2:#8f5a0e; --ok:#2f6f4e;
+  --btn:#0b2236; --btn-ink:#f6e3b8; --gold:#e19427;
+  --shadow:0 8px 20px rgba(60,40,10,.18);
+  --display:'Limelight','Playfair Display',Georgia,serif;
+  --label:'Josefin Sans','Noto Sans',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+  --given:#f0c868;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
-  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
-  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}}
+  --bg:#071b2c; --paper:#0f2b44; --panel-2:#153a5a; --cell:#0b2339; --gutter:#071b2c;
+  --ink:#f6e3b8; --ink-2:#b4b8ae; --line:#27506f; --line-2:#3a6485;
+  --accent:#f0a93a; --accent-ink:#071b2c; --accent-2:#f3c46b; --ok:#6fd3a2;
+  --btn:#e19427; --btn-ink:#071b2c; --shadow:0 8px 22px rgba(0,0,0,.5); --given:#6a4e12;}}
 :root[data-theme="dark"]{
-  --bg:#12151f; --paper:#1b2030; --panel-2:#252b3d; --cell:#161a27; --gutter:#0d1019;
-  --ink:#f3ecda; --ink-2:#a9a7b3; --line:#f3ecda; --line-2:#3b4258;
-  --accent:#e0606a; --accent-ink:#12151f; --accent-2:#59b8c4; --ok:#5fd39b; --shadow:4px 4px 0 #000; --given:#5a4a26;}
-body{background:var(--bg) radial-gradient(rgba(23,29,46,.07) 1px,transparent 1.4px) 0 0/6px 6px;}
-/* titres : affiche années 30 */
-.logo,h1,.lvl-title,h2.label{font-family:var(--display)!important;font-weight:400!important;font-style:normal!important;letter-spacing:.04em}
-.logo{letter-spacing:.1em;color:var(--accent);text-shadow:3px 3px 0 var(--ink)}
-h1{color:var(--accent)}
-.motto{font-family:var(--serif);font-style:italic}
-.collection,.label{color:var(--accent-2)}
-/* cartes, boutons : trait franc, ombre portée dure */
-.card,.mode,.scene,.fiche,.panel,details,.ep-picker,select,.lvl-select{border:2px solid var(--ink)!important;border-radius:8px!important;box-shadow:var(--shadow)!important}
-button,.btn,a.btn,.cta{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink);font-weight:700;text-transform:none;transition:transform .08s,box-shadow .08s}
-button:active,.btn:active,.cta:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
-button.primary,.btn.primary{background:var(--accent);color:var(--accent-ink)}
-.pcard{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink)!important}
+  --bg:#071b2c; --paper:#0f2b44; --panel-2:#153a5a; --cell:#0b2339; --gutter:#071b2c;
+  --ink:#f6e3b8; --ink-2:#b4b8ae; --line:#27506f; --line-2:#3a6485;
+  --accent:#f0a93a; --accent-ink:#071b2c; --accent-2:#f3c46b; --ok:#6fd3a2;
+  --btn:#e19427; --btn-ink:#071b2c; --shadow:0 8px 22px rgba(0,0,0,.5); --given:#6a4e12;}
+body{background:var(--bg) radial-gradient(rgba(120,90,30,.07) 1px,transparent 1.4px) 0 0/7px 7px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body{background:radial-gradient(ellipse at 50% -10%,#12385a,var(--bg) 70%) fixed}}
+:root[data-theme="dark"] body{background:radial-gradient(ellipse at 50% -10%,#12385a,var(--bg) 70%) fixed}
+
+/* navigation */
+.topnav{max-width:1040px;margin:0 auto 12px;display:flex;gap:10px;align-items:center}
+.navbtn{display:inline-flex;align-items:center;min-height:40px;padding:8px 16px;border:1.5px solid var(--ink);border-radius:2px;color:var(--ink);background:transparent;text-decoration:none;font:700 12px var(--label);letter-spacing:.18em;text-transform:uppercase;transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .15s,color .15s}
+.navbtn:hover,.navbtn:focus-visible{background:var(--btn);color:var(--btn-ink);transform:translateY(-2px)}
+
+/* titres : affiche Art déco */
+.logo,h1,.lvl-title,.demo-end h3{font-family:var(--display)!important;font-weight:400!important;font-style:normal!important}
+h1,.logo{text-transform:uppercase;letter-spacing:.08em;color:var(--accent);text-shadow:2px 2px 0 var(--line-2)}
+.lvl-title{letter-spacing:.02em;font-size:30px}
+.motto{font-family:var(--display);font-style:normal}
+.collection,.mode-tag,.kicker,.lvl-title span{font-family:var(--label)!important;font-weight:700!important;letter-spacing:.26em!important}
+.label,h2.label{font:700 14px var(--label)!important;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2)}
+.label::before{content:"";display:inline-block;width:8px;height:8px;border:1.5px solid currentColor;transform:rotate(45deg);margin:0 10px 1px 2px}
+
+/* panneaux : filet fin + filet intérieur, comme un cadre d'affiche */
+.panel,.card,.mode,.fiche,details,.ep-picker,select,.lvl-select{border:1.5px solid var(--ink)!important;border-radius:2px!important;box-shadow:var(--shadow),inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--line-2)!important}
+.panel{padding:20px!important}
+details.panel>summary{font:700 14px var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--accent-2);cursor:pointer}
+.scene{border:1.5px solid var(--ink)!important;border-radius:0!important}
+
+/* boutons : angles droits, capitales espacées */
+button,.btn,a.btn{border:1.5px solid var(--ink)!important;border-radius:2px!important;box-shadow:none!important;font-family:var(--label);font-weight:700;letter-spacing:.06em;
+  transition:transform .18s cubic-bezier(.3,1.6,.5,1),background .15s,color .15s,box-shadow .15s}
+.btn,a.btn{text-transform:uppercase;letter-spacing:.14em;font-size:12.5px}
+button:not(:disabled):not(.time):not(.ep-btn):hover,button:not(:disabled):not(.time):not(.ep-btn):focus-visible,.btn:hover,a.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--line-2)!important}
+button:not(:disabled):active,.btn:active{transform:translateY(1px)!important;box-shadow:none!important}
+button.primary,.btn.primary{background:var(--btn);border-color:var(--btn)!important;color:var(--btn-ink)}
+button.primary:hover,.btn.primary:hover{background:var(--accent);border-color:var(--accent)!important;color:var(--accent-ink)}
+.btn.accuse{background:var(--accent);border-color:var(--accent)!important;color:var(--accent-ink)}
+button.time{padding-left:3px;padding-right:3px;font-size:13px;letter-spacing:-.02em;white-space:nowrap;overflow:visible}
+button.time:not(:disabled):hover{transform:translateY(-2px)}
+.ep-btn:not(:disabled):hover{transform:translateX(4px)}
+.seg{border:0!important;background:transparent!important;padding:0!important;gap:8px!important;box-shadow:none!important}
+.seg button{margin:0}
+.pcard{border:2px solid var(--ink)!important;border-radius:2px!important;box-shadow:0 4px 8px rgba(0,0,0,.25)!important}
 .mini{border:2px solid var(--ink)!important}
-.story-text .sq b{font-family:var(--display);font-weight:400;color:var(--accent);letter-spacing:.05em}
-.snar{color:var(--ink-2)}
+
+/* carnet : fiches tapées à la machine */
+.clue .txt,.empty-note{font-family:var(--type);font-size:14px;line-height:1.5}
+.clue{border-top:1px dashed var(--line-2)!important}
+.clue.rule .txt{font-weight:400;border-left:3px solid var(--accent);padding-left:10px}
+.speaker b{font-family:var(--label)!important;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:13px}
+.bubbles .clue{border-radius:2px!important;background:var(--panel-2)!important;border:0!important}
+.bubbles .clue::before{display:none}
+.tag{border-radius:2px!important;font-family:var(--label);letter-spacing:.1em;text-transform:uppercase;font-size:10px}
 
 /* dialogues façon pièce de théâtre */
+.story-text .sq b{font-family:var(--label);font-weight:700;color:var(--accent);letter-spacing:.2em}
+.snar{color:var(--ink-2)}
 .story-text .sline{display:block;margin:14px 0 4px}
 .story-text .sline .mini{display:none}
 .story-text .sline .sq{display:block}
-.story-text .sline .sq b{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1px}
-.story-text .sline .sq i,.story-text .sline .sq{font-family:var(--serif);font-size:17px;line-height:1.45;color:var(--ink)}
+.story-text .sline .sq b{display:block;font-size:12.5px;text-transform:uppercase;margin-bottom:1px}
+.story-text .sline .sq i,.story-text .sline .sq{font-family:var(--type);font-size:16px;line-height:1.55;color:var(--ink)}
 .story-text .sline .sq{padding-left:14px;border-left:3px solid var(--accent)}
 .story-text .snar{font-style:italic;color:var(--ink-2);margin:10px 0}
 
-button.time{box-shadow:2px 2px 0 var(--ink);padding-left:3px;padding-right:3px;font-size:13px;letter-spacing:-.02em;white-space:nowrap;overflow:visible}
-
 /* démo */
-body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;text-align:center;transform:rotate(45deg);background:var(--accent);color:var(--accent-ink);font:700 12px var(--sans);letter-spacing:.2em;padding:4px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);z-index:50;pointer-events:none}
-.demo-end{margin:18px 0 6px;padding:16px 18px;border:2px solid var(--ink);border-radius:8px;background:var(--panel-2);box-shadow:3px 3px 0 var(--ink)}
-.demo-end h3{margin:0 0 6px;font:400 24px var(--display);color:var(--accent)}
+body::before{content:"DÉMO";position:fixed;top:14px;right:-38px;width:140px;text-align:center;transform:rotate(45deg);background:#b0402b;color:#f7eed3;font:700 12px var(--label);letter-spacing:.3em;padding:4px 0;z-index:50;pointer-events:none;animation:demoroll 9s ease-in-out infinite}
+@keyframes demoroll{0%,60%{opacity:1;transform:rotate(45deg) scale(1,1)}70%{opacity:1;transform:rotate(45deg) scale(.15,1.8)}74%,84%{opacity:0;transform:rotate(45deg) scale(.02,1.8)}94%,100%{opacity:1;transform:rotate(45deg) scale(1,1)}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
+.demo-end{margin:18px 0 6px;padding:18px 20px;border:1.5px solid var(--ink);border-radius:2px;background:var(--panel-2);box-shadow:inset 0 0 0 4px var(--panel-2),inset 0 0 0 5px var(--line-2)}
+.demo-end h3{margin:0 0 6px;font-size:24px;color:var(--accent)}
 .demo-end p{margin:6px 0}
 .demo-soon h3 span{color:var(--ink-2)}
 .demo-soon p{margin:4px 0 0;color:var(--ink-2);font-style:italic}
-.seg{border:0!important;background:transparent!important;padding:0!important;gap:8px!important;box-shadow:none!important}
-.seg button{box-shadow:2px 2px 0 var(--ink);margin:0}
 
-/* bandeau d'ambiance */
-.cover.ep-banner{position:relative;margin:6px 0 18px;padding:76px 18px 18px;border:2px solid var(--ink);border-radius:8px;box-shadow:var(--shadow);background-size:cover;background-position:center;overflow:hidden;text-align:left}
-.cover.ep-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,26,.88) 8%,rgba(10,14,26,.2) 70%)}
+/* bandeau d'ambiance d'épisode : affiche */
+.cover.ep-banner{position:relative;margin:6px 0 20px;padding:84px 20px 20px;border:1.5px solid var(--ink);border-radius:2px;box-shadow:var(--shadow);background-size:cover;background-position:center 68%;overflow:hidden;text-align:left}
+.cover.ep-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(7,27,44,.95) 12%,rgba(7,27,44,.72) 62%,rgba(7,27,44,.3) 100%)}
+.cover.ep-banner::after{content:"";position:absolute;inset:7px;border:1px solid #e19427;pointer-events:none}
 .cover.ep-banner>*{position:relative}
-.cover.ep-banner .kicker,.cover.ep-banner .blurb,.cover.ep-banner .lvl-title,.cover.ep-banner .lvl-title span{color:#fbf7ec!important;text-shadow:0 1px 6px rgba(0,0,0,.6)}
-.cover.ep-banner .lvl-title span{color:#f2c46a!important}
-.cover.ep-banner .blurb{font-style:italic}
-/* carte « partie rapide » : trois portraits encadrés, fonds conservés */
-#scene-quick{aspect-ratio:auto!important;background:var(--panel-2)!important;display:flex;gap:12px;justify-content:center;align-items:flex-start;padding:18px 14px 16px}
-#scene-quick .wbg,#scene-quick::after{display:none!important}
-#scene-quick .bust{position:static!important;transform:rotate(var(--r,0deg))!important;width:30%!important;left:auto!important}
-#scene-quick .bust:nth-child(2){--r:-2deg}
-#scene-quick .bust:nth-child(3){--r:1.5deg;margin-top:6px}
-#scene-quick .bust:nth-child(4){--r:-1deg}
-#scene-quick .bust .pcard{border:2px solid var(--ink)!important;border-radius:6px!important;box-shadow:3px 3px 0 var(--ink)!important}
+.cover.ep-banner .kicker,.cover.ep-banner .blurb,.cover.ep-banner .lvl-title{color:#f6e3b8!important;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.cover.ep-banner .lvl-title span{color:#f3c46b!important}
+.cover.ep-banner .blurb{font-family:var(--type);font-style:normal}
 
 /* avatars ronds cadrés sur le visage */
 .mini{position:relative;overflow:hidden}
 .mini img.pcard,.mini img.pbw{position:absolute!important;max-width:none!important;transform:none!important;object-fit:fill!important;border:0!important;border-radius:0!important;box-shadow:none!important;
   width:calc(var(--z,1) * 100%)!important;height:auto!important;left:calc(50% - var(--fx,.5) * var(--z,1) * 100%)!important;top:calc(50% - var(--fy,.33) * 1.5 * var(--z,1) * 100%)!important}
-/* bandeau démo : s'enroule et se déroule en boucle */
-body::before{animation:demoroll 9s ease-in-out infinite}
-@keyframes demoroll{0%,60%{opacity:1;transform:rotate(45deg) scale(1,1)}70%{opacity:1;transform:rotate(45deg) scale(.15,1.8)}74%,84%{opacity:0;transform:rotate(45deg) scale(.02,1.8)}94%,100%{opacity:1;transform:rotate(45deg) scale(1,1)}}
-@media (prefers-reduced-motion:reduce){body::before{animation:none}}
 
 .howto{text-align:center;color:var(--ink-2);font-size:14px;margin:6px 0 14px}
 .howto a,.foot a{color:var(--accent);font-weight:700}
-.howto-btn{background:var(--paper)}
-
-/* Menu : survols plus marqués */
-.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-.pill{display:inline-flex;align-items:center;min-height:42px;padding:8px 18px;border:2px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:700 14px var(--sans);text-decoration:none;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s,background .15s,color .15s}
-.pill:hover,.pill:focus-visible{transform:translate(-2px,-2px) rotate(-1.5deg);box-shadow:5px 5px 0 var(--accent);background:var(--accent);color:var(--accent-ink)}
-.pill:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.file{transition:transform .22s cubic-bezier(.3,1.6,.5,1),box-shadow .22s}
-.file:hover,.file:focus-visible{transform:translate(-4px,-6px) rotate(-.8deg);box-shadow:10px 10px 0 var(--ink)!important}
-.file:nth-child(2):hover,.file:nth-child(2):focus-visible{transform:translate(-4px,-6px) rotate(.8deg)}
-.file .scene{overflow:hidden}
-.file .scene .wbg,.file .scene .bust{transition:transform .5s ease}
-.file:hover .scene .wbg{transform:scale(1.1)}
-.file:hover .scene .bust{transform:translateX(-50%) translateY(-6px) scale(1.04)}
-.file .btn{transition:transform .2s,background .2s,box-shadow .2s;position:relative}
-.file .btn::after{content:"→";margin-left:8px;display:inline-block;transition:transform .2s}
-.file:hover .btn{transform:scale(1.06);box-shadow:3px 3px 0 var(--ink)}
-.file:hover .btn::after{transform:translateX(6px)}
-.file:hover h2{color:var(--accent)}
-.file .chip{transition:transform .2s}
-.file:hover .chip{transform:translateY(-2px) rotate(-2deg)}
-.file:hover .chip:nth-child(even){transform:translateY(-2px) rotate(2deg)}
-.logo{cursor:default}
-.logo span{display:inline-block;transition:transform .2s}
-.logo:hover span{animation:logohop .6s ease-in-out calc(var(--i) * 55ms) 1}
-.logo:hover{text-shadow:5px 5px 0 var(--accent-2)}
-@keyframes logohop{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-14px) rotate(-6deg)}65%{transform:translateY(2px) rotate(3deg)}}
-.rule svg{transition:transform .4s}
-.cover:hover .rule svg{transform:scale(1.3) rotate(-8deg)}
-@media (prefers-reduced-motion:reduce){.file,.file *,.pill,.logo span,.rule svg{transition:none!important;animation:none!important}.file:hover,.pill:hover{transform:none!important}}
-
-/* Survols de tous les boutons */
-button:not(:disabled):not(.time):not(.ep-btn),.btn,a.btn,.howto-btn,a[href="index.html"]{transition:transform .18s cubic-bezier(.3,1.6,.5,1),box-shadow .18s,background .15s,color .15s,opacity .15s!important}
-button:not(:disabled):not(.time):not(.ep-btn):hover,button:not(:disabled):not(.time):not(.ep-btn):focus-visible,.btn:hover,a.btn:hover,.btn:focus-visible{transform:translate(-2px,-3px) rotate(-1deg);box-shadow:5px 6px 0 var(--ink)}
-button.primary:hover,.btn.primary:hover,button.accuse:hover,.btn.accuse:hover{box-shadow:5px 6px 0 var(--accent-2)}
-button:not(:disabled):not(.time):active,.btn:active{transform:translate(2px,2px) rotate(0)!important;box-shadow:0 0 0 var(--ink)!important}
-button.time:not(:disabled):hover{transform:translateY(-2px);box-shadow:3px 4px 0 var(--ink)}
-.ep-btn:not(:disabled):hover{transform:translateX(4px)}
-.howto-btn:hover,.howto-btn:focus-visible,a[href="index.html"]:hover,a[href="index.html"]:focus-visible{transform:translate(-2px,-3px) rotate(-1.5deg);box-shadow:4px 5px 0 var(--accent);background:var(--accent)!important;color:var(--accent-ink)!important;opacity:1!important}
-.howto-btn,a[href="index.html"]{box-shadow:2px 2px 0 var(--ink)}
-.pill:hover,.pill:focus-visible{box-shadow:5px 5px 0 var(--accent-2)}
-@media (prefers-reduced-motion:reduce){button,.btn,.howto-btn,a[href="index.html"]{transition:none!important}button:hover,.btn:hover,.howto-btn:hover,a[href="index.html"]:hover{transform:none!important}}
+@media (prefers-reduced-motion:reduce){button,.btn,.navbtn{transition:none!important}button:hover,.btn:hover,.navbtn:hover{transform:none!important}}
 </style>
 </head>
 <body>
@@ -530,7 +520,7 @@ window.addEventListener('error', function (e) {
 });
 </script>
 <noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
-<div style="max-width:1040px;margin:0 auto 10px;display:flex;gap:10px;align-items:center"><a href="index.html" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8">← Menu</a><a href="#rules" class="howto-btn" style="display:inline-block;font:600 14px 'Noto Sans',Nunito,system-ui,sans-serif;color:inherit;text-decoration:none;border:1px solid currentColor;border-radius:999px;padding:9px 16px;min-height:42px;box-sizing:border-box;opacity:.8" onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a></div>
+<div class="topnav"><a href="index.html" class="navbtn">← Menu</a><a href="#rules" class="navbtn howto-btn" onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a></div>
 <div class="app" id="app">
   <header class="top">
     <div class="brand">
