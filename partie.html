@@ -394,6 +394,88 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 
 
 <script>window.KIOUKAN_DEMO_CH=1</script>
+<script>/* Langue : détection, T(), noms adaptés, bandeau de changement de langue. Chargé avant tout le reste. */
+(function () {
+  var stored = '';
+  try { stored = localStorage.getItem('kioukan.lang') || ''; } catch (e) { /* stockage indisponible */ }
+  var nav = (navigator.language || 'en').toLowerCase();
+  var lang = stored === 'fr' || stored === 'en' ? stored : (nav.indexOf('fr') === 0 ? 'fr' : 'en');
+  window.KIOUKAN_LANG = lang;
+  try { document.documentElement.lang = lang; } catch (e) { /* rien */ }
+
+  /* Noms : identifiant interne (français, sert aux images et aux couleurs) → nom affiché en anglais */
+  var NAMES = {
+    'Hortense Lafleur': 'Hortense Bloom', 'Comtesse Diane de Carat': 'Countess Diana Carat',
+    'Rémi Sansou': 'Remy Skint', 'Aria Vibrato': 'Aria Vibrato', 'Ernest Couchette': 'Ernest Bunkley',
+    'Jean Bilet': 'Jack Punch', 'Pr Hector Tumulus': 'Prof. Hector Barrow',
+    'Mme Vernet': 'Mrs Vernet', 'Dr Aubry': 'Dr Aubry', 'Lucas': 'Lucas', 'Colonel Marchal': 'Colonel Marchal', 'Inès': 'Inès',
+    'Mme Delaunay': 'Mrs Delaunay', 'Dr Moreau': 'Dr Moreau', 'Baron Voss': 'Baron Voss', 'Roux': 'Roux', 'Mlle Ferrand': 'Miss Ferrand',
+    'Mme Lefèvre': 'Mrs Lefèvre', 'M. Costa': 'Mr Costa', 'Dr Bellamy': 'Dr Bellamy', 'Mme Okafor': 'Mrs Okafor', 'Chef Duval': 'Chef Duval'
+  };
+  window.KIOUKAN_SHORT_EN = { 'Hortense Lafleur': 'Hortense', 'Comtesse Diane de Carat': 'Countess', 'Rémi Sansou': 'Remy', 'Aria Vibrato': 'Aria', 'Ernest Couchette': 'Ernest', 'Jean Bilet': 'Punch', 'Pr Hector Tumulus': 'Barrow' };
+  var REV = {}, k;
+  for (k in NAMES) REV[NAMES[k]] = k;
+  window.KIOUKAN_NAMES = NAMES;
+  /* nom affiché pour un identifiant */
+  window.tn = function (n) { return lang === 'en' ? (NAMES[n] || n) : n; };
+  /* identifiant français pour un nom affiché (ou déjà un identifiant) */
+  window.frName = function (n) { return REV[n] || n; };
+
+  /* Textes d'interface : la clé est le texte français ; sans traduction on garde le français */
+  window.KIOUKAN_EN = window.KIOUKAN_EN || {};
+  window.T = function (fr, vars) {
+    var s = lang === 'en' && window.KIOUKAN_EN[fr] != null ? window.KIOUKAN_EN[fr] : fr;
+    if (vars) for (var key in vars) s = s.split('{' + key + '}').join(vars[key]);
+    return s;
+  };
+
+  /* Changement de langue : bandeau qui descend avec le drapeau, puis la page se recharge ; il remonte à l'arrivée */
+  var FLAGS = {
+    fr: '<svg viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#0a3a9c"/><rect x="1" width="1" height="2" fill="#f4f1ea"/><rect x="2" width="1" height="2" fill="#d6281f"/></svg>',
+    en: '<svg viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice"><rect width="60" height="40" fill="#1c2f6e"/><path d="M0 0L60 40M60 0L0 40" stroke="#f4f1ea" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#d6281f" stroke-width="3"/><path d="M30 0V40M0 20H60" stroke="#f4f1ea" stroke-width="13"/><path d="M30 0V40M0 20H60" stroke="#d6281f" stroke-width="8"/></svg>'
+  };
+  function banner(l, dir) {
+    var d = document.createElement('div');
+    d.className = 'langbanner ' + dir;
+    d.setAttribute('aria-hidden', 'true');
+    d.innerHTML = FLAGS[l] + '<span>' + (l === 'fr' ? 'Français' : 'English') + '</span>';
+    document.body.appendChild(d);
+    return d;
+  }
+  window.setLang = function (l) {
+    if (l === lang) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try { localStorage.setItem('kioukan.lang', l); sessionStorage.setItem('kioukan.langbanner', l); } catch (e) { /* rien */ }
+    if (reduce) { location.reload(); return; }
+    banner(l, 'down');
+    setTimeout(function () { location.reload(); }, 900);
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    var l = '';
+    try { l = sessionStorage.getItem('kioukan.langbanner') || ''; sessionStorage.removeItem('kioukan.langbanner'); } catch (e) { /* rien */ }
+    if (l && l === lang) {
+      var b = banner(l, 'up');
+      setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 1000);
+    }
+    var tx = document.querySelectorAll('[data-i18n]');
+    for (var j = 0; j < tx.length; j++) { var el0 = tx[j]; if (!el0.getAttribute('data-fr')) el0.setAttribute('data-fr', el0.textContent); el0.textContent = window.T(el0.getAttribute('data-fr')); }
+    var ar = document.querySelectorAll('[data-i18n-aria]');
+    for (var q = 0; q < ar.length; q++) ar[q].setAttribute('aria-label', window.T(ar[q].getAttribute('data-i18n-aria')));
+    var btns = document.querySelectorAll('[data-lang-switch]');
+    for (var i = 0; i < btns.length; i++) {
+      (function (el) {
+        var target = lang === 'fr' ? 'en' : 'fr';
+        el.innerHTML = '<i class="lf">' + FLAGS[target] + '</i>' + (target === 'en' ? 'EN' : 'FR');
+        el.setAttribute('aria-label', target === 'en' ? 'Switch to English' : 'Passer en français');
+        el.addEventListener('click', function (ev) { ev.preventDefault(); window.setLang(target); });
+      })(btns[i]);
+    }
+  });
+})();
+</script>
+<script>window.KIOUKAN_EN = window.KIOUKAN_EN || {};
+Object.assign(window.KIOUKAN_EN, {"Les Larmes de Lune": "Moon Tears", "Le collier de la comtesse a disparu.": "The countess’s necklace has vanished.", "Bijou, son caniche, a aboyé à {h} : c’est l’heure du vol, et le voleur était seul avec lui {lieu}. Reconstitue les déplacements des trois passagers.": "Jewel, her poodle, barked at {h}: that is the time of the theft, and the thief was alone with the dog {lieu}. Reconstruct the movements of the three passengers.", "le voleur": "the thief", "vol": "theft", "Paris – Nice, par le chemin des écoliers : sept nuits à bord de l’Express de minuit.": "Paris to Nice, the scenic route: seven nights aboard the Midnight Express.", "Première nuit. Le train file vers le sud.": "First night. The train races south.", "Non… Non, non, non !": "No… No, no, no!", "CLAC": "SLAM", "Mon collier ! Les Larmes de Lune ! Volé pendant que je dînais !": "My necklace! The Moon Tears! Stolen while I was at dinner!", "Respirez, comtesse. Prochain arrêt : Lyon, à minuit. Votre voleur est encore à bord.": "Breathe, Countess. Next stop: Lyon, at midnight. Your thief is still on board.", "Hortense Lafleur. Institutrice à la retraite… et détective à ses heures.": "Hortense Bloom. Retired schoolteacher… and part-time detective.", "Votre caniche a aboyé à {h} précises.": "Your poodle barked at {h} sharp.", "C’est l’heure du vol. Le voleur était seul avec le chien {lieu}.": "That is the time of the theft. The thief was alone with the dog {lieu}.", "Trois passagers n’ont pas d’alibi. Reconstitue leurs allées et venues.": "Three passengers have no alibi. Reconstruct their comings and goings.", "Bon, bon… Je voulais juste l’emprunter pour le casino de Monte-Carlo. Je l’aurais rendu avant le petit-déjeuner !": "Well, well… I only wanted to borrow it for the Monte Carlo casino. I’d have returned it before breakfast!", "Le casino attendra, jeune homme. Rendez ce collier à votre tante.": "The casino can wait, young man. Give that necklace back to your aunt.", "La nuit suivante, un cri d’horreur retentit à bord. Celui du professeur Tumulus…": "The next night, a scream of horror rings out on board. Professor Barrow’s…", "AAAAH !": "AAAAH!", "Le papyrus à la soupe": "The Papyrus in the Soup", "Le papyrus du professeur a fini dans la soupe.": "The professor’s papyrus ended up in the soup.", "La soupière a été renversée à {h}, {lieu}, par la seule personne présente. Qui a noyé Ramsès Deux-Fois ?": "The soup tureen was knocked over at {h}, {lieu}, by the only person there. Who drowned Ramses the Second Helping?", "le coupable": "the culprit", "méfait": "mischief", "Mon papyrus de Ramsès Deux-Fois ! Trempé dans la soupe à l’oignon ! Trois mille ans d’histoire, et ça sent la ciboulette !": "My papyrus of Ramses the Second Helping! Soaked in onion soup! Three thousand years of history, and it smells of chives!", "La soupière a été renversée à {h}, {lieu}. Une seule personne s’y trouvait.": "The tureen was knocked over at {h}, {lieu}. Only one person was there.", "Ce soir, le professeur Tumulus n’a pas quitté la voiture-bar. Restent trois suspects.": "Tonight, Professor Barrow never left the bar car. That leaves three suspects.", "Je voulais seulement le faire sécher… sur la soupière. Elle était chaude, c’était pratique !": "I only wanted to dry it… on the tureen. It was hot, it was handy!", "Un papyrus n’est pas une serviette, Ernest. Même en wagon-restaurant.": "A papyrus is not a napkin, Ernest. Even in a dining car.", "Troisième nuit. Le contrôleur cherche désespérément quelque chose…": "Third night. The inspector is desperately looking for something…", "La poinçonneuse": "The Ticket Punch", "La poinçonneuse du contrôleur a disparu.": "The inspector’s ticket punch has disappeared.", "Elle a été dérobée à {h}, {lieu}. Jean Bilet était au fourgon, il est hors de cause. Lequel des trois autres passagers ?": "It was stolen at {h}, {lieu}. Jack Punch was in the luggage van, so he is in the clear. Which of the other three passengers did it?", "Ma poinçonneuse ! Sans elle, je ne peux plus poinçonner ! Un contrôleur qui ne poinçonne pas, c’est un passager !": "My ticket punch! Without it, I can’t punch! An inspector who doesn’t punch is just a passenger!", "On l’a prise {lieu}, à {h}. Le voleur y était seul.": "It was taken {lieu}, at {h}. The thief was alone there.", "Cette fois, la nuit sera plus longue : six créneaux à reconstituer.": "This time the night will be longer: six time slots to reconstruct.", "Je voulais faire des confettis pour ma première à l’Opéra. Les confettis poinçonnés, c’est très chic.": "I wanted to make confetti for my opening night at the Opera. Punched confetti is very chic.", "Chic, peut-être. Légal, certainement pas.": "Chic, perhaps. Legal, certainly not.", "Quatrième nuit. C’est Bijou, le caniche, qui disparaît.": "Fourth night. This time it’s Jewel the poodle who vanishes.", "OUAF !": "WOOF!", "Un caniche sans billet": "A Poodle Without a Ticket", "Bijou le caniche a été enlevé.": "Jewel the poodle has been kidnapped.", "Le chien a été emmené à {h}, {lieu}, par une personne seule avec lui. Retrouve-la.": "The dog was taken at {h}, {lieu}, by someone alone with it. Find them.", "enlèvement": "kidnapping", "Bijou ! Mon Bijou ! Quelqu’un a enlevé mon caniche !": "Jewel! My Jewel! Someone has kidnapped my poodle!", "On l’a entendu gémir {lieu} à {h}. Son ravisseur était seul avec lui.": "Whimpering was heard {lieu} at {h}. The kidnapper was alone with the dog.", "Le professeur Tumulus dormait sous ses papyrus et le neveu ronflait. Restent trois suspects.": "Professor Barrow was asleep under his papyri and the nephew was snoring. That leaves three suspects.", "Le règlement est clair : pas de billet, pas de voyage. Même pour un caniche.": "The rules are clear: no ticket, no travel. Even for a poodle.", "Le caniche voyage avec sa maîtresse, monsieur Bilet. Il a même un collier, lui.": "The poodle travels with its mistress, Mr Punch. It even has a collar, which is more than I can say for you.", "Cinquième nuit. La diva Aria Vibrato ne peut plus chanter une note…": "Fifth night. The diva Aria Vibrato can’t sing a single note…", "Fausse note": "A Sour Note", "Les pastilles de la diva ont été piégées.": "The diva’s throat lozenges have been tampered with.", "Quelqu’un a glissé des bonbons au piment dans la boîte d’Aria Vibrato à {h}, {lieu}. Lequel des quatre ?": "Someone slipped chilli sweets into Aria Vibrato’s tin at {h}, {lieu}. Which of the four?", "Mes pastilles pour la voix ! Remplacées par des bonbons au piment ! Ma voix… elle est partie en fumée !": "My voice lozenges! Swapped for chilli sweets! My voice… it went up in smoke!", "Quatre suspects, cette fois. L’échange a eu lieu {lieu}, à {h}.": "Four suspects this time. The swap took place {lieu}, at {h}.", "La comtesse, elle, ne quittait pas Bijou d’une semelle.": "The countess, meanwhile, never let Jewel out of her sight.", "Elle faisait ses vocalises toute la nuit ! Même mes momies ne pouvaient plus dormir.": "She did her vocal warm-ups all night long! Even my mummies couldn’t sleep.", "Il existe des bouchons d’oreilles, professeur. Ils sont moins épicés.": "Earplugs exist, Professor. They are less spicy.", "Sixième nuit. Le train freine brutalement en pleine campagne.": "Sixth night. The train brakes sharply in the middle of the countryside.", "SKRIIII !": "SKREEEE!", "Signal d’alarme": "Pull the Cord", "Le signal d’alarme a été tiré.": "The emergency cord has been pulled.", "Le train s’est arrêté net à {h}. La poignée se trouve {lieu}, et le coupable y était seul. Qui a fait ça ?": "The train stopped dead at {h}. The handle is {lieu}, and the culprit was alone there. Who did this?", "alarme": "alarm", "Quelqu’un a tiré le signal d’alarme ! Une heure de retard ! Vous savez combien de billets je vais devoir re-poinçonner ?": "Someone pulled the emergency cord! An hour late! Do you know how many tickets I’ll have to re-punch?", "La poignée a été tirée {lieu}, à {h}. Le coupable était seul.": "The handle was pulled {lieu}, at {h}. The culprit was alone.", "Je pensais que c’était la poignée des toilettes ! Et puis… je voulais descendre à Monaco. Le casino, vous comprenez.": "I thought it was the toilet chain! And then… I wanted to get off at Monaco. The casino, you understand.", "Rémi, encore vous. Je commence à connaître votre chronologie par cœur.": "Remy, you again. I’m starting to know your timeline by heart.", "Au matin du septième jour, la comtesse ouvre son écrin. Le collier est là… mais il est faux.": "On the morning of the seventh day, the countess opens her jewel case. The necklace is there… but it’s fake.", "La plume du Hibou": "The Owl’s Feather", "Le vrai collier a été remplacé par une copie.": "The real necklace has been replaced by a copy.", "Une plume de hibou a été trouvée dans l’écrin. L’échange a eu lieu à {h}, {lieu}. Qui travaille pour le Hibou ?": "An owl feather was found in the case. The swap took place at {h}, {lieu}. Who works for the Owl?", "échange": "swap", "C’est du verre ! On a échangé mes Larmes de Lune contre une vulgaire copie ! Et il y a… une plume !": "It’s glass! My Moon Tears have been swapped for a cheap copy! And there’s… a feather!", "Une plume de hibou. La signature d’un cambrioleur célèbre. L’échange a eu lieu {lieu}, à {h}.": "An owl feather. The signature of a famous burglar. The swap took place {lieu}, at {h}.", "Dernier mystère avant Nice. Rémi, puni, n’a pas quitté sa tante de la nuit : il est hors de cause.": "Last mystery before Nice. Remy, grounded, never left his aunt all night: he is in the clear.", "Un monsieur masqué m’a donné un très gros pourboire pour échanger deux colliers. Je croyais que c’était un jeu de société !": "A masked gentleman gave me a very generous tip to swap two necklaces. I thought it was a parlour game!", "Le Hibou. Il a déjà filé avec le vrai collier. Mais un hibou, ça finit toujours par rentrer au nid.": "The Owl. He has already made off with the real necklace. But an owl always comes back to its nest.", "Fin du chapitre 1. Direction Nice, et le Grand Hôtel des Mouettes.": "End of chapter 1. Next stop: Nice, and the Grand Hôtel des Mouettes.", "À 22 h, Rémi a emprunté dix francs à Ernest « jusqu’à demain ». À 23 h, Ernest le cherchait pour récupérer son argent : ils n’étaient pas dans la même voiture.": "At 10 pm, Remy borrowed ten francs from Ernest \"until tomorrow\". At 11 pm, Ernest was looking for him to get his money back: they were not in the same car.", "De 21 h à 21 h 30, Aria a fait ses vocalises sans bouger d’un pouce : une diva ne se déplace pas pendant ses gammes.": "From 9 pm to 9:30 pm, Aria did her vocal exercises without moving an inch: a diva does not move during her scales.", "Ernest a changé trois fois de voiture dans la soirée, plateau à la main : une fois entre 21 h et 21 h 30, une autre entre 22 h et 22 h 30.": "Ernest changed cars three times during the evening, tray in hand: once between 9 pm and 9:30 pm, and once between 10 pm and 10:30 pm.", "Rémi est passé par le fourgon à un moment de la soirée. Pour y cacher ses créanciers, paraît-il.": "Remy passed through the luggage van at some point in the evening. To hide from his creditors, apparently.", "Au cours de la soirée, Aria est passée au wagon-restaurant réclamer du miel pour sa gorge. Ernest y est passé lui aussi, à un moment ou à un autre.": "During the evening, Aria passed through the dining car to ask for honey for her throat. Ernest passed through too, at one time or another.", "Le contrôleur a vérifié le billet d’Aria quand la pendule a sonné dix coups… puis encore à 23 h, « par précaution ». Les deux fois, ils étaient dans la même voiture.": "The inspector checked Aria’s ticket when the clock struck ten… then again at 11 pm, \"just in case\". Both times, they were in the same car.", "À 21 h comme à 22 h, Ernest astiquait l’argenterie, seul dans sa voiture.": "At 9 pm and at 10 pm, Ernest was polishing the silverware, alone in his car.", "Jean Bilet a changé de voiture quatre fois dans la soirée. Un contrôleur ne tient pas en place.": "Jack Punch changed cars four times during the evening. An inspector can’t sit still.", "Ernest a changé trois fois de voiture, mais de 22 h 30 à 23 h, il n’a pas quitté la sienne : il recollait une soupière.": "Ernest changed cars three times, but from 10:30 pm to 11 pm he stayed put: he was gluing a soup tureen back together.", "À 21 h 30, Aria n’était plus dans la voiture où elle se trouvait à 21 h : elle fuyait un courant d’air.": "At 9:30 pm, Aria was no longer in the car she had been in at 9 pm: she was fleeing a draught.", "Dans la soirée, Aria est passée par le salon-fumoir (en toussant ostensiblement) et Ernest par la voiture-bar.": "During the evening, Aria passed through the smoking lounge (coughing ostentatiously) and Ernest through the bar car.", "À 21 h 30, le professeur Tumulus expliquait à Aria comment on momifie un chat. Elle faisait semblant d’écouter, juste à côté de lui.": "At 9:30 pm, Professor Barrow was explaining to Aria how to mummify a cat. She pretended to listen, right next to him.", "Rémi a suivi Aria comme son ombre à 22 h et à 22 h 30, pour lui emprunter de quoi jouer. Entre ces deux heures, elle a changé de voiture pour le semer… en vain.": "Remy followed Aria like a shadow at 10 pm and 10:30 pm, to borrow gambling money. Between those two times she changed cars to shake him off… in vain.", "Quand la pendule a sonné onze coups, le professeur faisait la sieste, seul dans sa voiture. Et le wagon-lit A était désert.": "When the clock struck eleven, the professor was napping, alone in his car. And sleeper A was deserted.", "Aria a changé trois fois de voiture dans la soirée, mais elle n’a pas bougé de 22 h 30 à 23 h : elle se remaquillait.": "Aria changed cars three times during the evening, but she didn’t move from 10:30 pm to 11 pm: she was touching up her make-up.", "Rémi a changé trois fois de voiture, mais de 21 h à 21 h 30 il est resté au même endroit, à recompter ses dettes.": "Remy changed cars three times, but from 9 pm to 9:30 pm he stayed put, recounting his debts.", "Le professeur a changé trois fois de voiture. Il n’a pas bougé de 21 h 30 à 22 h, ni de 22 h 30 à 23 h : il dort beaucoup.": "The professor changed cars three times. He didn’t move from 9:30 pm to 10 pm, nor from 10:30 pm to 11 pm: he sleeps a lot.", "Ni Rémi ni le professeur n’ont mis les pieds dans la voiture-bar de la soirée : l’un n’a plus un sou, l’autre ne boit que de la tisane.": "Neither Remy nor the professor set foot in the bar car all evening: one is out of money, the other only drinks herbal tea.", "Le professeur est passé par le wagon-lit A à un moment de la soirée, à la recherche de ses lunettes (qu’il avait sur le nez).": "The professor passed through sleeper A at some point in the evening, looking for his glasses (which he was wearing).", "À 21 h, Ernest a proposé un café au contrôleur, qui l’a refusé : « Pas pendant le service. »": "At 9 pm, Ernest offered the inspector a coffee, who refused: \"Not while on duty.\"", "Quand la pendule a sonné dix coups, puis encore à 22 h 30, Ernest servait du miel chaud à Aria, qui se plaignait de sa gorge.": "When the clock struck ten, and again at 10:30 pm, Ernest was serving hot honey to Aria, who was complaining about her throat.", "À 23 h, le contrôleur exigeait le billet d’Aria. Ernest, lui, n’était pas avec eux.": "At 11 pm, the inspector was demanding Aria’s ticket. Ernest was not with them.", "Ernest a changé quatre fois de voiture dans la soirée, dont une fois entre 21 h 30 et 22 h.": "Ernest changed cars four times during the evening, once of them between 9:30 pm and 10 pm.", "Le contrôleur a changé quatre fois de voiture, notamment entre 21 h 30 et 22 h, puis entre 22 h et 22 h 30.": "The inspector changed cars four times, notably between 9:30 pm and 10 pm, then between 10 pm and 10:30 pm.", "Le wagon-restaurant était désert à 21 h et à 22 h : le chef était en grève.": "The dining car was deserted at 9 pm and at 10 pm: the chef was on strike.", "Ernest n’a jamais mis les pieds dans le salon-fumoir de la soirée : la fumée lui fait pleurer les yeux.": "Ernest never set foot in the smoking lounge all evening: the smoke makes his eyes water.", "Le contrôleur n’a mis les pieds ni dans le wagon-lit A, ni dans la voiture-bar. Le règlement, c’est le règlement.": "The inspector set foot in neither sleeper A nor the bar car. Rules are rules.", "Au cours de la soirée, Aria est passée par le salon-fumoir et, à un moment, sur le toit du train pour « respirer l’air des cimes ».": "During the evening, Aria passed through the smoking lounge and, at one point, onto the roof of the train to \"breathe the mountain air\".", "Le contrôleur est passé par le wagon-restaurant à un moment de la soirée.": "The inspector passed through the dining car at some point in the evening.", "À 21 h comme à 21 h 30, Rémi était avec le professeur, à essayer de lui vendre une « authentique » momie de chat.": "At 9 pm and at 9:30 pm, Remy was with the professor, trying to sell him an \"authentic\" cat mummy.", "À 22 h 30, le contrôleur a surpris Rémi sans billet. Il l’a noté deux fois dans son carnet.": "At 10:30 pm, the inspector caught Remy without a ticket. He wrote it down twice in his notebook.", "Quand la pendule a sonné onze coups, Ernest consolait Rémi, qui venait de perdre aux cartes.": "When the clock struck eleven, Ernest was comforting Remy, who had just lost at cards.", "Le professeur a changé trois fois de voiture, mais il n’a pas bougé de 22 h à 22 h 30 : il ronflait.": "The professor changed cars three times, but he didn’t move from 10 pm to 10:30 pm: he was snoring.", "Le professeur est passé par le wagon-lit A au cours de la soirée.": "The professor passed through sleeper A during the evening.", "Ernest n’a changé que deux fois de voiture dans la soirée, dont une fois entre 21 h et 21 h 30.": "Ernest changed cars only twice during the evening, once of them between 9 pm and 9:30 pm.", "Le contrôleur a changé trois fois de voiture, mais de 22 h 30 à 23 h, il n’a pas bougé : il remplissait son carnet.": "The inspector changed cars three times, but from 10:30 pm to 11 pm he didn’t move: he was filling in his notebook.", "Trois lieux déserts : le wagon-lit A à 21 h, la voiture-bar à 22 h et le toit du train à 22 h 30.": "Three deserted spots: sleeper A at 9 pm, the bar car at 10 pm and the roof of the train at 10:30 pm.", "Trois serments : le professeur n’a jamais mis les pieds dans la voiture-bar, Rémi jamais dans le wagon-restaurant, et le contrôleur jamais sur le toit.": "Three oaths: the professor never set foot in the bar car, Remy never in the dining car, and the inspector never on the roof.", "Ernest est monté sur le toit du train à un moment de la soirée, pour secouer une nappe.": "Ernest climbed onto the roof of the train at some point in the evening, to shake out a tablecloth.", "Quand la pendule a sonné neuf coups, ils étaient tous les quatre dans la même voiture pour le tournoi de belote : Rémi, Ernest, Aria et le professeur.": "When the clock struck nine, all four were in the same car for the belote tournament: Remy, Ernest, Aria and the professor.", "À 22 h, Aria, Rémi et le professeur partageaient la même voiture… et la même tarte.": "At 10 pm, Aria, Remy and the professor shared the same car… and the same tart.", "À 22 h 30 comme à 23 h, Ernest était seul dans sa voiture, à compter ses pourboires.": "At 10:30 pm and at 11 pm, Ernest was alone in his car, counting his tips.", "Ernest a changé trois fois de voiture dans la soirée, mais pas entre 21 h et 21 h 30 : la belote, c’est sacré.": "Ernest changed cars three times during the evening, but not between 9 pm and 9:30 pm: belote is sacred.", "Aria n’a pas bougé de 22 h à 22 h 30 : elle avait trouvé un public.": "Aria didn’t move from 10 pm to 10:30 pm: she had found an audience.", "Le professeur n’a pas bougé de 22 h 30 à 23 h : il dormait.": "The professor didn’t move from 10:30 pm to 11 pm: he was sleeping.", "Personne dans le salon-fumoir à 22 h 30. Personne sur le toit ni dans le wagon-restaurant à 23 h.": "Nobody in the smoking lounge at 10:30 pm. Nobody on the roof or in the dining car at 11 pm.", "Le professeur est passé par le salon-fumoir à un moment de la soirée, sa pipe éteinte à la main.": "The professor passed through the smoking lounge at some point in the evening, an unlit pipe in his hand.", "À 21 h, puis de nouveau à 23 h, Aria répétait son grand air devant le professeur.": "At 9 pm, and again at 11 pm, Aria rehearsed her big aria in front of the professor.", "À 21 h 30, Ernest apportait un grog à Aria.": "At 9:30 pm, Ernest brought Aria a hot toddy.", "À 21 h 30, le contrôleur a réveillé le professeur pour contrôler son billet. Le professeur s’est rendormi aussitôt et n’a pas bougé jusqu’à 22 h.": "At 9:30 pm, the inspector woke the professor to check his ticket. The professor fell straight back asleep and didn’t move until 10 pm.", "Quand la pendule a sonné dix coups, Aria signait un autographe au contrôleur… sur son carnet de contraventions.": "When the clock struck ten, Aria was signing an autograph for the inspector… in his book of fines.", "À 22 h 30, Aria s’était isolée pour se concentrer : personne d’autre dans sa voiture. La voiture-bar, elle, était vide.": "At 10:30 pm, Aria had shut herself away to concentrate: nobody else in her car. The bar car was empty.", "À 23 h 30, le professeur était seul, penché sur un hiéroglyphe.": "At 11:30 pm, the professor was alone, bent over a hieroglyph.", "Le professeur a changé quatre fois de voiture et il est passé par le toit du train à un moment de la soirée.": "The professor changed cars four times and passed over the roof of the train at some point in the evening.", "À 22 h, à 22 h 30 et à 23 h, Ernest était toujours dans la même voiture, à préparer les plateaux du petit-déjeuner.": "At 10 pm, 10:30 pm and 11 pm, Ernest was always in the same car, preparing the breakfast trays.", "Le contrôleur n’a pas bougé de 23 h à 23 h 30.": "The inspector didn’t move from 11 pm to 11:30 pm.", "Aria et Ernest sont tous deux passés par le salon-fumoir dans la soirée, pas forcément au même moment.": "Aria and Ernest both passed through the smoking lounge during the evening, not necessarily at the same time.", "Le contrôleur est passé par le wagon-lit A à un moment de la soirée, pour compter les couchettes.": "The inspector passed through sleeper A at some point in the evening, to count the berths.", "Hmm. Son alibi tient. Reprenons la chronologie.": "Hmm. Their alibi holds. Let’s go back over the timeline.", "Je retire ce que j’ai dit. Mon carnet n’a pas dit son dernier mot.": "I take back what I said. My notebook has not had its final word.", "Fausse piste. Le coupable doit bien rire.": "A false lead. The culprit must be laughing.", "Ce n’était pas l’heure ni la bonne personne. Recomptons.": "Wrong time, wrong person. Let’s recount.", "Moi ? Je n’ai même pas de quoi m’offrir un alibi !": "Me? I can’t even afford an alibi!", "Quelle audace ! Je n’ai que faire des bijoux des autres : j’ai les miens.": "How dare you! I have no use for other people’s jewels: I have my own.", "Vingt ans de service, et pas une petite cuillère ne m’a jamais manqué !": "Twenty years of service, and not one teaspoon has ever gone missing!", "Je contrôle les billets, madame, pas les soupçons.": "I check tickets, madam, not suspicions.", "J’étudie les momies, pas les cambriolages. Elles au moins ne me dérangent pas.": "I study mummies, not burglaries. At least they don’t disturb me.", "Moi ? Votre cliente ? Vous perdez la tête, ma chère Hortense.": "Me? Your client? You’re losing your mind, my dear Hortense.", "L’Express de minuit": "The Midnight Express", "Paris – Nice, en wagon-lit. Un collier, un caniche et beaucoup trop de suspects pour un seul train.": "Paris to Nice, by sleeper train. A necklace, a poodle and far too many suspects for a single train.", "Affaire classée": "Case closed", "Annuler": "Cancel", "Au moins une de ses déclarations est vraie et au moins une est fausse.": "At least one of their statements is true and at least one is false.", "Bientôt": "Coming soon", "Carnet d’Hortense": "Hortense’s notebook", "Chapitre": "Chapter", "Chapitres 2 à {n}": "Chapters 2 to {n}", "Choisir un lieu": "Choose a location", "Chronologie": "Timeline", "Constats": "Clues", "Contrôle toute la grille d’un coup": "Checks the whole grid at once", "Demi-vérités": "Half-truths", "Désigner le coupable": "Name the culprit", "Effacer": "Clear", "Effacer la case": "Clear cell", "Fermer": "Close", "Fin de la démo": "End of the demo", "Il sera marqué « résolu avec aide ».": "It will be marked “solved with help”.", "Indice": "Hint", "J’accuse !": "I accuse!", "J’accuse…": "I accuse…", "Kioukan - mes retours sur la démo": "Kioukan - my feedback on the demo", "Le reste de l’enquête est encore en développement.": "The rest of the investigation is still in development.", "Les suspects": "The suspects", "Lis d’abord « Comment jouer »": "Read “How to play” first", "Masquer les déclarations confirmées": "Hide confirmed statements", "Masquer les indices confirmés": "Hide confirmed clues", "Merci d’avoir mené l’enquête ! Le chapitre 1 s’achève ici : le Hibou court toujours, et le reste du jeu (hôtel, manoir, paquebot, opéra et casino) est encore en développement.": "Thank you for investigating! Chapter 1 ends here: the Owl is still at large, and the rest of the game (hotel, manor, ocean liner, opera and casino) is still in development.", "Ouvrir l’enquête": "Open the case", "Passer cet épisode": "Skip this episode", "Plan à": "Plan at", "Première enquête ?": "First case?", "Preuves": "Proof", "Qui ment ?": "Who is lying?", "Rejouer": "Play again", "Tous les constats sont confirmés.": "All clues are confirmed.", "Toutes ses déclarations sont confirmées.": "All of their statements are confirmed.", "Témoignages": "Statements", "Un menteur": "One liar", "Verrouillé": "Locked", "Vos retours sont précieux : dites-nous ce que vous avez aimé, ce qui vous a bloqué, et ce que vous voudriez voir ensuite.": "Your feedback matters: tell us what you liked, what stumped you, and what you would like to see next.", "Vérification en direct": "Live checking", "Vérification en direct : les erreurs s’affichent tout de suite en rouge.": "Live checking: mistakes show up in red straight away.", "Vérification manuelle : rien ne s’affiche tant que tu n’appuies pas sur « Vérifier ».": "Manual checking: nothing shows until you press “Check”.", "Vérifier": "Check", "cases": "cells", "certaines": "certain", "chronologie complète : désigne le menteur": "timeline complete: name the liar", "confirmé": "confirmed", "confirmés": "confirmed", "constats": "clues", "coupable": "guilty", "dit vrai": "tells the truth", "désigne un menteur": "name a liar", "faux": "false", "indices": "clues", "innocent": "innocent", "lieu des faits": "scene of the crime", "menteur ?": "liar?", "passage entre voitures": "passage between cars", "personnes": "people", "porte": "door", "résolu avec aide": "solved with help", "résolu ✓": "solved ✓", "touche une case": "tap a cell", "trappe vers le toit": "hatch to the roof", "trop loin": "too far", "vide": "empty", "vrai": "true", "vérification en direct désactivée": "live checking off", "Écrire à l’équipe": "Write to the team", "Épisode": "Episode", "à": "at", "contradiction": "contradiction", "contradictions": "contradictions", "fausse accusation": "wrong accusation", "fausses accusations": "wrong accusations", "ment en partie": "partly lies", "ment sur tout": "lies about everything", "Démo terminée, merci !": "Demo complete, thank you!", "Bravo, l’histoire est terminée !": "Well done, the story is over!", "Vous faites erreur !": "You are mistaken!", "Pr Hector Tumulus": "Prof. Hector Barrow", "← Menu": "← Menu", "Comment jouer ?": "How to play?", "Comment jouer": "How to play", "Mode histoire · Le Hibou": "Story mode · The Owl", "Épisodes": "Episodes", "Introduction": "Introduction", "L'affaire": "The case", "Chronologie des déplacements": "Timeline of movements", "Le train en coupe": "The train, cutaway", "Dossier en préparation…": "Preparing the case file…", "Nouvelle affaire": "New case", "Décor": "Setting", "Mode de jeu": "Game mode", "Difficulté": "Difficulty", "Plan du manoir": "Plan of the manor", "Classique": "Classic", "Plan du train": "Plan of the train", "Plan de l’hôtel": "Plan of the hotel", "Manoir": "Manor", "Train": "Train", "Hôtel": "Hotel", "Le maître des lieux a été retrouvé mort": "The master of the house has been found dead", "Sa montre s’est arrêtée à": "His watch stopped at", "dans le manoir ce soir-là": "in the manor that evening", "Un riche voyageur a été retrouvé mort": "A wealthy traveller has been found dead", "Sa montre à gousset s’est arrêtée à": "His pocket watch stopped at", "à bord de l’express cette nuit-là": "aboard the express that night", "Le directeur de l’hôtel a été retrouvé mort": "The hotel manager has been found dead", "dans l’hôtel ce soir-là": "in the hotel that evening", "L’affaire": "The case", "Trois": "Three", "Quatre": "Four", "Cinq": "Five", "scène du crime": "scene of the crime", " suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a mêlé le vrai et le faux : au moins une de ses déclarations est vraie, au moins une est fausse. Démasque-le.": " suspects were questioned. The innocent told the truth. The killer, alone with the victim at that moment, mixed truth and lies: at least one of the statements is true and at least one is false. Unmask them.", " suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a menti dans chacune de ses déclarations. Démasque-le.": " suspects were questioned. The innocent told the truth. The killer, alone with the victim at that moment, lied in every statement. Unmask them.", "Déclarations": "Statements", "confirmées": "confirmed", "ment : tout est faux": "lies: everything is false", "Affaire suivante": "Next case", "Qui est le meurtrier ? Une mauvaise réponse est comptée comme une erreur.": "Who is the killer? A wrong answer counts as a mistake.", "Instruction du dossier…": "Preparing the case file…", "Masquer les constats confirmés": "Hide confirmed clues", "Vérification manuelle : rien ne s’affiche tant que tu n’appuies pas sur « Vérifier », qui contrôle toute la grille d’un coup.": "Manual checking: nothing shows while you play; press “Check” to check the whole grid at once.", "Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Touche une case pour choisir la pièce.": "Each cell of the <b>timeline</b> shows which {unit} a suspect was in at a given time. Tap a cell to choose the {unit}.", "Entre deux heures, un suspect <b>reste sur place</b> ou <b>passe une porte</b> (les traits colorés du plan). Un mur sans porte ne se traverse pas.": "Between two times, a suspect either <b>stays put</b> or <b>goes through a door</b> (the coloured marks on the plan). Nobody walks through a wall.", "Tous les <b>constats</b> sont vrais. Il n’existe qu’une seule chronologie qui les respecte tous.": "Every <b>clue</b> is true. Only one timeline fits them all.", "À l’heure du crime, un seul suspect se trouvait dans la pièce du crime : c’est le <b>meurtrier</b>. Complète la grille pour le démasquer.": "At the time of the crime, only one suspect was in the {unit} of the crime: that is the <b>killer</b>. Fill in the grid to unmask them.", "Touche une heure pour voir qui était où sur le plan. Les cases au fond doré sont des alibis déjà confirmés.": "Tap a time to see who was where on the plan. Gold cells are alibis already confirmed.", "Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.": "Each cell of the <b>timeline</b> shows which {unit} a suspect was in at a given time. Between two times, you either stay put or go through a door.", "Chaque suspect fait des <b>déclarations</b>. Les innocents disent la vérité. <b>Un seul suspect ment</b>, et toutes ses déclarations sont fausses.": "Each suspect makes <b>statements</b>. The innocent tell the truth. <b>Only one suspect lies</b>, and all of their statements are false.", "Le menteur est le <b>meurtrier</b> : c’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.": "The liar is the <b>killer</b>: the only suspect who was in the {unit} of the crime at the time of the crime.", "Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>, puis remplis la grille. Chaque déclaration se vérifie sur la chronologie : essaie un suspect, change d’avis si ça coince.": "Pick the one you suspect under <b>Who is lying?</b>, then fill in the grid. Each statement is checked against the timeline: try a suspect, and change your mind if it gets stuck.", "Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.": "<b>Proof</b> is certain fact. It is already placed in the gold cells.", "Chaque suspect fait des <b>déclarations</b>. Les innocents disent toujours la vérité.": "Each suspect makes <b>statements</b>. The innocent always tell the truth.", "Le <b>meurtrier</b> mélange le vrai et le faux : <b>au moins une</b> de ses déclarations est vraie et <b>au moins une</b> est fausse. C’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.": "The <b>killer</b> mixes truth and lies: <b>at least one</b> of their statements is true and <b>at least one</b> is false. They are the only suspect who was in the {unit} of the crime at the time of the crime.", "Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>. Ses déclarations s’affichent alors comme vraies ou fausses d’après ta grille, et il doit en avoir des deux sortes.": "Pick the one you suspect under <b>Who is lying?</b>. Their statements then show as true or false based on your grid, and they must have both kinds.", "Dans ce mode, le coupable est le menteur. <b>Qui ment ?</b> sert à tester une hypothèse (les déclarations se colorent). <b>J’accuse !</b> sert à la valider : une bonne accusation gagne tout de suite.": "In this mode, the culprit is the liar. <b>Who is lying?</b> lets you test a hypothesis (statements get coloured). <b>I accuse!</b> confirms it: a correct accusation wins immediately.", "Pas besoin de tout remplir : dès que tu es sûr, touche <b>J’accuse !</b> et désigne le coupable. Une bonne accusation gagne tout de suite. Une mauvaise est comptée comme une erreur et le suspect est écarté.": "No need to fill everything in: as soon as you are sure, tap <b>I accuse!</b> and name the culprit. A correct accusation wins immediately. A wrong one counts as a mistake and the suspect is ruled out.", "<b>Vérification en direct</b> : cochée, les erreurs apparaissent aussitôt en rouge (une case qui contredit un constat, ou un trajet impossible). Décochée, rien ne s’affiche pendant que tu joues : le bouton <b>Vérifier</b> contrôle alors toute la grille d’un coup, à la demande. C’est le mode sans filet.": "<b>Live checking</b>: when ticked, mistakes turn red straight away (a cell that contradicts a clue, or an impossible journey). When unticked, nothing shows while you play: the <b>Check</b> button then checks the whole grid on demand. No safety net.", "Contact": "Contact", "Wagons-Lits": "Wagons-Lits", "1ʳᵉ classe": "1st class", "Mode histoire": "Story mode", "Le Hibou": "The Owl", "Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.": "Hortense Bloom, a retired schoolteacher, hunts a jewel thief from the Midnight Express all the way to the Monte Carlo casino.", "Commencer l’enquête": "Start the investigation", "7 épisodes": "7 episodes", "Dossier": "Case file", "Affaire libre": "Open case", "Partie rapide": "Quick game", "Une affaire au hasard": "A random case", "Une énigme toujours nouvelle, à la difficulté de votre choix.": "A brand-new puzzle every time, at the difficulty of your choice.", "Ouvrir un dossier": "Open a file", "3 niveaux": "3 levels", "Votre progression est enregistrée sur cet appareil.": "Your progress is saved on this device.", "Qui ? Où ? Quand ?": "Who? Where? When?", "Résolvez les crimes en reconstituant les emplois du temps des suspects.": "Solve the crimes by reconstructing the suspects’ schedules.", "Démo terminée": "Demo complete", "Relire l’enquête": "Reread the case", "Reprendre l’enquête": "Resume the case", "Passer en français": "Passer en français"});
+</script>
 <style id="skin">@font-face{font-family:'DM Serif Display';src:url(fonts/dm-serif-display-latin-400-normal.woff2) format('woff2');font-display:swap}
 @font-face{font-family:'Inter';font-weight:400;src:url(fonts/inter-latin-400-normal.woff2) format('woff2');font-display:swap}
 @font-face{font-family:'Inter';font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format('woff2');font-display:swap}
@@ -580,6 +662,24 @@ body:has(.fiche.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18),
 body:has(.pola.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18),
 body:has(.who.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18){opacity:.32}
 @media (prefers-reduced-motion:reduce){.fiche,.pola,.fiche .pcard,.pola .pcard,.cell{transition:none!important}.fiche:hover,.pola:hover,.fiche:hover .pcard,.pola:hover .pcard{transform:none}}
+
+/* ---------- Langue : sélecteur + grand bandeau drapeau ---------- */
+.langsw{margin-left:4px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;font:600 12px var(--sans);letter-spacing:.08em}
+.langsw .lf{display:inline-block;width:22px;height:15px;border:1px solid var(--ink);line-height:0;overflow:hidden}
+.langsw .lf svg{width:100%;height:100%;display:block}
+.langbanner{position:fixed;left:50%;top:0;z-index:9999;width:min(340px,78vw);height:100vh;transform:translateX(-50%) translateY(-101%);display:flex;flex-direction:column;align-items:center;background:var(--paper);border:3px solid var(--ink);border-top:0;box-shadow:0 18px 0 rgba(0,0,0,.18);pointer-events:none}
+.langbanner svg{width:100%;flex:1;display:block}
+.langbanner span{padding:14px 0 18px;font:400 30px 'DM Serif Display',serif;color:var(--ink);letter-spacing:.02em}
+.langbanner.down{animation:lbdown .85s cubic-bezier(.2,.8,.2,1) forwards}
+.langbanner.up{transform:translateX(-50%) translateY(0);animation:lbup .9s cubic-bezier(.6,0,.4,1) .05s forwards}
+@keyframes lbdown{from{transform:translateX(-50%) translateY(-101%)}to{transform:translateX(-50%) translateY(0)}}
+@keyframes lbup{from{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(-101%)}}
+.langbanner svg{transform-origin:top;animation:lbwave 1.6s ease-in-out infinite}
+@keyframes lbwave{0%,100%{transform:skewX(0)}50%{transform:skewX(-1.2deg)}}
+@media (prefers-reduced-motion:reduce){.langbanner{display:none}}
+html[lang="en"] .board{--tw:64px}
+html[lang="en"] .board .time{font-size:12px;padding-left:4px;padding-right:4px;white-space:nowrap}
+html[lang="en"] body::before{content:"DEMO"}
 </style>
 </head>
 <body>
@@ -591,7 +691,7 @@ window.addEventListener('error', function (e) {
 });
 </script>
 <noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
-<div class="topnav"><a href="index.html" class="navbtn">← Menu</a><a href="#rules" class="navbtn howto-btn" onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a></div>
+<div class="topnav"><a href="index.html" class="navbtn" data-i18n>← Menu</a><a href="#rules" class="navbtn howto-btn" data-i18n onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a><button type="button" class="navbtn langsw" data-lang-switch></button></div>
 <div class="app" id="app">
   <header class="top">
     <div class="brand">
@@ -599,25 +699,25 @@ window.addEventListener('error', function (e) {
       <p class="dossier mode-tag" id="dossier">Dossier en préparation…</p>
     </div>
     <div class="controls">
-      <div class="seg" id="scenes" role="group" aria-label="Décor"></div>
-      <div class="seg" id="modes" role="group" aria-label="Mode de jeu"></div>
-      <div class="seg" id="levels" role="group" aria-label="Difficulté"></div>
-      <button class="btn primary" type="button" data-act="new">Nouvelle affaire</button>
+      <div class="seg" id="scenes" role="group" data-i18n-aria="Décor" aria-label="Décor"></div>
+      <div class="seg" id="modes" role="group" data-i18n-aria="Mode de jeu" aria-label="Mode de jeu"></div>
+      <div class="seg" id="levels" role="group" data-i18n-aria="Difficulté" aria-label="Difficulté"></div>
+      <button class="btn primary" type="button" data-act="new" data-i18n>Nouvelle affaire</button>
     </div>
   </header>
 
   <div class="layout">
     <div class="col">
-      <section class="panel case" id="case" aria-label="L'affaire"></section>
-      <section class="panel" id="suspects" aria-label="Les suspects" hidden></section>
-      <section class="panel" id="board-panel" aria-label="Chronologie des déplacements"></section>
+      <section class="panel case" id="case" data-i18n-aria="L'affaire" aria-label="L'affaire"></section>
+      <section class="panel" id="suspects" data-i18n-aria="Les suspects" aria-label="Les suspects" hidden></section>
+      <section class="panel" id="board-panel" data-i18n-aria="Chronologie des déplacements" aria-label="Chronologie des déplacements"></section>
       <section id="verdict" aria-live="polite"></section>
     </div>
     <div class="col">
-      <section class="panel" id="map-panel" aria-label="Plan du manoir"></section>
-      <section class="panel" id="clues-panel" aria-label="Constats"></section>
+      <section class="panel" id="map-panel" data-i18n-aria="Plan du manoir" aria-label="Plan du manoir"></section>
+      <section class="panel" id="clues-panel" data-i18n-aria="Constats" aria-label="Constats"></section>
       <details class="panel rules" id="rules">
-        <summary>Comment jouer</summary>
+        <summary data-i18n>Comment jouer</summary>
         <ol id="rules-list"></ol>
       </details>
     </div>
@@ -988,7 +1088,7 @@ window.addEventListener('error', function (e) {
     var w = fz.z * d, h = w * 1.5, id = 'fb' + (++badgeUid);
     return '<clipPath id="' + id + '"><circle r="' + d / 2 + '"/></clipPath><g clip-path="url(#' + id + ')"><rect x="' + -d / 2 + '" y="' + -d / 2 + '" width="' + d + '" height="' + d + '" fill="#e9e6e0"/><image href="' + src + '" x="' + (-fz.fx * w) + '" y="' + (-fz.fy * h) + '" width="' + w + '" height="' + h + '" preserveAspectRatio="none"/></g>';
   }
-  function slug(name) { return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]+/g, '-').replace(/^-|-$/g, ''); }
+  function slug(name) { name = window.frName ? window.frName(name) : name; return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]+/g, '-').replace(/^-|-$/g, ''); }
 
   /* ---------- Décors (viewBox 0 0 400 260) ---------- */
   function sc(inner, id) { return '<svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + inner + '</svg>'; }
@@ -1146,7 +1246,7 @@ window.addEventListener('error', function (e) {
   window.kioukanCI = function (names, s) {
     var used = {}, out = [], i, k;
     for (i = 0; i < names.length; i++) {
-      var f = FIXED[names[i]];
+      var f = FIXED[window.frName ? window.frName(names[i]) : names[i]];
       if (f != null && !used[f]) { used[f] = 1; out.push(f); } else out.push(null);
     }
     var free = [];
@@ -1231,9 +1331,34 @@ window.addEventListener('error', function (e) {
     }
   };
 
+
+  /* ---------- Langue : surcouche anglaise des décors (les identifiants restent français) ---------- */
+  var EN = typeof window !== 'undefined' && window.KIOUKAN_LANG === 'en';
+  var EN_SCENE = {
+    manoir: { label: 'Manor', unit: 'room', rooms: [['Hall','Hall','the hall'],['Lounge','Lounge','the lounge'],['Kitchen','Kitchen','the kitchen'],['Library','Library','the library'],['Study','Study','the study'],['Cellar','Cellar','the cellar'],['Garden','Garden','the garden']] },
+    train: { label: 'Train', unit: 'car', rooms: [['Luggage van','Luggage','the luggage van'],['Sleeper A','Sleeper A','sleeper A'],['Sleeper B','Sleeper B','sleeper B'],['Dining car','Diner','the dining car'],['Bar car','Bar','the bar car'],['Smoking lounge','Smoking','the smoking lounge'],['Train roof','Roof','the roof of the train']] },
+    hotel: { label: 'Hotel', unit: 'room', rooms: [['Bar','Bar','the bar'],['Reception','Reception','reception'],['Restaurant','Restaurant','the restaurant'],['Kitchens','Kitchens','the kitchens'],['Elevator','Elevator','the elevator'],['Corridor','Corridor','the corridor'],['Suite 12','Suite 12','suite 12'],['Terrace','Terrace','the terrace']] }
+  };
+  var EN_ROLE = { gouvernante: 'housekeeper', 'médecin': 'doctor', neveu: 'nephew', militaire: 'soldier', 'secrétaire': 'secretary', veuve: 'widow', baron: 'baron', 'contrôleur': 'ticket inspector', cantatrice: 'opera singer', barman: 'bartender', cliente: 'guest', cuisinier: 'cook' };
+  function localize(key) {
+    var sc = SCENES[key];
+    if (!EN || sc.localized) return;
+    var o = EN_SCENE[key];
+    if (o) {
+      sc.label = o.label; sc.unit = o.unit;
+      sc.rooms.forEach(function (r, i) { r.id = r.name; r.name = o.rooms[i][0]; r.short = o.rooms[i][1]; r.the = o.rooms[i][2]; });
+    }
+    sc.suspects.forEach(function (p) {
+      p.id = p.id || p.name; p.role = EN_ROLE[p.role] || p.role;
+      if (window.tn) { p.name = window.tn(p.id); p.short = (window.KIOUKAN_SHORT_EN && window.KIOUKAN_SHORT_EN[p.id]) || p.name.replace(/^(Mrs|Mr|Dr|Miss|Prof\.|Colonel|Baron|Chef|Countess) /, ''); }
+    });
+    sc.localized = true;
+  }
+
   var SCENE, SCENE_KEY, ROOMS, DOORS, NR, ALL, ADJ, STEP, UNION, POP, SUSPECTS;
   function setScene(key) {
     SCENE_KEY = SCENES[key] ? key : 'manoir';
+    localize(SCENE_KEY);
     SCENE = SCENES[SCENE_KEY];
     ROOMS = SCENE.rooms; DOORS = SCENE.doors; SUSPECTS = SCENE.suspects;
     NR = ROOMS.length;
@@ -1272,8 +1397,12 @@ window.addEventListener('error', function (e) {
     }
   };
 
+  if (EN) { LEVELS.facile.label = 'Easy'; LEVELS.moyen.label = 'Medium'; LEVELS.difficile.label = 'Hard'; }
+
   function timeLabel(t) {
-    return (SCENE.t0 + Math.floor(t / 2)) + 'h' + (t % 2 ? '30' : '00');
+    var h = SCENE.t0 + Math.floor(t / 2);
+    if (EN) return ((h + 11) % 12 + 1) + (t % 2 ? ':30' : ':00') + (h % 24 >= 12 ? ' pm' : ' am');
+    return h + 'h' + (t % 2 ? '30' : '00');
   }
 
   function mulberry32(a) {
@@ -1512,7 +1641,50 @@ window.addEventListener('error', function (e) {
     return out;
   }
 
+  function clueTextEN(puz, c) {
+    var nm = function (s) { return SUSPECTS[s].name; };
+    var the = function (r) { return ROOMS[r].the; };
+    var loc = function (r) { return (ROOMS[r].on ? 'on ' : 'in ') + ROOMS[r].the; };
+    var u = U(), A = function (w) { return /^[aeiou]/.test(w) ? 'an' : 'a'; };
+    switch (c.type) {
+      case 'at': return nm(c.s) + ' was ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.';
+      case 'notAt': return nm(c.s) + ' was not ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.';
+      case 'together': return nm(c.a) + ' and ' + nm(c.b) + ' were in the same ' + u + ' at ' + timeLabel(c.t) + '.';
+      case 'apart': return nm(c.a) + ' and ' + nm(c.b) + ' were not together at ' + timeLabel(c.t) + '.';
+      case 'stay': return nm(c.s) + ' stayed in the same ' + u + ' between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.';
+      case 'move': return nm(c.s) + ' changed ' + u + 's between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.';
+      case 'moves':
+        return c.n === 0 ? nm(c.s) + ' never moved all evening.'
+          : c.n === 1 ? nm(c.s) + ' changed ' + u + 's only once.'
+          : nm(c.s) + ' changed ' + u + 's ' + c.n + ' times in total.';
+      case 'never': return nm(c.s) + ' never set foot ' + loc(c.r) + ' all evening.';
+      case 'visited': return nm(c.s) + ' passed through ' + the(c.r) + ' at some point in the evening.';
+      case 'empty': return 'Nobody was ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.';
+      case 'alone': return nm(c.s) + ' was alone in their ' + u + ' at ' + timeLabel(c.t) + '.';
+      case 'crime': return 'Only one suspect was ' + loc(puz.crime.room) + ' at ' + timeLabel(puz.crime.t) + ': the killer.';
+    }
+    return '';
+  }
+  function statementTextEN(puz, c) {
+    var by = c.by, me = function (s) { return s === by; };
+    var nm = function (s) { return SUSPECTS[s].name; };
+    var the = function (r) { return ROOMS[r].the; };
+    var loc = function (r) { return (ROOMS[r].on ? 'on ' : 'in ') + ROOMS[r].the; };
+    var u = U(), other;
+    switch (c.type) {
+      case 'at': if (me(c.s)) return 'I was ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.'; break;
+      case 'notAt': if (me(c.s)) return 'I was not ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.'; break;
+      case 'together': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' and I were in the same ' + u + ' at ' + timeLabel(c.t) + '.'; } break;
+      case 'apart': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' and I were not together at ' + timeLabel(c.t) + '.'; } break;
+      case 'stay': if (me(c.s)) return 'I stayed in the same ' + u + ' between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.'; break;
+      case 'move': if (me(c.s)) return 'I changed ' + u + 's between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.'; break;
+      case 'never': if (me(c.s)) return 'I never set foot ' + loc(c.r) + ' all evening.'; break;
+      case 'visited': if (me(c.s)) return 'I passed through ' + the(c.r) + ' at some point in the evening.'; break;
+    }
+    return clueTextEN(puz, c);
+  }
   function clueText(puz, c) {
+    if (EN) return clueTextEN(puz, c);
     var nm = function (s) { return SUSPECTS[s].name; };
     var the = function (r) { return ROOMS[r].the; };
     var loc = function (r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; };
@@ -1911,6 +2083,7 @@ window.addEventListener('error', function (e) {
 
   // Déclaration à la première personne quand le sujet est celui qui parle
   function statementText(puz, c) {
+    if (EN) return statementTextEN(puz, c);
     var by = c.by, me = function (s) { return s === by; };
     var nm = function (s) { return SUSPECTS[s].name; };
     var the = function (r) { return ROOMS[r].the; };
@@ -1949,6 +2122,8 @@ window.addEventListener('error', function (e) {
   'use strict';
   var E = window.KioukanEngine;
   var ROOMS, SUSPECTS, STEP, DOORS, GEO, SC;
+  var EN = window.KIOUKAN_LANG === 'en', TR = window.T;
+  function pl(n, one, many) { return n > 1 ? many : one; }
   var LEVELS = E.LEVELS;
   var tl = E.timeLabel;
 
@@ -1956,8 +2131,8 @@ window.addEventListener('error', function (e) {
   var Art = window.KioukanArt, WT = window.KioukanWT;
   var SCENE_UI = {
     manoir: {
-      label: 'Manoir', plan: 'Plan du manoir',
-      dead: 'Le maître des lieux a été retrouvé mort', watch: 'Sa montre s’est arrêtée à', where: 'dans le manoir ce soir-là',
+      label: TR('Manoir'), plan: TR('Plan du manoir'),
+      dead: TR('Le maître des lieux a été retrouvé mort'), watch: TR('Sa montre s’est arrêtée à'), where: TR('dans le manoir ce soir-là'),
       geo: [
         { x: 120, y: 80, w: 110, h: 70, f: 'check', fu: [['plant', 90, 34, 16, 26], ['table', 8, 46, 28, 16]] },
         { x: 10, y: 80, w: 110, h: 70, f: 'wood', fu: [['sofa', 8, 46, 48, 18], ['tv', 80, 52, 22, 10], ['plant', 92, 24, 14, 22]] },
@@ -1969,8 +2144,8 @@ window.addEventListener('error', function (e) {
       ]
     },
     train: {
-      label: 'Train', plan: 'Plan du train',
-      dead: 'Un riche voyageur a été retrouvé mort', watch: 'Sa montre à gousset s’est arrêtée à', where: 'à bord de l’express cette nuit-là',
+      label: TR('Train'), plan: TR('Plan du train'),
+      dead: TR('Un riche voyageur a été retrouvé mort'), watch: TR('Sa montre à gousset s’est arrêtée à'), where: TR('à bord de l’express cette nuit-là'),
       geo: [
         { x: 10, y: 60, w: 55, h: 100, l: 'FOURGON', f: 'steel', fu: [['crate', 5, 68, 20, 20], ['crate', 30, 68, 20, 20], ['crate', 17, 40, 18, 18]] },
         { x: 65, y: 60, w: 55, h: 100, l: 'LIT A', f: 'wood', fu: [['win', 7, 22, 16, 8], ['win', 32, 22, 16, 8], ['bed', 6, 66, 43, 26]] },
@@ -1984,8 +2159,8 @@ window.addEventListener('error', function (e) {
         [37, 92, 147, 202, 257, 312].map(function (x) { return '<circle class="wheel" cx="' + x + '" cy="166" r="6"/>'; }).join('')
     },
     hotel: {
-      label: 'Hôtel', plan: 'Plan de l’hôtel',
-      dead: 'Le directeur de l’hôtel a été retrouvé mort', watch: 'Sa montre s’est arrêtée à', where: 'dans l’hôtel ce soir-là',
+      label: TR('Hôtel'), plan: TR('Plan de l’hôtel'),
+      dead: TR('Le directeur de l’hôtel a été retrouvé mort'), watch: TR('Sa montre s’est arrêtée à'), where: TR('dans l’hôtel ce soir-là'),
       geo: [
         { x: 10, y: 125, w: 85, h: 75, l: 'BAR', f: 'wood', fu: [['counter', 6, 56, 73, 14], ['stool', 16, 48, 9], ['stool', 40, 48, 9], ['stool', 64, 48, 9]] },
         { x: 95, y: 125, w: 95, h: 75, l: 'RÉCEPTION', f: 'check', fu: [['desk', 20, 54, 55, 16], ['plant', 78, 26, 14, 22]] },
@@ -2003,8 +2178,8 @@ window.addEventListener('error', function (e) {
     ROOMS = E.ROOMS; SUSPECTS = E.SUSPECTS; STEP = E.STEP; DOORS = E.DOORS;
     SC = SCENE_UI[state.scene]; GEO = SC.geo;
   }
-  function inRoom(r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; }
-  function unitize(str) { return str.replace(/pièce/g, E.SCENE.unit); }
+  function inRoom(r) { return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
+  function unitize(str) { return EN ? str.replace(/\{unit\}/g, E.SCENE.unit) : str.replace(/pièce/g, E.SCENE.unit); }
   function doorRect(a, b) {
     var A = GEO[a], B = GEO[b];
     var x1 = Math.max(A.x, B.x), x2 = Math.min(A.x + A.w, B.x + B.w);
@@ -2121,7 +2296,7 @@ window.addEventListener('error', function (e) {
   }
 
   function renderModes() {
-    var M = { classic: 'Classique', liar: 'Un menteur', half: 'Demi-vérités' };
+    var M = { classic: TR('Classique'), liar: TR('Un menteur'), half: TR('Demi-vérités') };
     $('modes').innerHTML = Object.keys(M).map(function (k) {
       return '<button type="button" data-act="mode" data-mode="' + k + '" aria-pressed="' + (k === state.mode) + '">' + M[k] + '</button>';
     }).join('');
@@ -2129,33 +2304,33 @@ window.addEventListener('error', function (e) {
 
   var RULES = {
     classic: [
-      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Touche une case pour choisir la pièce.',
-      'Entre deux heures, un suspect <b>reste sur place</b> ou <b>passe une porte</b> (les traits colorés du plan). Un mur sans porte ne se traverse pas.',
-      'Tous les <b>constats</b> sont vrais. Il n’existe qu’une seule chronologie qui les respecte tous.',
-      'À l’heure du crime, un seul suspect se trouvait dans la pièce du crime : c’est le <b>meurtrier</b>. Complète la grille pour le démasquer.',
-      'Touche une heure pour voir qui était où sur le plan. Les cases au fond doré sont des alibis déjà confirmés.'
+      TR('Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Touche une case pour choisir la pièce.'),
+      TR('Entre deux heures, un suspect <b>reste sur place</b> ou <b>passe une porte</b> (les traits colorés du plan). Un mur sans porte ne se traverse pas.'),
+      TR('Tous les <b>constats</b> sont vrais. Il n’existe qu’une seule chronologie qui les respecte tous.'),
+      TR('À l’heure du crime, un seul suspect se trouvait dans la pièce du crime : c’est le <b>meurtrier</b>. Complète la grille pour le démasquer.'),
+      TR('Touche une heure pour voir qui était où sur le plan. Les cases au fond doré sont des alibis déjà confirmés.')
     ],
     liar: [
-      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.',
-      'Chaque suspect fait des <b>déclarations</b>. Les innocents disent la vérité. <b>Un seul suspect ment</b>, et toutes ses déclarations sont fausses.',
-      'Le menteur est le <b>meurtrier</b> : c’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.',
-      'Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>, puis remplis la grille. Chaque déclaration se vérifie sur la chronologie : essaie un suspect, change d’avis si ça coince.',
-      'Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.'
+      TR('Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.'),
+      TR('Chaque suspect fait des <b>déclarations</b>. Les innocents disent la vérité. <b>Un seul suspect ment</b>, et toutes ses déclarations sont fausses.'),
+      TR('Le menteur est le <b>meurtrier</b> : c’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.'),
+      TR('Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>, puis remplis la grille. Chaque déclaration se vérifie sur la chronologie : essaie un suspect, change d’avis si ça coince.'),
+      TR('Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.')
     ],
     half: [
-      'Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.',
-      'Chaque suspect fait des <b>déclarations</b>. Les innocents disent toujours la vérité.',
-      'Le <b>meurtrier</b> mélange le vrai et le faux : <b>au moins une</b> de ses déclarations est vraie et <b>au moins une</b> est fausse. C’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.',
-      'Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>. Ses déclarations s’affichent alors comme vraies ou fausses d’après ta grille, et il doit en avoir des deux sortes.',
-      'Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.'
+      TR('Chaque case de la <b>chronologie</b> indique la pièce où se trouvait un suspect à une heure donnée. Entre deux heures, on reste sur place ou on passe une porte.'),
+      TR('Chaque suspect fait des <b>déclarations</b>. Les innocents disent toujours la vérité.'),
+      TR('Le <b>meurtrier</b> mélange le vrai et le faux : <b>au moins une</b> de ses déclarations est vraie et <b>au moins une</b> est fausse. C’est le seul suspect qui se trouvait dans la pièce du crime à l’heure du crime.'),
+      TR('Désigne celui que tu soupçonnes sous <b>Qui ment ?</b>. Ses déclarations s’affichent alors comme vraies ou fausses d’après ta grille, et il doit en avoir des deux sortes.'),
+      TR('Les <b>preuves</b> sont des faits certains. Elles sont déjà placées dans les cases au fond doré.')
     ]
   };
   function renderRules() {
     var extra = [
       isLiar(state.puz || { mode: state.mode })
-        ? 'Dans ce mode, le coupable est le menteur. <b>Qui ment ?</b> sert à tester une hypothèse (les déclarations se colorent). <b>J’accuse !</b> sert à la valider : une bonne accusation gagne tout de suite.'
-        : 'Pas besoin de tout remplir : dès que tu es sûr, touche <b>J’accuse !</b> et désigne le coupable. Une bonne accusation gagne tout de suite. Une mauvaise est comptée comme une erreur et le suspect est écarté.',
-      '<b>Vérification en direct</b> : cochée, les erreurs apparaissent aussitôt en rouge (une case qui contredit un constat, ou un trajet impossible). Décochée, rien ne s’affiche pendant que tu joues : le bouton <b>Vérifier</b> contrôle alors toute la grille d’un coup, à la demande. C’est le mode sans filet.'
+        ? TR('Dans ce mode, le coupable est le menteur. <b>Qui ment ?</b> sert à tester une hypothèse (les déclarations se colorent). <b>J’accuse !</b> sert à la valider : une bonne accusation gagne tout de suite.')
+        : TR('Pas besoin de tout remplir : dès que tu es sûr, touche <b>J’accuse !</b> et désigne le coupable. Une bonne accusation gagne tout de suite. Une mauvaise est comptée comme une erreur et le suspect est écarté.'),
+      TR('<b>Vérification en direct</b> : cochée, les erreurs apparaissent aussitôt en rouge (une case qui contredit un constat, ou un trajet impossible). Décochée, rien ne s’affiche pendant que tu joues : le bouton <b>Vérifier</b> contrôle alors toute la grille d’un coup, à la demande. C’est le mode sans filet.')
     ];
     $('rules-list').innerHTML = RULES[state.mode].concat(extra).map(function (r) { return '<li>' + unitize(r) + '</li>'; }).join('');
   }
@@ -2163,16 +2338,16 @@ window.addEventListener('error', function (e) {
   function renderCase() {
     var P = state.puz;
     var liarMode = isLiar(P), half = P.mode === 'half';
-    $('dossier').textContent = 'Dossier n° ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' créneaux' + (liarMode ? (half ? ' · demi-vérités' : ' · un menteur') : '');
+    $('dossier').textContent = EN ? 'Case no. ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' time slots' + (liarMode ? (half ? ' · half-truths' : ' · one liar') : '') : 'Dossier n° ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' créneaux' + (liarMode ? (half ? ' · demi-vérités' : ' · un menteur') : '');
     $('case').innerHTML =
-      '<p class="eyebrow">L’affaire</p>' +
-      '<h2>' + SC.dead + ' ' + (ROOMS[P.crime.room].on ? 'sur' : 'dans') + ' <em>' + ROOMS[P.crime.room].the + '</em>.</h2>' +
-      '<p>' + SC.watch + ' <b class="mono">' + tl(P.crime.t) + '</b>. ' + NUMWORD[P.S] +
+      '<p class="eyebrow">' + TR('L’affaire') + '</p>' +
+      '<h2>' + SC.dead + ' ' + (EN ? (ROOMS[P.crime.room].on ? 'on' : 'in') : (ROOMS[P.crime.room].on ? 'sur' : 'dans')) + ' <em>' + ROOMS[P.crime.room].the + '</em>.</h2>' +
+      '<p>' + SC.watch + ' <b class="mono">' + tl(P.crime.t) + '</b>. ' + TR(NUMWORD[P.S]) +
       (liarMode
         ? (half
-          ? ' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a mêlé le vrai et le faux : au moins une de ses déclarations est vraie, au moins une est fausse. Démasque-le.</p>'
-          : ' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a menti dans chacune de ses déclarations. Démasque-le.</p>')
-        : ' suspects se trouvaient ' + SC.where + ', et un seul d’entre eux était avec lui à cet instant. Reconstitue leurs déplacements pour trouver lequel.</p>');
+          ? TR(' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a mêlé le vrai et le faux : au moins une de ses déclarations est vraie, au moins une est fausse. Démasque-le.') + '</p>'
+          : TR(' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a menti dans chacune de ses déclarations. Démasque-le.') + '</p>')
+        : (EN ? ' suspects were ' + SC.where + ', and only one of them was with him at that moment. Reconstruct their movements to find out which.' : ' suspects se trouvaient ' + SC.where + ', et un seul d’entre eux était avec lui à cet instant. Reconstitue leurs déplacements pour trouver lequel.') + '</p>');
   }
 
   function pill(x, y, text) {
@@ -2186,7 +2361,7 @@ window.addEventListener('error', function (e) {
       chips += '<button type="button" class="chip' + (i === P.crime.t ? ' crime' : '') + '" data-act="time" data-t="' + i +
         '" aria-pressed="' + (i === t) + '">' + tl(i) + '</button>';
     }
-    svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' à ' + tl(t) + '">' + Art.defs() + '<defs><clipPath id="tokc"><circle r="10.4"/></clipPath></defs>';
+    svg += '<svg class="plan" viewBox="0 0 350 210" role="img" aria-label="' + SC.plan + ' ' + TR('à') + ' ' + tl(t) + '">' + Art.defs() + '<defs><clipPath id="tokc"><circle r="10.4"/></clipPath></defs>';
     // plan dessiné à la main (mêmes plans que le mode histoire pour le manoir et l'hôtel)
     var IMG = (window.KIOUKAN_IMAGES || {})['plan:' + ({ manoir: 'manoir', hotel: 'palace', train: 'train' })[state.scene]];
     if (IMG) svg += '<image href="' + IMG + '" x="0" y="0" width="350" height="210" preserveAspectRatio="xMidYMid slice"/>';
@@ -2211,7 +2386,7 @@ window.addEventListener('error', function (e) {
     });
     for (r = 0; r < ROOMS.length; r++) {
       var G4 = GEO[r];
-      svg += pill(G4.x + G4.w / 2, G4.y + 11, G4.l || ROOMS[r].name.toUpperCase());
+      svg += pill(G4.x + G4.w / 2, G4.y + 11, (EN ? '' : G4.l) || ROOMS[r].name.toUpperCase());
     }
     var burst = [], bi, br;
     for (bi = 0; bi < 12; bi++) { br = bi % 2 ? 6.5 : 11; burst.push((Math.sin(bi * Math.PI / 6) * br).toFixed(1) + ',' + (-Math.cos(bi * Math.PI / 6) * br).toFixed(1)); }
@@ -2238,9 +2413,9 @@ window.addEventListener('error', function (e) {
     });
     svg += '</svg>';
     $('map-panel').innerHTML =
-      '<div class="panel-hd"><h2 class="label">' + SC.plan + '</h2><span class="sub">à ' + tl(t) + '</span></div>' +
+      '<div class="panel-hd"><h2 class="label">' + SC.plan + '</h2><span class="sub">' + TR('à') + ' ' + tl(t) + '</span></div>' +
       '<div class="chips" style="--n:' + T + '">' + chips + '</div>' + svg +
-      '<p class="legend"><span><i class="lg-door"></i>porte</span><span><i class="lg-crime"></i>scène du crime</span></p>';
+      '<p class="legend"><span><i class="lg-door"></i>' + TR('porte') + '</span><span><i class="lg-crime"></i>' + TR('scène du crime') + '</span></p>';
   }
 
   function pola(sid, extra) {
@@ -2255,7 +2430,7 @@ window.addEventListener('error', function (e) {
     var P = state.puz, el = $('suspects'), s, h = '';
     if (!P || isLiar(P)) { el.innerHTML = ''; el.hidden = true; return; }
     el.hidden = false;
-    h += '<div class="panel-hd"><h2 class="label">Les suspects</h2><span class="sub">' + P.S + ' personnes</span></div>';
+    h += '<div class="panel-hd"><h2 class="label">' + TR('Les suspects') + '</h2><span class="sub">' + P.S + ' ' + TR('personnes') + '</span></div>';
     h += '<div class="fiches" style="--n:' + (P.S <= 4 ? P.S : 3) + ';--N:' + P.S + '">';
     for (s = 0; s < P.S; s++) h += pola(s, '<small>' + SUSPECTS[s].role + '</small>');
     el.innerHTML = h + '</div>';
@@ -2263,7 +2438,7 @@ window.addEventListener('error', function (e) {
 
   function renderBoard() {
     var P = state.puz, S = P.S, T = P.T, A = analyse(), show = showMarks(), s, t, h = '';
-    h += '<div class="panel-hd"><h2 class="label">Chronologie</h2><span class="sub">touche une case</span></div>';
+    h += '<div class="panel-hd"><h2 class="label">' + TR('Chronologie') + '</h2><span class="sub">' + TR('touche une case') + '</span></div>';
     h += '<div class="board' + (S >= 5 ? ' dense' : '') + '" style="--cols:' + S + '"><div></div>';
     for (s = 0; s < S; s++) {
       h += '<div class="who s' + ci(s) + '">' + mini(s) + '<b>' + SUSPECTS[s].short + '</b>' +
@@ -2275,7 +2450,7 @@ window.addEventListener('error', function (e) {
       for (s = 0; s < S; s++) {
         var idx = s * T + t, v = state.grid[idx], given = state.given[idx];
         var cls = 'cell s' + ci(s) + (v < 0 ? ' empty' : '') + (given ? ' given' : '') + (show && !given && A.bad[idx] ? ' bad' : '');
-        var label = SUSPECTS[s].name + ', ' + tl(t) + ' : ' + (v < 0 ? 'vide' : ROOMS[v].name) + (given ? ' (confirmé)' : '');
+        var label = SUSPECTS[s].name + ', ' + tl(t) + ' : ' + (v < 0 ? TR('vide') : ROOMS[v].name) + (given ? ' (' + TR('confirmé') + ')' : '');
         h += '<button type="button" class="' + cls + '" data-act="cell" data-s="' + s + '" data-t="' + t + '" aria-label="' + label + '"' +
           (given || state.solved ? ' disabled' : '') + '>' + (v < 0 ? '' : ROOMS[v].short) + (given ? ICON.lock : '') + '</button>';
       }
@@ -2288,21 +2463,21 @@ window.addEventListener('error', function (e) {
       }
       h += '</div></div>';
     }
-    h += '<div class="status"><span>' + A.filled + '/' + (S * T) + ' cases</span>' +
-      (show ? '<span class="' + (A.errors ? 'err' : '') + '">' + A.errors + ' contradiction' + (A.errors > 1 ? 's' : '') + '</span>' : '<span>vérification en direct désactivée</span>') +
-      (isLiar(P) && !state.solved && state.liarGuess < 0 && gridCorrect() ? '<span class="err">chronologie complète : désigne le menteur</span>' : '') +
-      (state.wrong && !state.solved ? '<span class="err">' + state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + ' (' + state.accused.map(function (x) { return SUSPECTS[x].short; }).join(', ') + ' : innocent)</span>' : '') +
+    h += '<div class="status"><span>' + A.filled + '/' + (S * T) + ' ' + TR('cases') + '</span>' +
+      (show ? '<span class="' + (A.errors ? 'err' : '') + '">' + A.errors + ' ' + TR(pl(A.errors, 'contradiction', 'contradictions')) + '</span>' : '<span>' + TR('vérification en direct désactivée') + '</span>') +
+      (isLiar(P) && !state.solved && state.liarGuess < 0 && gridCorrect() ? '<span class="err">' + TR('chronologie complète : désigne le menteur') + '</span>' : '') +
+      (state.wrong && !state.solved ? '<span class="err">' + state.wrong + ' ' + TR(pl(state.wrong, 'fausse accusation', 'fausses accusations')) + ' (' + state.accused.map(function (x) { return SUSPECTS[x].short; }).join(', ') + ' : ' + TR('innocent') + ')</span>' : '') +
       '</div>';
     if (!state.solved) {
-      h += '<div class="actions"><label class="switch"><input type="checkbox" id="live"' + (state.live ? ' checked' : '') + '><span>Vérification en direct</span></label>' +
+      h += '<div class="actions"><label class="switch"><input type="checkbox" id="live"' + (state.live ? ' checked' : '') + '><span>' + TR('Vérification en direct') + '</span></label>' +
         '<div class="btns">' +
-        (state.live ? '' : '<button type="button" class="btn sm" data-act="check" title="Contrôle toute la grille d’un coup">Vérifier</button>') +
-        '<button type="button" class="btn sm" data-act="hint">Indice</button>' +
-        '<button type="button" class="btn sm" data-act="reset">Effacer</button>' +
-        '<button type="button" class="btn sm accuse" data-act="accuse">J’accuse !</button></div></div>' +
+        (state.live ? '' : '<button type="button" class="btn sm" data-act="check" title="' + TR('Contrôle toute la grille d’un coup') + '">' + TR('Vérifier') + '</button>') +
+        '<button type="button" class="btn sm" data-act="hint">' + TR('Indice') + '</button>' +
+        '<button type="button" class="btn sm" data-act="reset">' + TR('Effacer') + '</button>' +
+        '<button type="button" class="btn sm accuse" data-act="accuse">' + TR('J’accuse !') + '</button></div></div>' +
         '<p class="hintline">' + (state.live
-          ? 'Vérification en direct : les erreurs s’affichent tout de suite en rouge.'
-          : 'Vérification manuelle : rien ne s’affiche tant que tu n’appuies pas sur « Vérifier », qui contrôle toute la grille d’un coup.') + '</p>';
+          ? TR('Vérification en direct : les erreurs s’affichent tout de suite en rouge.')
+          : TR('Vérification manuelle : rien ne s’affiche tant que tu n’appuies pas sur « Vérifier », qui contrôle toute la grille d’un coup.')) + '</p>';
     }
     $('board-panel').innerHTML = h;
   }
@@ -2310,9 +2485,9 @@ window.addEventListener('error', function (e) {
   function renderCluesLiar() {
     var P = state.puz, A = analyse(), show = showMarks(), L = state.liarGuess, S = P.S, s, h = '';
     var total = A.items.length;
-    h += '<div class="panel-hd"><h2 class="label">Déclarations</h2><span class="sub">' +
-      (show ? (L < 0 ? 'désigne un menteur' : A.okCount + '/' + total + ' confirmées') : total + ' constats') + '</span></div>';
-    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>Masquer les déclarations confirmées</span></label>';
+    h += '<div class="panel-hd"><h2 class="label">' + TR('Déclarations') + '</h2><span class="sub">' +
+      (show ? (L < 0 ? TR('désigne un menteur') : A.okCount + '/' + total + ' ' + TR('confirmées')) : total + ' ' + TR('constats')) + '</span></div>';
+    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>' + TR('Masquer les déclarations confirmées') + '</span></label>';
     function li(it, text) {
       var st = show ? it.st : 'pending';
       if (state.hideOk && st === 'ok') return '';
@@ -2320,20 +2495,20 @@ window.addEventListener('error', function (e) {
       return '<li class="clue ' + st + (it.rule ? ' rule' : '') + '"><span class="ico">' + ICON[st] + '</span><span class="txt">' + text + ' ' + tag + '</span></li>';
     }
     var rule = A.items.filter(function (it) { return it.rule; })[0];
-    h += '<ul class="clues">' + li(rule, 'Le menteur est le meurtrier : lui seul se trouvait ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) + '.') + '</ul>';
+    h += '<ul class="clues">' + li(rule, EN ? 'The liar is the killer: only they were ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '.' : 'Le menteur est le meurtrier : lui seul se trouvait ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) + '.') + '</ul>';
     var facts = P.clues.filter(function (c) { return c.by === undefined; });
     if (facts.length) {
-      h += '<div class="speaker"><b>Preuves</b><span class="tag">certaines</span></div><ul class="clues proof-list">' +
+      h += '<div class="speaker"><b>' + TR('Preuves') + '</b><span class="tag">' + TR('certaines') + '</span></div><ul class="clues proof-list">' +
         facts.map(function (c) { return '<li class="clue ok proof"><span class="ico">' + ICON.lock + '</span><span class="txt">' + E.clueText(P, c) + '</span></li>'; }).join('') + '</ul>';
     }
     for (s = 0; s < S; s++) {
       var mix = (P.mode === 'half' && L === s) ? A.items.filter(function (it) { return it.mix; })[0] : null;
-      var rows = (mix ? li(mix, 'Au moins une de ses déclarations est vraie et au moins une est fausse.') : '') + A.items.filter(function (it) { return !it.rule && !it.mix && it.c.by === s; }).map(function (it) {
-        return li(it, '« ' + E.statementText(P, it.c) + ' »');
+      var rows = (mix ? li(mix, TR('Au moins une de ses déclarations est vraie et au moins une est fausse.')) : '') + A.items.filter(function (it) { return !it.rule && !it.mix && it.c.by === s; }).map(function (it) {
+        return li(it, EN ? '“' + E.statementText(P, it.c) + '”' : '« ' + E.statementText(P, it.c) + ' »');
       }).join('');
-      var who = L < 0 ? '' : (L === s ? '<span class="tag liar-tag">' + (P.mode === 'half' ? 'ment en partie' : 'ment : tout est faux') + '</span>' : '<span class="tag">dit vrai</span>');
+      var who = L < 0 ? '' : (L === s ? '<span class="tag liar-tag">' + TR(P.mode === 'half' ? 'ment en partie' : 'ment : tout est faux') + '</span>' : '<span class="tag">' + TR('dit vrai') + '</span>');
       h += '<div class="sp s' + ci(s) + '">' + pola(s, '<small>' + SUSPECTS[s].role + '</small>' + who) +
-        (rows ? '<ul class="clues bubbles">' + rows + '</ul>' : '<p class="empty-note">Toutes ses déclarations sont confirmées.</p>') + '</div>';
+        (rows ? '<ul class="clues bubbles">' + rows + '</ul>' : '<p class="empty-note">' + TR('Toutes ses déclarations sont confirmées.') + '</p>') + '</div>';
     }
     $('clues-panel').innerHTML = h;
   }
@@ -2341,15 +2516,15 @@ window.addEventListener('error', function (e) {
   function renderClues() {
     if (isLiar(state.puz)) { renderCluesLiar(); return; }
     var A = analyse(), show = showMarks();
-    var h = '<div class="panel-hd"><h2 class="label">Constats</h2><span class="sub">' +
-      (show ? A.okCount + '/' + A.items.length + ' confirmés' : A.items.length + ' constats') + '</span></div>';
-    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>Masquer les constats confirmés</span></label>';
+    var h = '<div class="panel-hd"><h2 class="label">' + TR('Constats') + '</h2><span class="sub">' +
+      (show ? A.okCount + '/' + A.items.length + ' ' + TR('confirmés') : A.items.length + ' ' + TR('constats')) + '</span></div>';
+    h += '<label class="switch opts"><input type="checkbox" id="hideok"' + (state.hideOk ? ' checked' : '') + '><span>' + TR('Masquer les constats confirmés') + '</span></label>';
     var rows = A.items.map(function (it) {
       var st = show ? it.st : 'pending';
       if (state.hideOk && st === 'ok') return '';
       return '<li class="clue ' + st + (it.c.type === 'crime' ? ' rule' : '') + '"><span class="ico">' + ICON[st] + '</span><span class="txt">' + E.clueText(state.puz, it.c) + '</span></li>';
     }).join('');
-    h += rows ? '<ul class="clues">' + rows + '</ul>' : '<p class="empty-note">Tous les constats sont confirmés.</p>';
+    h += rows ? '<ul class="clues">' + rows + '</ul>' : '<p class="empty-note">' + TR('Tous les constats sont confirmés.') + '</p>';
     $('clues-panel').innerHTML = h;
   }
 
@@ -2366,7 +2541,14 @@ window.addEventListener('error', function (e) {
     var P = state.puz, el = $('verdict');
     if (!state.solved) { el.innerHTML = ''; return; }
     var c = SUSPECTS[P.culprit];
-    el.innerHTML = '<div class="panel verdict"><div class="v-top">' + pola(P.culprit, '<small class="guilty">coupable</small>') + '<div class="stamp">Affaire classée</div></div>' +
+    el.innerHTML = '<div class="panel verdict"><div class="v-top">' + pola(P.culprit, '<small class="guilty">' + TR('coupable') + '</small>') + '<div class="stamp">' + TR('Affaire classée') + '</div></div>' +
+      (EN
+        ? (P.mode === 'half'
+          ? '<p><b>' + c.name + '</b> mixed truth and lies: ' + falseCount() + ' of ' + (c.f ? 'her' : 'his') + ' ' + mineCount() + ' statements ' + (falseCount() > 1 ? 'were false' : 'was false') + '. ' + (c.f ? 'She' : 'He') + ' was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '. The other suspects always told the truth.</p>'
+          : P.mode === 'liar'
+          ? '<p><b>' + c.name + '</b> was lying. ' + (c.f ? 'She' : 'He') + ' was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + ', and every one of ' + (c.f ? 'her' : 'his') + ' statements was false. The other suspects told the truth.</p>'
+          : '<p><b>' + c.name + '</b> was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '. Every other alibi holds.</p>')
+        : '') + (EN ? '' :
       (P.mode === 'half'
         ? '<p><b>' + c.name + '</b> mêlait le vrai et le faux : ' + falseCount() + ' de ' + (c.f ? 'ses' : 'ses') + ' ' + mineCount() + ' déclarations ' + (falseCount() > 1 ? 'étaient fausses' : 'était fausse') + '. ' + (c.f ? 'Elle' : 'Il') + ' était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
           '. Les autres suspects disaient toujours vrai.</p>'
@@ -2374,11 +2556,15 @@ window.addEventListener('error', function (e) {
         ? '<p><b>' + c.name + '</b> mentait. ' + (c.f ? 'Elle' : 'Il') + ' était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
           ', et chacune de ses déclarations était fausse. Les autres suspects disaient vrai.</p>'
         : '<p><b>' + c.name + '</b> était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
-          '. Tous les autres alibis tiennent.</p>') +
-      '<p class="sub">' + (state.early ? 'Accusation exacte alors que ' + state.early + ' case' + (state.early > 1 ? 's' : '') + ' de la chronologie restaient à remplir. ' : '') +
-      (state.hints ? state.hints + ' indice' + (state.hints > 1 ? 's' : '') + ' utilisé' + (state.hints > 1 ? 's' : '') + '. ' : 'Aucun indice utilisé. ') +
-      (state.wrong ? state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'Aucune fausse accusation.') + '</p>' +
-      '<button type="button" class="btn primary" data-act="new">Affaire suivante</button></div>';
+          '. Tous les autres alibis tiennent.</p>')) +
+      '<p class="sub">' + (EN
+        ? ((state.early ? 'Correct accusation with ' + state.early + ' timeline cell' + (state.early > 1 ? 's' : '') + ' still empty. ' : '') +
+           (state.hints ? state.hints + ' hint' + (state.hints > 1 ? 's' : '') + ' used. ' : 'No hints used. ') +
+           (state.wrong ? state.wrong + ' wrong accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'No wrong accusations.'))
+        : ((state.early ? 'Accusation exacte alors que ' + state.early + ' case' + (state.early > 1 ? 's' : '') + ' de la chronologie restaient à remplir. ' : '') +
+           (state.hints ? state.hints + ' indice' + (state.hints > 1 ? 's' : '') + ' utilisé' + (state.hints > 1 ? 's' : '') + '. ' : 'Aucun indice utilisé. ') +
+           (state.wrong ? state.wrong + ' fausse' + (state.wrong > 1 ? 's' : '') + ' accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'Aucune fausse accusation.'))) + '</p>' +
+      '<button type="button" class="btn primary" data-act="new">' + TR('Affaire suivante') + '</button></div>';
   }
 
   function renderSheet() {
@@ -2388,14 +2574,14 @@ window.addEventListener('error', function (e) {
       for (var q0 = 0; q0 < P0.S; q0++) {
         var out = state.accused.indexOf(q0) >= 0;
         ab += '<button type="button" class="acc-btn s' + ci(q0) + (out ? ' out' : '') + '" data-act="accpick" data-s="' + q0 + '"' + (out ? ' disabled' : '') + '>' +
-          pola(q0, '<small>' + (out ? 'innocent' : SUSPECTS[q0].role) + '</small>') + '</button>';
+          pola(q0, '<small>' + (out ? TR('innocent') : SUSPECTS[q0].role) + '</small>') + '</button>';
       }
       root.innerHTML = '<div class="scrim" data-act="close"></div>' +
-        '<div class="sheet" role="dialog" aria-modal="true" aria-label="Désigner le coupable">' +
-        '<div class="sheet-hd"><b class="acc-t">J’accuse…</b></div>' +
-        '<p class="trail">Qui est le meurtrier ? Une mauvaise réponse est comptée comme une erreur.</p>' +
+        '<div class="sheet" role="dialog" aria-modal="true" aria-label="' + TR('Désigner le coupable') + '">' +
+        '<div class="sheet-hd"><b class="acc-t">' + TR('J’accuse…') + '</b></div>' +
+        '<p class="trail">' + TR('Qui est le meurtrier ? Une mauvaise réponse est comptée comme une erreur.') + '</p>' +
         '<div class="acc-grid" style="--n:' + (P0.S <= 4 ? P0.S : 3) + '">' + ab + '</div>' +
-        '<div class="sheet-ft"><button type="button" class="btn sm" data-act="close">Annuler</button></div></div>';
+        '<div class="sheet-ft"><button type="button" class="btn sm" data-act="close">' + TR('Annuler') + '</button></div></div>';
       var f0 = root.querySelector('.acc-btn:not(:disabled)'); if (f0) f0.focus();
       return;
     }
@@ -2409,14 +2595,14 @@ window.addEventListener('error', function (e) {
     var btns = ROOMS.map(function (room, r) {
       var far = (prev >= 0 && !((STEP[prev] >> r) & 1)) || (next >= 0 && !((STEP[r] >> next) & 1));
       return '<button type="button" class="room-btn' + (r === cur ? ' cur' : '') + (far ? ' far' : '') + '" data-act="pick" data-r="' + r + '">' +
-        room.name + (far ? '<small>trop loin</small>' : '') + '</button>';
+        room.name + (far ? '<small>' + TR('trop loin') + '</small>' : '') + '</button>';
     }).join('');
     root.innerHTML = '<div class="scrim" data-act="close"></div>' +
-      '<div class="sheet s' + ci(s) + '" role="dialog" aria-modal="true" aria-label="Choisir une ' + E.SCENE.unit + '">' +
+      '<div class="sheet s' + ci(s) + '" role="dialog" aria-modal="true" aria-label="' + (EN ? 'Choose a ' : 'Choisir une ') + E.SCENE.unit + '">' +
       '<div class="sheet-hd">' + mini(s) + '<b>' + SUSPECTS[s].name + '</b></div>' +
       '<p class="trail">' + trail.join(' → ') + '</p>' +
       '<div class="room-grid">' + btns + '</div>' +
-      '<div class="sheet-ft"><button type="button" class="btn sm" data-act="clear">Effacer la case</button><button type="button" class="btn sm" data-act="close">Fermer</button></div></div>';
+      '<div class="sheet-ft"><button type="button" class="btn sm" data-act="clear">' + TR('Effacer la case') + '</button><button type="button" class="btn sm" data-act="close">' + TR('Fermer') + '</button></div></div>';
     var first = root.querySelector('.room-btn.cur') || root.querySelector('.room-btn');
     if (first) first.focus();
   }
@@ -2434,7 +2620,7 @@ window.addEventListener('error', function (e) {
     lsSet('kioukan.mode', state.mode);
     lsSet('kioukan.scene', state.scene);
     renderScenes(); renderModes(); renderLevels();
-    $('board-panel').innerHTML = '<p class="loading">Instruction du dossier…</p>';
+    $('board-panel').innerHTML = '<p class="loading">' + TR('Instruction du dossier…') + '</p>';
     $('case').innerHTML = ''; $('suspects').innerHTML = ''; $('map-panel').innerHTML = ''; $('clues-panel').innerHTML = ''; $('verdict').innerHTML = '';
     state.picker = null; renderSheet();
     setTimeout(function () {
