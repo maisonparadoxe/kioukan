@@ -456,13 +456,13 @@ Object.assign(window.KIOUKAN_EN, {"Les Larmes de Lune": "Moon Tears", "Le collie
 </script>
 <script>/* Effets sonores synthétisés (WebAudio, aucun fichier) : composteur, coq, Big Ben, jeu. */
 (function () {
-  var ctx = null, master = null, on = true;
-  try { on = localStorage.getItem('kioukan.sound') !== 'off'; } catch (e) { /* rien */ }
+  var ctx = null, master = null, on = true, vol = 0.7;
+  try { on = localStorage.getItem('kioukan.sound') !== 'off'; var sv = parseFloat(localStorage.getItem('kioukan.volume')); if (sv >= 0 && sv <= 1) vol = sv; } catch (e) { /* rien */ }
   function ac() {
     if (!ctx) {
       var C = window.AudioContext || window.webkitAudioContext;
       if (!C) return null;
-      ctx = new C(); master = ctx.createGain(); master.gain.value = 0.55; master.connect(ctx.destination);
+      ctx = new C(); master = ctx.createGain(); master.gain.value = 0.8 * vol; master.connect(ctx.destination);
     }
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
@@ -506,33 +506,58 @@ Object.assign(window.KIOUKAN_EN, {"Les Larmes de Lune": "Moon Tears", "Le collie
   var DUR = {};
   window.KSFX = {
     play: function (name) {
-      if (!on || !S[name]) return;
+      if (!on || vol <= 0 || !S[name]) return;
       var c = ac(); if (!c) return;
       try { S[name](c.currentTime + 0.01); } catch (e) { /* rien */ }
     },
     force: function (name) { var c = ac(); if (c && S[name]) { try { S[name](c.currentTime + 0.01); } catch (e) { /* rien */ } } },
     dur: function (name) { return (DUR[name] || 0.4) * 1000; },
-    isOn: function () { return on; },
-    set: function (v) { on = !!v; try { localStorage.setItem('kioukan.sound', on ? 'on' : 'off'); } catch (e) { /* rien */ } sync(); if (on) window.KSFX.play('click'); }
+    isOn: function () { return on && vol > 0; },
+    vol: function () { return vol; },
+    setVol: function (v) { vol = Math.max(0, Math.min(1, v)); if (vol > 0 && !on) on = true; if (master) master.gain.value = 0.8 * vol; try { localStorage.setItem('kioukan.volume', String(vol)); localStorage.setItem('kioukan.sound', on ? 'on' : 'off'); } catch (e) { /* rien */ } sync(); },
+    set: function (v) { on = !!v; if (on && vol <= 0) vol = 0.7; if (master) master.gain.value = 0.8 * vol; try { localStorage.setItem('kioukan.sound', on ? 'on' : 'off'); localStorage.setItem('kioukan.volume', String(vol)); } catch (e) { /* rien */ } sync(); if (on) window.KSFX.play('click'); }
   };
 
   var ICON_ON = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
   var ICON_OFF = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
   function sync() {
-    var b = document.querySelectorAll('[data-sound-toggle]'), fr = window.KIOUKAN_LANG !== 'en';
+    var b = document.querySelectorAll('[data-sound-toggle]'), fr = window.KIOUKAN_LANG !== 'en', muted = !on || vol <= 0;
     for (var i = 0; i < b.length; i++) {
-      b[i].innerHTML = on ? ICON_ON : ICON_OFF;
-      b[i].setAttribute('aria-pressed', on ? 'true' : 'false');
-      b[i].setAttribute('aria-label', fr ? (on ? 'Couper le son' : 'Activer le son') : (on ? 'Mute sound' : 'Turn sound on'));
+      b[i].innerHTML = muted ? ICON_OFF : ICON_ON;
+      b[i].setAttribute('aria-expanded', b[i].parentNode.classList.contains('open') ? 'true' : 'false');
+      b[i].setAttribute('aria-label', fr ? 'Réglages du son' : 'Sound settings');
       b[i].title = b[i].getAttribute('aria-label');
+      var w = b[i].parentNode, r = w.querySelector('.snd-range'), m = w.querySelector('.snd-mute');
+      if (r) { r.value = Math.round(vol * 100); r.setAttribute('aria-label', fr ? 'Volume' : 'Volume'); }
+      if (m) m.textContent = fr ? (muted ? 'Activer le son' : 'Couper le son') : (muted ? 'Turn sound on' : 'Mute');
+    }
+  }
+  function build() {
+    var b = document.querySelectorAll('[data-sound-toggle]');
+    for (var i = 0; i < b.length; i++) {
+      (function (btn) {
+        var w = document.createElement('span'); w.className = 'sndwrap';
+        btn.parentNode.insertBefore(w, btn); w.appendChild(btn);
+        var pop = document.createElement('div'); pop.className = 'sndpop'; pop.hidden = true;
+        pop.innerHTML = '<input type="range" class="snd-range" min="0" max="100" step="5"><button type="button" class="snd-mute"></button>';
+        w.appendChild(pop);
+        btn.setAttribute('aria-haspopup', 'true');
+        btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); pop.hidden = !pop.hidden; w.classList.toggle('open', !pop.hidden); sync(); if (!pop.hidden) window.KSFX.force('click'); });
+        var r = pop.querySelector('.snd-range');
+        r.addEventListener('input', function () { window.KSFX.setVol(r.value / 100); });
+        r.addEventListener('change', function () { window.KSFX.play('pick'); });
+        pop.querySelector('.snd-mute').addEventListener('click', function (e) { e.stopPropagation(); window.KSFX.set(!(on && vol > 0)); });
+        pop.addEventListener('click', function (e) { e.stopPropagation(); });
+        document.addEventListener('click', function () { if (!pop.hidden) { pop.hidden = true; w.classList.remove('open'); sync(); } });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { pop.hidden = true; w.classList.remove('open'); btn.focus(); sync(); } });
+      })(b[i]);
     }
   }
   document.addEventListener('DOMContentLoaded', function () {
-    sync();
+    build(); sync();
     document.addEventListener('click', function (e) {
       var t = e.target.closest ? e.target : null; if (!t) return;
-      var tg = t.closest('[data-sound-toggle]');
-      if (tg) { e.preventDefault(); window.KSFX.set(!on); return; }
+      if (t.closest('.sndwrap')) return;
       var tk = t.closest('a.ticket');
       if (tk && on && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button)) {
         e.preventDefault(); window.KSFX.play('punch');
@@ -775,6 +800,12 @@ html[lang="en"] body::before{content:"DEMO"}
 .sndbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:30px;padding:0;background:var(--paper);color:var(--ink);border:1px solid var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
 .sndbtn:hover{transform:translate(-1px,-2px);box-shadow:3px 4px 0 var(--accent)}
 .sndbtn[aria-pressed="false"]{opacity:.65}
+.sndwrap{position:relative;display:inline-flex}
+.sndpop{position:absolute;right:0;top:calc(100% + 6px);z-index:60;display:flex;flex-direction:column;gap:10px;min-width:176px;padding:12px;background:var(--paper);border:1px solid var(--ink);border-top:3px solid var(--ink);box-shadow:4px 5px 0 var(--accent);animation:ldin .16s ease-out}
+.sndpop[hidden]{display:none}
+.snd-range{width:100%;accent-color:var(--accent);cursor:pointer}
+.snd-mute{padding:7px 10px;background:var(--ink);color:var(--paper);border:0;cursor:pointer;font:600 12px var(--sans);letter-spacing:.04em}
+.snd-mute:hover{background:var(--accent)}
 </style>
 </head>
 <body>
