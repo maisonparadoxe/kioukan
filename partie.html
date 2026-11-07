@@ -1831,7 +1831,7 @@ window.addEventListener('error', function (e) {
       case 'notAt': return nm(c.s) + ' was not ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.';
       case 'together': return nm(c.a) + ' and ' + nm(c.b) + ' were in the same ' + u + ' at ' + timeLabel(c.t) + '.';
       case 'apart': return nm(c.a) + ' and ' + nm(c.b) + ' were not together at ' + timeLabel(c.t) + '.';
-      case 'stay': return nm(c.s) + ' stayed in the same ' + u + ' between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.';
+      case 'stay': return nm(c.s) + ' stayed in the same ' + u + ' at ' + timeLabel(c.t) + ' and at ' + timeLabel(c.t + 1) + '.';
       case 'move': return nm(c.s) + ' changed ' + u + 's between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.';
       case 'moves':
         return c.n === 0 ? nm(c.s) + ' never moved all evening.'
@@ -1856,7 +1856,7 @@ window.addEventListener('error', function (e) {
       case 'notAt': if (me(c.s)) return 'I was not ' + loc(c.r) + ' at ' + timeLabel(c.t) + '.'; break;
       case 'together': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' and I were in the same ' + u + ' at ' + timeLabel(c.t) + '.'; } break;
       case 'apart': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' and I were not together at ' + timeLabel(c.t) + '.'; } break;
-      case 'stay': if (me(c.s)) return 'I stayed in the same ' + u + ' between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.'; break;
+      case 'stay': if (me(c.s)) return 'I stayed in the same ' + u + ' at ' + timeLabel(c.t) + ' and at ' + timeLabel(c.t + 1) + '.'; break;
       case 'move': if (me(c.s)) return 'I changed ' + u + 's between ' + timeLabel(c.t) + ' and ' + timeLabel(c.t + 1) + '.'; break;
       case 'never': if (me(c.s)) return 'I never set foot ' + loc(c.r) + ' all evening.'; break;
       case 'visited': if (me(c.s)) return 'I passed through ' + the(c.r) + ' at some point in the evening.'; break;
@@ -1873,7 +1873,7 @@ window.addEventListener('error', function (e) {
       case 'notAt': return nm(c.s) + " n'était pas " + loc(c.r) + ' à ' + timeLabel(c.t) + '.';
       case 'together': return nm(c.a) + ' et ' + nm(c.b) + ' étaient dans la même ' + U() + ' à ' + timeLabel(c.t) + '.';
       case 'apart': return nm(c.a) + ' et ' + nm(c.b) + " n'étaient pas ensemble à " + timeLabel(c.t) + '.';
-      case 'stay': return nm(c.s) + ' est resté' + (SUSPECTS[c.s].f ? 'e' : '') + ' dans la même ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.';
+      case 'stay': return nm(c.s) + ' est resté' + (SUSPECTS[c.s].f ? 'e' : '') + ' dans la même ' + U() + ' à ' + timeLabel(c.t) + ' comme à ' + timeLabel(c.t + 1) + '.';
       case 'move': return nm(c.s) + ' a changé de ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.';
       case 'moves':
         return c.n === 0 ? nm(c.s) + " n'a pas bougé de la soirée."
@@ -2278,7 +2278,7 @@ window.addEventListener('error', function (e) {
       case 'apart':
         if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + " et moi n'étions pas ensemble à " + timeLabel(c.t) + '.'; }
         break;
-      case 'stay': if (me(c.s)) return 'Je suis resté' + (f ? 'e' : '') + ' dans la même ' + U() + ' entre ' + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.'; break;
+      case 'stay': if (me(c.s)) return 'Je suis resté' + (f ? 'e' : '') + ' dans la même ' + U() + ' à ' + timeLabel(c.t) + ' comme à ' + timeLabel(c.t + 1) + '.'; break;
       case 'move': if (me(c.s)) return "J'ai changé de " + U() + " entre " + timeLabel(c.t) + ' et ' + timeLabel(c.t + 1) + '.'; break;
       case 'never': if (me(c.s)) return "Je n'ai jamais mis les pieds " + loc(c.r) + ' de la soirée.'; break;
       case 'visited': if (me(c.s)) return "J'ai traversé " + the(c.r) + ' à un moment de la soirée.'; break;
