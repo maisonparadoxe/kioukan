@@ -2687,6 +2687,28 @@ window.addEventListener('error', function (e) {
   };
 })();
 
+/* Une icône unique par personnage, lisible en noir et blanc (plan, grille, version papier). */
+(function () {
+  var S = 'stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+  var F = 'fill="currentColor"';
+  var G = {
+    'Rémi Sansou': // bourse vide et rapiécée : le neveu fauché
+      '<path d="M18 15C14 10 17 6 20 8L24 10L28 8C31 6 34 10 30 15" ' + S + '/><path d="M18 15C8 22 7 40 24 40C41 40 40 22 30 15Z" ' + S + '/><path d="M17 15H31" ' + S + '/><path d="M21 25L29 33M29 25L21 33" ' + S + '/>',
+    'Aria Vibrato': // note de musique
+      '<path d="M19 33V11L35 8V30" ' + S + '/><ellipse cx="15" cy="34" rx="5.5" ry="4.2" ' + F + '/><ellipse cx="31" cy="31" rx="5.5" ry="4.2" ' + F + '/><path d="M19 17L35 14" ' + S + '/>',
+    'Ernest Couchette': // cloche de plateau
+      '<path d="M8 32C8 20 15 13 24 13C33 13 40 20 40 32Z" ' + S + '/><circle cx="24" cy="10" r="2.6" ' + F + '/><path d="M5 36H43" ' + S + '/>',
+    'Jean Bilet': // billet poinçonné
+      '<path d="M7 15H41V21A3.4 3.4 0 0 0 41 27V33H7V27A3.4 3.4 0 0 0 7 21Z" ' + S + '/><path d="M31 15V33" ' + S + ' stroke-dasharray="1.5 4.5"/><circle cx="19" cy="24" r="3.4" ' + F + '/>',
+    'Pr Hector Tumulus': // pyramide
+      '<path d="M5 37L24 9L43 37Z" ' + S + '/><path d="M24 9V37" ' + S + ' opacity=".0"/><path d="M14 25H34" ' + S + '/><path d="M9.5 31H38.5" ' + S + ' opacity="0"/>',
+    'André Vivalto': // sifflet à roulette
+      '<path d="M24 22H43V30H31.5" ' + S + '/><circle cx="22" cy="31" r="9.5" ' + S + '/><circle cx="22" cy="31" r="3.2" ' + F + '/><path d="M28 22V18" ' + S + '/><circle cx="7" cy="14" r="3.6" ' + S + '/><path d="M10 16L14.5 23" ' + S + '/>'
+  };
+  window.KioukanIcons = { names: Object.keys(G), has: function (n) { n = window.frName ? window.frName(n) : n; return !!G[n]; }, glyph: function (n) { return G[n]; },
+    svg: function (n, o) { o = o || {}; n = window.frName ? window.frName(n) : n; return '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="color:' + (o.fg || '#1d1a22') + '" aria-hidden="true" focusable="false">' + (o.ring === false ? '<circle cx="24" cy="24" r="24" style="fill:' + (o.bg || '#fff') + '"/>' : '<circle cx="24" cy="24" r="22.5" style="fill:' + (o.bg || '#fff') + ';stroke:' + (o.fg || '#1d1a22') + '" stroke-width="2.4"/>') + '<g transform="translate(24 24) scale(' + (o.scale || .62) + ') translate(-24 -24)">' + G[n] + '</g></svg>'; } };
+})();
+
 </script>
 <script>
 /* Mode histoire : trame, distribution et 42 épisodes.
@@ -3591,10 +3613,18 @@ window.KioukanPuzzles = KioukanTutoData.puzzles;
 
   /* ---------- Rendu du jeu ---------- */
   function fiche(s, extra) {
-    return '<figure class="fiche s' + ci(s) + '"><div class="fiche-img">' + WT.portrait(SUSPECTS[s].name, 'neutre') + '</div>' +
+    return '<figure class="fiche s' + ci(s) + '"><div class="fiche-img">' + WT.portrait(SUSPECTS[s].name, 'neutre') + (hasIc(s) ? '<span class="fiche-ic">' + IC.svg(SUSPECTS[s].name, { bg: 'var(--c)', fg: '#fff' }) + '</span>' : '') + '</div>' +
       '<figcaption><span class="fn">' + SUSPECTS[s].short + '</span><small>' + (extra || SUSPECTS[s].role) + '</small></figcaption></figure>';
   }
   function ci(s) { return window.kioukanCI(SUSPECTS.map(function (x) { return x.name; }), s); }
+  var IC = window.KioukanIcons;
+  function hasIc(s) { return !!(IC && IC.has(SUSPECTS[s].name)); }
+  // icône du personnage (grille, boutons, fiche de saisie) ; portrait si pas encore d'icône
+  function miniIc(s) { return hasIc(s) ? '<span class="mini ic s' + ci(s) + '">' + IC.svg(SUSPECTS[s].name, { bg: 'var(--c)', fg: '#fff', ring: false, scale: 0.78 }) + '</span>' : mini(s); }
+  (function () { if (document.getElementById('ic-css')) return; var st = document.createElement('style'); st.id = 'ic-css';
+    st.textContent = '.mini.ic{background:var(--c)!important}.mini.ic svg{transform:none!important;width:100%;height:100%;display:block}' +
+      '.fiche-img{position:relative}.fiche-ic{position:absolute;top:6px;right:6px;width:38px;height:38px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));z-index:1}.fiche-ic svg{display:block;width:100%;height:100%}';
+    document.head.appendChild(st); })();
   function mini(s, ex) { return '<span class="mini s' + ci(s) + '">' + WT.portrait(SUSPECTS[s].name, ex || 'neutre') + '</span>'; }
 
   function renderCase() {
@@ -3614,6 +3644,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     var wx = (A.x + A.w === B.x) ? B.x : A.x; return { x: wx - 3, y: (y1 + y2) / 2 - 11, w: 6, h: 22 };
   }
   function tok(name, cx, floor) {
+    if (IC && IC.has(name)) return '<svg x="' + (cx - 17) + '" y="' + (floor - 34) + '" width="34" height="34" viewBox="0 0 48 48" overflow="visible" style="color:#fff">' + IC.svg(name, { bg: 'var(--c,#171d2e)', fg: '#fff' }).replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</svg>';
     var fb = WT.faceBadge(name, 28);
     if (fb) return '<g transform="translate(' + cx + ',' + (floor - 17) + ')"><circle r="16.5" style="fill:var(--c,#171d2e);stroke:#171d2e;stroke-width:1"/><circle r="14.2" fill="#fffaf0"/>' + fb + '</g>';
     return '<svg x="' + (cx - 16) + '" y="' + (floor - 38) + '" width="32" height="38.4" viewBox="0 0 100 120">' + WT.bust(name, 'neutre') + '</svg>';
@@ -3670,7 +3701,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     var P = state.puz, S = P.S, T = P.T, A = analyse(), show = showMarks(), s, t, h = '';
     h += '<div class="panel-hd"><h2 class="label">' + TR('Chronologie') + '</h2><span class="sub">' + TR('touche une case') + '</span></div>';
     h += '<div class="board' + (S >= 5 ? ' dense' : '') + '" style="--cols:' + S + '"><div></div>';
-    for (s = 0; s < S; s++) h += '<div class="who s' + ci(s) + '">' + mini(s) + '<b>' + SUSPECTS[s].short + '</b>' +
+    for (s = 0; s < S; s++) h += '<div class="who s' + ci(s) + '">' + miniIc(s) + '<b>' + SUSPECTS[s].short + '</b>' +
       (isLiar(P) && state.liarGuess === s ? '<small class="liar-badge">' + TR('menteur ?') + '</small>' : '<small>' + SUSPECTS[s].role + '</small>') + '</div>';
     for (t = 0; t < T; t++) {
       h += '<button type="button" class="time' + (t === state.selT ? ' sel' : '') + '" data-act="time" data-t="' + t + '">' + tl(t) + (t === P.crime.t ? '<small>' + esc(TR(LV.noun)) + '</small>' : '') + '</button>';
@@ -3685,7 +3716,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     h += '</div>';
     if (isLiar(P) && !state.solved) {
       h += '<div class="liar"><span class="liar-q">' + TR('Qui ment ?') + '</span><div class="liar-btns">';
-      for (s = 0; s < S; s++) h += '<button type="button" class="liar-btn s' + ci(s) + '" data-act="liar" data-s="' + s + '" aria-pressed="' + (state.liarGuess === s) + '">' + mini(s) + SUSPECTS[s].short + '</button>';
+      for (s = 0; s < S; s++) h += '<button type="button" class="liar-btn s' + ci(s) + '" data-act="liar" data-s="' + s + '" aria-pressed="' + (state.liarGuess === s) + '">' + miniIc(s) + SUSPECTS[s].short + '</button>';
       h += '</div></div>';
     }
     h += '<div class="status"><span>' + A.filled + '/' + (S * T) + ' ' + TR('cases') + '</span>' +
@@ -3831,7 +3862,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
       return '<button type="button" class="room-btn' + (r === cur ? ' cur' : '') + (far ? ' far' : '') + '" data-act="pick" data-r="' + r + '">' + room.name + (far ? '<small>' + TR('trop loin') + '</small>' : '') + '</button>';
     }).join('');
     root.innerHTML = '<div class="scrim" data-act="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="' + TR('Choisir un lieu') + '">' +
-      '<div class="sheet-hd">' + mini(s) + '<b>' + SUSPECTS[s].name + '</b></div><p class="trail">' + trail.join(' → ') + '</p>' +
+      '<div class="sheet-hd">' + miniIc(s) + '<b>' + SUSPECTS[s].name + '</b></div><p class="trail">' + trail.join(' → ') + '</p>' +
       '<div class="room-grid">' + btns + '</div><div class="sheet-ft"><button type="button" class="btn sm" data-act="clear">' + TR('Effacer la case') + '</button><button type="button" class="btn sm" data-act="close">' + TR('Fermer') + '</button></div></div>';
     var first = root.querySelector('.room-btn.cur') || root.querySelector('.room-btn');
     if (first) first.focus();
