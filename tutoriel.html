@@ -2233,12 +2233,15 @@ window.addEventListener('error', function (e) {
     // personnages
     (o.occ || []).forEach(function (list, room) {
       var b = roomBox(room), n = list.length;
+      // à 3 personnes ou plus (icônes), deux rangées d'icônes plus petites pour rester lisibles
+      var two = !!o.tok && !!o.small && n >= 3 && list.every(function (sid) { return o.small(o.names[sid]); }), per = Math.ceil(n / 2), isz = Math.min(24, (b.w - 2) / 2);
       list.forEach(function (sid, k2) {
         var span = Math.min(24, (b.w - 18) / Math.max(1, n - 1));
-        var cx = b.x + b.w / 2 + (k2 - (n - 1) / 2) * span;
+        var cx = b.x + b.w / 2 + (k2 - (n - 1) / 2) * span, fl = b.floor, tsz;
+        if (two) { var row = Math.floor(k2 / per), col = k2 % per, m = row ? n - per : per; cx = b.x + b.w / 2 + (col - (m - 1) / 2) * (isz + 1); fl = b.floor - (1 - row) * (isz + 1); tsz = isz; }
         var sc = 0.5, sz = 64 * sc;
         var cls = 'lc-tok s' + window.kioukanCI(o.names, sid) + (o.culprit === sid ? ' culprit' : '');
-        if (o.tok) h += '<g class="' + cls + '">' + o.tok(o.names[sid], cx, b.floor) + '</g>';
+        if (o.tok) h += '<g class="' + cls + '">' + o.tok(o.names[sid], cx, fl, tsz) + '</g>';
         else h += '<g class="' + cls + '" transform="translate(' + (cx - sz / 2) + ' ' + (b.floor - sz) + ') scale(' + sc + ')">' + bust(o.names[sid]) + '</g>';
       });
     });
@@ -3643,8 +3646,9 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     if (x2 > x1) { var wy = (A.y + A.h === B.y) ? B.y : A.y; return { x: (x1 + x2) / 2 - 11, y: wy - 3, w: 22, h: 6 }; }
     var wx = (A.x + A.w === B.x) ? B.x : A.x; return { x: wx - 3, y: (y1 + y2) / 2 - 11, w: 6, h: 22 };
   }
-  function tok(name, cx, floor) {
-    if (IC && IC.has(name)) return '<svg x="' + (cx - 17) + '" y="' + (floor - 34) + '" width="34" height="34" viewBox="0 0 48 48" overflow="visible" style="color:#fff">' + IC.svg(name, { bg: 'var(--c,#171d2e)', fg: '#fff' }).replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</svg>';
+  function tok(name, cx, floor, sz) {
+    sz = sz || 34;
+    if (IC && IC.has(name)) return '<svg x="' + (cx - sz / 2) + '" y="' + (floor - sz) + '" width="' + sz + '" height="' + sz + '" viewBox="0 0 48 48" overflow="visible" style="color:#fff">' + IC.svg(name, { bg: 'var(--c,#171d2e)', fg: '#fff' }).replace(/^<svg[^>]*>|<\/svg>$/g, '') + '</svg>';
     var fb = WT.faceBadge(name, 28);
     if (fb) return '<g transform="translate(' + cx + ',' + (floor - 17) + ')"><circle r="16.5" style="fill:var(--c,#171d2e);stroke:#171d2e;stroke-width:1"/><circle r="14.2" fill="#fffaf0"/>' + fb + '</g>';
     return '<svg x="' + (cx - 16) + '" y="' + (floor - 38) + '" width="32" height="38.4" viewBox="0 0 100 120">' + WT.bust(name, 'neutre') + '</svg>';
@@ -3676,9 +3680,14 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     }
     occ.forEach(function (list, room) {
       var B = G[room], n = list.length;
+      // à 3 personnes ou plus, les icônes rapetissent et passent sur deux rangées pour rester lisibles
+      var icons = list.every(function (sid) { return IC && IC.has(SUSPECTS[sid].name); }), two = icons && n >= 3;
+      var sz = two ? Math.min(26, (B.w - 4) / 2) : 34, per = two ? Math.ceil(n / 2) : n;
       list.forEach(function (sid, k) {
-        var span = Math.min(30, (B.w - 30) / Math.max(1, n - 1)), cx = B.x + B.w / 2 + (k - (n - 1) / 2) * span;
-        h += '<g class="lc-tok s' + ci(sid) + (state.solved && t === P.crime.t && sid === P.culprit ? ' culprit' : '') + '">' + tok(SUSPECTS[sid].name, cx, B.y + B.h - 2) + '</g>';
+        var row = two ? Math.floor(k / per) : 0, col = two ? k % per : k, m = two ? (row ? n - per : per) : n;
+        var span = two ? sz + 1 : Math.min(30, (B.w - 30) / Math.max(1, n - 1)), cx = B.x + B.w / 2 + (col - (m - 1) / 2) * span;
+        var floor = B.y + B.h - 2 - (two ? (1 - row) * (sz + 1) : 0);
+        h += '<g class="lc-tok s' + ci(sid) + (state.solved && t === P.crime.t && sid === P.culprit ? ' culprit' : '') + '">' + tok(SUSPECTS[sid].name, cx, floor, icons ? sz : 0) + '</g>';
       });
     });
     return h + '</svg>';
@@ -3690,7 +3699,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     var occ = ROOMS.map(function () { return []; });
     for (s = 0; s < P.S; s++) { var v = g(s, t); if (v >= 0) occ[v].push(s); }
     var svg = PLACE.view === 'train'
-      ? LC.train({ img: (window.KIOUKAN_IMAGES || {})['plan:' + CH.place], tok: tok, occ: occ, crime: P.crime.room, labels: (EN && WORLD.EN_PLACES && WORLD.EN_PLACES[CH.place]) ? WORLD.EN_PLACES[CH.place].labels : PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: E.SCENE.label + ' ' + TR('à') + ' ' + tl(t) })
+      ? LC.train({ img: (window.KIOUKAN_IMAGES || {})['plan:' + CH.place], tok: tok, small: function (nm) { return !!(IC && IC.has(nm)); }, occ: occ, crime: P.crime.room, labels: (EN && WORLD.EN_PLACES && WORLD.EN_PLACES[CH.place]) ? WORLD.EN_PLACES[CH.place].labels : PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: E.SCENE.label + ' ' + TR('à') + ' ' + tl(t) })
       : planSVG(occ, t);
     $('map-panel').innerHTML = '<div class="panel-hd"><h2 class="label">' + esc(E.SCENE.label) + '</h2><span class="sub">' + TR('à') + ' ' + tl(t) + '</span></div>' +
       '<div class="chips" style="--n:' + T + '">' + chips + '</div><div class="train-frame">' + svg + '</div>' +
