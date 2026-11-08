@@ -26,10 +26,13 @@
 .sub b{font:400 26px/1.1 var(--display)}
 .sub p{margin:0;color:var(--ink-2);max-width:44ch}
 .tickets{display:grid;gap:28px}
-@media(min-width:760px){.tickets{grid-template-columns:1.25fr 1fr}}
+.k-n{display:inline-block;margin-right:8px;padding:2px 7px;background:var(--ink);color:var(--paper);letter-spacing:.12em}
+@media(min-width:760px){a.ticket.main{display:grid;grid-template-columns:1.15fr 1fr;grid-template-rows:auto 1fr auto}a.ticket.main .t-top{grid-column:1/-1}a.ticket.main .img{grid-row:2/4;aspect-ratio:auto;min-height:320px;border-right:1.5px solid var(--ink)}a.ticket.main .t-body{display:flex;flex-direction:column;justify-content:center;padding:26px 24px}a.ticket.main h2{font-size:44px}}
+a.ticket.quick .img{display:none}a.ticket.quick h2{font-size:26px}
+@media(min-width:760px){a.ticket.quick{display:grid;grid-template-columns:1fr auto}a.ticket.quick .t-top{grid-column:1/-1}a.ticket.quick .stub{border-top:0;border-left:2px dashed var(--ink);flex-direction:column;justify-content:center;align-items:stretch;text-align:center;padding:16px 22px}a.ticket.quick .stub::before,a.ticket.quick .stub::after{display:none}}
 a.ticket{position:relative;display:flex;flex-direction:column;color:var(--ink);text-decoration:none;background:var(--paper);border:1.5px solid var(--ink);overflow:hidden;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
 a.ticket:hover,a.ticket:focus-visible{transform:translate(-3px,-5px) rotate(-.5deg);box-shadow:7px 9px 0 var(--accent)}
-a.ticket:nth-child(2):hover{transform:translate(-3px,-5px) rotate(.5deg)}
+a.ticket.quick:hover{transform:translate(-3px,-5px) rotate(.5deg)}
 .t-top{display:flex;justify-content:space-between;padding:9px 16px;border-bottom:1.5px solid var(--ink);font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase}
 .t-top span:last-child{color:var(--accent)}
 .img{aspect-ratio:16/10;overflow:hidden;background:var(--panel-2);position:relative}
@@ -50,7 +53,7 @@ a.ticket:hover .faces div{transform:translateY(-6px) rotate(var(--r,0deg))}
 a.ticket:hover .go{background:var(--accent);color:var(--accent-ink);gap:16px}
 .no{font:600 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
 .no.prog{color:var(--accent)}
-.mtuto{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin:0 0 22px;padding:12px 16px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);text-decoration:none;font-size:14.5px}.mtuto b{font-family:var(--display);font-size:17px;font-weight:400}.mtuto span{flex:1;color:var(--ink-2)}.mtuto i{font-style:normal;color:var(--accent);font-weight:700}.mtuto:hover{background:var(--panel-2)}.mtuto.done{opacity:.75}
+.mtuto{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:16px 18px;border:1.5px solid var(--ink);border-left:6px solid var(--accent);background:var(--paper);color:var(--ink);text-decoration:none;font-size:15px;transition:transform .25s,box-shadow .25s}.mtuto:hover{transform:translate(-3px,-4px);box-shadow:6px 7px 0 var(--accent)}.mtuto .k-n{font:600 11px var(--sans);text-transform:uppercase;padding:3px 8px}.mtuto b{font-family:var(--display);font-size:22px;font-weight:400}.mtuto .go{flex:none}.mtuto .d{flex:1 1 240px;color:var(--ink-2)}.mtuto.done{border-left-color:var(--ink-2)}.mtuto.done .go{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
 .mfoot{margin-top:40px;color:var(--ink-2);font-size:13px}
 @media(prefers-reduced-motion:reduce){.head h1.logo,.owl,a.ticket,.img img.p,.faces div{transition:none!important;animation:none!important}.head:hover .owl,.head:hover h1.logo,a.ticket:hover{transform:none}}
 </style>
@@ -58,7 +61,6 @@ a.ticket:hover .go{background:var(--accent);color:var(--accent-ink);gap:16px}
 <div class="mtop"><span></span><nav><a href="tutoriel.html" data-i18n id="tuto-open">Tutoriel</a><a href="histoire.html#rules" data-i18n id="howto-open">Comment jouer ?</a><a href="mailto:maisonparadoxe@gmail.com?subject=Kioukan%20-%20contact" data-i18n>Contact</a><button type="button" class="sndbtn" data-sound-toggle></button><div class="langdd" data-lang-menu></div></nav></div>
 <header class="head"><h1 class="logo">Kioukan</h1>
 <div class="sub"><span class="owl" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 9 7M18 4l-3 3"/><path d="M5 10a7 7 0 0 1 14 0v4a7 7 0 0 1-14 0z"/><circle cx="9" cy="11" r="2"/><circle cx="15" cy="11" r="2"/><path d="m11 15 1 1.5 1-1.5"/></svg></span><b data-i18n>Qui ? Où ? Quand ?</b><p data-i18n>Résolvez les crimes en reconstituant les emplois du temps des suspects.</p></div></header>
-<a class="mtuto" href="tutoriel.html" id="tuto-cta"><b data-i18n>Première fois ?</b> <span data-i18n>Apprends à jouer avec une enquête guidée, pas à pas (3 minutes).</span> <i aria-hidden="true">→</i></a>
 
 <script>window.KIOUKAN_DEMO_CH=1</script>
 <script>/* Langue : détection, T(), noms adaptés, bandeau de changement de langue. Chargé avant tout le reste. */
@@ -147,6 +149,8 @@ Object.assign(window.KIOUKAN_EN, {"À 21 h comme à 21 h 30, Aria a fait ses voc
 Object.assign(window.KIOUKAN_EN, {"Mon papyrus de Ramsès Deux ! Trempé dans la soupe à l’oignon ! Ramsès Deux-Louches, voilà ce qu’il est devenu ! Trois mille ans d’histoire, et ça sent la ciboulette !": "My papyrus of Ramses the Second! Soaked in onion soup! Ramses the Second Helping, that’s what it’s become! Three thousand years of history, and it smells of chives!", "La soupière a été renversée à {h}, {lieu}, par la seule personne présente. Qui a noyé Ramsès Deux ?": "The soup tureen was knocked over at {h}, {lieu}, by the only person there. Who drowned Ramses the Second?"});
 Object.assign(window.KIOUKAN_EN, {"Tutoriel": "Tutorial", "Une enquête pour apprendre à jouer, étape par étape.": "A case to learn how to play, step by step.", "Le sucrier de la comtesse": "The countess’s sugar bowl", "Mon sucrier en argent ! Il a disparu de la voiture-bar !": "My silver sugar bowl! It has vanished from the bar car!", "Du calme, comtesse. Nous allons retrouver le voleur… et je vais t’expliquer chaque étape.": "Calm down, countess. We will find the thief… and I will explain every step.", "Entraînement : trois suspects, quatre heures à reconstituer, et un guide pour t’accompagner.": "Practice case: three suspects, four times to rebuild, and a guide to walk you through it.", "Le sucrier de la comtesse a disparu.": "The countess’s sugar bowl has vanished.", "Le sucrier a disparu {lieu}, à {h}, et le voleur y était seul. Trois passagers, quatre heures à reconstituer.": "The sugar bowl vanished {lieu}, at {h}, and the thief was alone there. Three passengers, four times to rebuild.", "Un sucrier en argent, ça fait un si joli tintement… Je voulais seulement l’entendre sonner.": "A silver sugar bowl makes such a lovely ring… I only wanted to hear it chime.", "Entraînement terminé ! Maintenant, la vraie enquête commence : un collier a disparu dans l’Express de minuit.": "Practice over! Now the real case begins: a necklace has vanished on the Midnight Express.", "Commencer la vraie enquête": "Start the real case", "À 21 h 30, Aria et Ernest étaient dans la même voiture : elle lui racontait sa dernière tournée.": "At 9:30 pm, Aria and Ernest were in the same car: she was telling him about her latest tour.", "Rémi a changé de voiture entre 21 h et 21 h 30 : il cherchait un endroit où compter ses pièces en paix.": "Remy changed cars between 9 pm and 9:30 pm: he was looking for somewhere to count his coins in peace.", "À 21 h 30, personne dans le fourgon : même les bagages avaient pris congé.": "At 9:30 pm, nobody in the luggage van: even the bags had taken the evening off.", "À 21 h 30 comme à 22 h, Rémi est resté dans la même voiture, à bouder.": "At 9:30 pm and at 10 pm, Remy stayed in the same car, sulking.", "À 21 h comme à 21 h 30, Ernest est resté dans la même voiture : un steward ne lâche pas son plateau.": "At 9 pm and at 9:30 pm, Ernest stayed in the same car: a steward never lets go of his tray.", "À 21 h 30 comme à 22 h, Aria est restée dans la même voiture, à s’échauffer la voix.": "At 9:30 pm and at 10 pm, Aria stayed in the same car, warming up her voice.", "À 22 h comme à 22 h 30, Aria est encore restée dans la même voiture, très sûre d’elle.": "At 10 pm and at 10:30 pm, Aria stayed in the same car again, very sure of herself.", "À 22 h, Aria était seule dans sa voiture : personne ne supportait ses vocalises.": "At 10 pm, Aria was alone in her car: nobody could stand her vocal exercises.", "Rémi est passé par le wagon-restaurant à un moment de la soirée, attiré par l’odeur du potage.": "Remy passed through the dining car at some point in the evening, drawn by the smell of soup.", "À 22 h 30, Ernest et Rémi étaient dans la même voiture : l’un servait, l’autre mendiait.": "At 10:30 pm, Ernest and Remy were in the same car: one was serving, the other begging."});
 Object.assign(window.KIOUKAN_EN, {"Première fois ?": "First time?", "Apprends à jouer avec une enquête guidée, pas à pas (3 minutes).": "Learn to play with a guided case, step by step (3 minutes)."});
+
+Object.assign(window.KIOUKAN_EN, {'Étape 1':'Step 1','Étape 2':'Step 2','Étape 3':'Step 3','Tutoriel':'Tutorial','Commencer ici':'Start here','Refaire':'Replay','La campagne':'The campaign','Pour continuer':'Then','Parties rapides':'Quick games'});
 </script>
 <script>/* Effets sonores synthétisés (WebAudio, aucun fichier) : composteur, coq, Big Ben, jeu. */
 (function () {
@@ -542,13 +546,14 @@ window.addEventListener('error', function (e) {
 </script>
 <noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
 <main class="tickets">
-<a class="ticket" href="histoire.html"><div class="t-top"><span data-i18n>Wagons-Lits</span><span data-i18n>1ʳᵉ classe</span></div>
+<a class="mtuto" href="tutoriel.html" id="tuto-cta"><span class="k-n" data-i18n>Étape 1</span><b data-i18n>Tutoriel</b> <span class="d" data-i18n>Apprends à jouer avec une enquête guidée, pas à pas (3 minutes).</span> <span class="go" id="tuto-btn" data-i18n>Commencer ici</span></a>
+<a class="ticket main" href="histoire.html"><div class="t-top"><span data-i18n>Wagons-Lits</span><span data-i18n>1ʳᵉ classe</span></div>
 <div class="img"><img class="p" id="story-img" src="img/bg-night.webp" alt=""></div>
-<div class="t-body"><p class="k" data-i18n>Mode histoire</p><h2 data-i18n>Le Hibou</h2><p class="d" data-i18n>Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.</p></div>
+<div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 2</span><span data-i18n>La campagne</span></p><h2 data-i18n>Le Hibou</h2><p class="d" data-i18n>Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.</p></div>
 <div class="stub"><span class="go" id="story-btn" data-i18n>Commencer l’enquête</span><span class="no" id="story-no" data-i18n>7 épisodes</span></div></a>
-<a class="ticket" href="partie.html"><div class="t-top"><span data-i18n>Dossier</span><span data-i18n>Affaire libre</span></div>
+<a class="ticket quick" href="partie.html"><div class="t-top"><span data-i18n>Dossier</span><span data-i18n>Affaire libre</span></div>
 <div class="img"><div class="faces" id="faces"></div></div>
-<div class="t-body"><p class="k" data-i18n>Partie rapide</p><h2 data-i18n>Une affaire au hasard</h2><p class="d" data-i18n>Une énigme toujours nouvelle, à la difficulté de votre choix.</p></div>
+<div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 3</span><span data-i18n>Pour continuer</span></p><h2 data-i18n>Parties rapides</h2><p class="d" data-i18n>Une énigme toujours nouvelle, à la difficulté de votre choix.</p></div>
 <div class="stub"><span class="go" data-i18n>Ouvrir un dossier</span><span class="no" data-i18n>3 niveaux</span></div></a>
 </main>
 <p class="mfoot" data-i18n>Votre progression est enregistrée sur cet appareil.</p></div>
@@ -557,7 +562,7 @@ window.addEventListener('error', function (e) {
 <script>
 (function () {
   var I = window.KIOUKAN_IMAGES || {};
-  try { if (localStorage.getItem('kioukan.tuto') === 'done') { var tc = document.getElementById('tuto-cta'); if (tc) tc.classList.add('done'); } } catch (e) { /* stockage indisponible */ }
+  try { if (localStorage.getItem('kioukan.tuto') === 'done') { var tc = document.getElementById('tuto-cta'); if (tc) tc.classList.add('done'); var tb = document.getElementById('tuto-btn'); if (tb) tb.textContent = (window.T || String)('Refaire'); } } catch (e) { /* stockage indisponible */ }
   var lg = document.querySelector('.logo');
   if (lg) { lg.setAttribute('aria-label', 'Kioukan'); lg.innerHTML = lg.textContent.split('').map(function (c, i) { return '<span aria-hidden="true" style="--i:' + i + '">' + c + '</span>'; }).join(''); }
   if (I['bg:night']) document.getElementById('story-img').src = I['bg:night'];
