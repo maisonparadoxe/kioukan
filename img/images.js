@@ -34,6 +34,13 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Chapitre 2 · Le Grand Hôtel des Mouettes ———
   // 'plan:palace': 'img/plan-palace.png',
+  'paul-ochon': 'img/paul-ochon-carte.webp',
+  'andre-vivalto': 'img/andre-vivalto-carte.webp',
+  'lise-defait': 'img/lise-defait-carte.webp',
+  'max-valise': 'img/max-valise-carte.webp',
+  'jacques-teil': 'img/jacques-teil-carte.webp',
+  'ginette-pepite': 'img/ginette-pepite-carte.webp',
+  'chef-al-dente': 'img/chef-al-dente-carte.webp',
   // 'max-valise:gene': 'img/max-valise-gene.png',
   // 'paul-ochon:choc': 'img/paul-ochon-choc.png',
   // 'ginette-pepite:sourire': 'img/ginette-pepite-sourire.png',
@@ -49,6 +56,12 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Chapitre 3 · Le Manoir des Oliviers ———
   // 'plan:manoir': 'img/plan-manoir.png',
+  'maitre-gerard-menvussa': 'img/maitre-gerard-menvussa-carte.webp',
+  'lucie-fer': 'img/lucie-fer-carte.webp',
+  'hippolyte-plateau': 'img/hippolyte-plateau-carte.webp',
+  'julie-enne': 'img/julie-enne-carte.webp',
+  'basile-bouture': 'img/basile-bouture-carte.webp',
+  'dr-mehdi-cament': 'img/dr-mehdi-cament-carte.webp',
   // 'lucie-fer:sourire': 'img/lucie-fer-sourire.png',
   // 'julie-enne:choc': 'img/julie-enne-choc.png',
   // 'basile-bouture:gene': 'img/basile-bouture-gene.png',
