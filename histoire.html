@@ -357,7 +357,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 </style>
 
 
-<script>window.KIOUKAN_DEMO_CH=1</script>
+<script>window.KIOUKAN_DEMO_CH=0</script>
 <script>/* Langue : détection, T(), noms adaptés, bandeau de changement de langue. Chargé avant tout le reste. */
 (function () {
   var stored = '';
@@ -801,7 +801,7 @@ body:has(.who.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18){opa
 .mtop nav{display:flex;align-items:center;gap:18px}
 html[lang="en"] .board{--tw:64px}
 html[lang="en"] .board .time{font-size:12px;padding-left:4px;padding-right:4px;white-space:nowrap}
-html[lang="en"] body::before{content:"DEMO"}
+html[lang="en"] body::before{content:"DEMO"} body::before{display:none!important}
 
 .sndbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:30px;padding:0;background:var(--paper);color:var(--ink);border:1px solid var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
 .sndbtn:hover{transform:translate(-1px,-2px);box-shadow:3px 4px 0 var(--accent)}
@@ -2309,6 +2309,7 @@ window.addEventListener('error', function (e) {
 })();
 
 </script>
+<script>Object.assign(window.KIOUKAN_EN || (window.KIOUKAN_EN = {}), {"42 épisodes": "42 episodes", "Histoire terminée": "Story complete"});</script>
 <script src="img/images.js"></script>
 <script>
 /* Illustrations « webtoon » : trait fin brun, ombrage doux en dégradés, grands yeux à reflets,
@@ -4818,7 +4819,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   }
 
   function win(early) {
-    if (window.KSFX) window.KSFX.play(DEMO && state.ep >= N ? 'victory' : 'win');
+    if (window.KSFX) window.KSFX.play(state.ep >= N ? 'victory' : 'win');
     state.solved = true; state.early = early; state.selT = state.puz.crime.t; state.lastWrong = -1;
     if (isLiar(state.puz)) state.liarGuess = state.puz.culprit;
     if (TUTO) lsSet('kioukan.tuto', 'done');

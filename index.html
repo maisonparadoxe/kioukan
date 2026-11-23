@@ -62,7 +62,7 @@ a.ticket:hover .go{background:var(--accent);color:var(--accent-ink);gap:16px}
 <header class="head"><h1 class="logo">Kioukan</h1>
 <div class="sub"><span class="owl" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 9 7M18 4l-3 3"/><path d="M5 10a7 7 0 0 1 14 0v4a7 7 0 0 1-14 0z"/><circle cx="9" cy="11" r="2"/><circle cx="15" cy="11" r="2"/><path d="m11 15 1 1.5 1-1.5"/></svg></span><b data-i18n>Qui ? Où ? Quand ?</b><p data-i18n>Résolvez les crimes en reconstituant les emplois du temps des suspects.</p></div></header>
 
-<script>window.KIOUKAN_DEMO_CH=1</script>
+<script>window.KIOUKAN_DEMO_CH=0</script>
 <script>/* Langue : détection, T(), noms adaptés, bandeau de changement de langue. Chargé avant tout le reste. */
 (function () {
   var stored = '';
@@ -506,7 +506,7 @@ body:has(.who.s18:hover) :is(.cell,.who,.tok,.lc-tok,.fiche,.pola):not(.s18){opa
 .mtop nav{display:flex;align-items:center;gap:18px}
 html[lang="en"] .board{--tw:64px}
 html[lang="en"] .board .time{font-size:12px;padding-left:4px;padding-right:4px;white-space:nowrap}
-html[lang="en"] body::before{content:"DEMO"}
+html[lang="en"] body::before{content:"DEMO"} body::before{display:none!important}
 
 .sndbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:30px;padding:0;background:var(--paper);color:var(--ink);border:1px solid var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
 .sndbtn:hover{transform:translate(-1px,-2px);box-shadow:3px 4px 0 var(--accent)}
@@ -554,7 +554,7 @@ window.addEventListener('error', function (e) {
 <a class="ticket main" href="histoire.html"><div class="t-top"><span data-i18n>Wagons-Lits</span><span data-i18n>1ʳᵉ classe</span></div>
 <div class="img"><img class="p" id="story-img" src="img/bg-night.webp" alt=""></div>
 <div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 2</span><span data-i18n>La campagne</span></p><h2 data-i18n>Le Hibou</h2><p class="d" data-i18n>Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.</p></div>
-<div class="stub"><span class="go" id="story-btn" data-i18n>Commencer l’enquête</span><span class="no" id="story-no" data-i18n>7 épisodes</span></div></a>
+<div class="stub"><span class="go" id="story-btn" data-i18n>Commencer l’enquête</span><span class="no" id="story-no" data-i18n>42 épisodes</span></div></a>
 <a class="ticket quick" href="partie.html"><div class="t-top"><span data-i18n>Dossier</span><span data-i18n>Affaire libre</span></div>
 <div class="img"><div class="faces" id="faces"></div></div>
 <div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 3</span><span data-i18n>Pour continuer</span></p><h2 data-i18n>Parties rapides</h2><p class="d" data-i18n>Une énigme toujours nouvelle, à la difficulté de votre choix.</p></div>
@@ -562,6 +562,7 @@ window.addEventListener('error', function (e) {
 </main>
 <p class="mfoot" data-i18n>Votre progression est enregistrée sur cet appareil.</p></div>
 <dialog id="howto" class="howto-dlg" aria-labelledby="howto-title"><div class="howto-in"><button type="button" class="howto-x" aria-label="Fermer" data-close>×</button><div id="howto-body"></div></div></dialog>
+<script>Object.assign(window.KIOUKAN_EN || (window.KIOUKAN_EN = {}), {"42 épisodes": "42 episodes", "Histoire terminée": "Story complete"});</script>
 <script src="img/images.js"></script>
 <script>
 (function () {
@@ -576,8 +577,8 @@ window.addEventListener('error', function (e) {
     var pr = JSON.parse(localStorage.getItem('kioukan.histoire') || '{}'), n = Object.keys(pr.solved || {}).length;
     if (n) {
       var no = document.getElementById('story-no');
-      no.removeAttribute('data-i18n'); no.textContent = n >= 7 ? T('Démo terminée') : T('Épisode') + ' ' + Math.min(n + 1, 7) + ' / 7'; no.className = 'no prog';
-      var sb = document.getElementById('story-btn'); sb.removeAttribute('data-i18n'); sb.textContent = T(n >= 7 ? 'Relire l’enquête' : 'Reprendre l’enquête');
+      no.removeAttribute('data-i18n'); no.textContent = n >= 42 ? T('Histoire terminée') : T('Épisode') + ' ' + Math.min(n + 1, 42) + ' / 42'; no.className = 'no prog';
+      var sb = document.getElementById('story-btn'); sb.removeAttribute('data-i18n'); sb.textContent = T(n >= 42 ? 'Relire l’enquête' : 'Reprendre l’enquête');
     }
   } catch (e) { /* stockage indisponible */ }
 })();
