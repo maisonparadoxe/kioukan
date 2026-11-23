@@ -75,6 +75,11 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Chapitre 4 · Le paquebot Bel Azur ———
   // 'plan:paquebot': 'img/plan-paquebot.png',
+  'capitaine-jean-tempete': 'img/capitaine-jean-tempete-carte.webp',
+  'marcel-helice': 'img/marcel-helice-carte.webp',
+  'paul-ka': 'img/paul-ka-carte.webp',
+  'cecile-ence': 'img/cecile-ence-carte.webp',
+  'agathe-crispie': 'img/agathe-crispie-carte.webp',
   // 'capitaine-jean-tempete:choc': 'img/capitaine-jean-tempete-choc.png',
   // 'agathe-crispie:sourire': 'img/agathe-crispie-sourire.png',
   // 'paul-ka:choc': 'img/paul-ka-choc.png',
@@ -88,6 +93,11 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Chapitre 5 · L’Opéra de Monte-Carlo ———
   // 'plan:opera': 'img/plan-opera.png',
+  'maestro-vivaldo-baguette': 'img/maestro-vivaldo-baguette-carte.webp',
+  'enzo-lyrico': 'img/enzo-lyrico-carte.webp',
+  'paulette-paillette': 'img/paulette-paillette-carte.webp',
+  'sam-souffle': 'img/sam-souffle-carte.webp',
+  'gerard-rideau': 'img/gerard-rideau-carte.webp',
   // 'paulette-paillette:gene': 'img/paulette-paillette-gene.png',
   // 'maestro-vivaldo-baguette:choc': 'img/maestro-vivaldo-baguette-choc.png',
   // 'enzo-lyrico:gene': 'img/enzo-lyrico-gene.png',
@@ -102,6 +112,9 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Chapitre 6 · Le Casino de Monte-Carlo ———
   // 'plan:casino': 'img/plan-casino.png',
+  'jacques-potte': 'img/jacques-potte-carte.webp',
+  'rene-vaplu': 'img/rene-vaplu-carte.webp',
+  'bernadette-banco': 'img/bernadette-banco-carte.webp',
   // 'rene-vaplu:choc': 'img/rene-vaplu-choc.png',
   // 'bernadette-banco:gene': 'img/bernadette-banco-gene.png',
   // 'jacques-potte:choc': 'img/jacques-potte-choc.png',
