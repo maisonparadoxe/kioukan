@@ -187,6 +187,6 @@
     E.SCENES[key] = scene(placeKey, suspectNames);
     E.setScene(key);
   }
-  return { PLACES: PLACES, CAST: CAST, scene: scene, use: use, EN_PLACES: EN_PLACES };
+  return { PLACES: PLACES, CAST: CAST, scene: scene, use: use, EN_PLACES: EN_PLACES, EN_ROLES: EN_ROLES };
 });
 

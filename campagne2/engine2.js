@@ -9,6 +9,7 @@
   else root.KioukanEngine2 = factory();
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
+  var DEBUG = typeof process !== 'undefined' && process.env && process.env.K2DEBUG;
 
   /* ---------- Préparation : déplacements possibles de chaque personnage ---------- */
   // puz.rooms : [{name,…}], puz.doors : [[a,b]], puz.secret : [{a,b,who:[s…]}], puz.locked : [[a,b]] (sous-ensemble de doors)
@@ -237,7 +238,7 @@
       return p[cr.t] === cr.room && (!puz.weapon || took(puz.weapon, p, cr.t));
     }
     var sols = [], nodes = 0, aborted = false, seen = {}, P = [];
-    var capCache = new Map();
+    var capCache = new WeakMap();
     function anyCul(f, arr) {
       var v = capCache.get(arr); if (v !== undefined) return v;
       v = false; for (var z = 0; z < arr.length; z++) if (culCapable(f, arr[z])) { v = true; break; }
@@ -293,7 +294,9 @@
         if (aborted || sols.length >= limit) return;
       }
     }
+    var _t0 = Date.now();
     rec(paths, range(NE));
+    if (DEBUG && Date.now() - _t0 > 1500) console.error('  solve lent', Date.now() - _t0, 'ms, noeuds', nodes, 'limite', limit, 'tailles', paths.map(function (p) { return p.length; }).join('/'), 'indices', clues.map(function (c) { return c.type; }).join(','));
     return { count: sols.length, sols: sols, aborted: aborted, nodes: nodes, sizes: paths.map(function (p) { return p.length; }) };
   }
 
@@ -401,7 +404,8 @@
     return L.filter(function (c) { return !leaks(puz, c) && !touchesDark(puz, c); });
   }
 
-  var W_DEFAULT = { at: 1, notAt: 0.6, together: 2, apart: 1.3, stay: 1.2, move: 1.2, moves: 1.5, never: 1.5, visited: 1.5, alone: 1.3, empty: 1.4, oneOf: 6 };
+  var W_DEFAULT = { at: 1, notAt: 0.6, together: 2, apart: 1.3, stay: 1.2, move: 1.2, moves: 1.5, never: 1.5, visited: 1.5, alone: 1.3, empty: 1.4, oneOf: 1.2 };
+  var MAX_PER_TYPE = { oneOf: 2, neither: 2 };
 
   // spec : { place:{rooms,doors,secret,locked,key,t0}, S, T, victim:{name,kind:'mort'|'assomme'}, weapon:{room,after},
   //          dark, crime:{room?,t?,times?}, culprit (index voulu), liars, twins:[a,b], speakers:[s…] (témoins possibles),
@@ -428,6 +432,7 @@
       if (puz.weapon && !weaponInteresting(puz, P, x)) continue;
       if (puz.secret && puz.secret.length && !secretUsed(puz, P)) continue;
       STATS.built++;
+      if (DEBUG) console.error('  essai', attempt, 'coupable', x.culprit, 't', x.t);
       var res = build(R, puz, P, x, spec);
       if (res && (!best || res.score > best.score)) { best = res; if (!spec.target || Math.abs(res.puz.difficulty - spec.target) <= (spec.tol || 3)) break; }
     }
@@ -436,7 +441,7 @@
   function base(spec) {
     var pl = spec.place;
     var puz = { S: spec.S, T: spec.T, rooms: pl.rooms, doors: pl.doors, secret: pl.secret || [], locked: pl.locked || [],
-      key: pl.key || null, t0: pl.t0 != null ? pl.t0 : 40, victim: spec.victim || null, weapon: spec.weapon || null,
+      key: pl.key || null, t0: pl.t0 != null ? pl.t0 : 20, victim: spec.victim || null, weapon: spec.weapon || null,
       dark: spec.dark != null ? spec.dark : null, liars: spec.liars || 0, twins: spec.twins || null, clues: [] };
     return puz;
   }
@@ -490,8 +495,10 @@
       if (r.count === 0) { STATS.gZero = (STATS.gZero || 0) + 1; return null; }
       var alts = r.sols;
       var best = null, bs = -1;
+      var cnt = {}; clues.forEach(function (c) { cnt[c.type] = (cnt[c.type] || 0) + 1; });
       for (var i = 0; i < cands.length; i++) {
         var c = cands[i], n = 0;
+        if (MAX_PER_TYPE[c.type] && (cnt[c.type] || 0) >= MAX_PER_TYPE[c.type]) continue;
         for (var j = 0; j < alts.length; j++) if (!eliminatedOk(z, c, alts[j])) n++;
         if (!n) continue;
         var sc = n * w[c.type] * (0.6 + R() * 0.8);
@@ -593,8 +600,10 @@
       if (r.count === 1 && !alts.length) return clues;
       if (r.count === 0) { STATS.lZero = (STATS.lZero || 0) + 1; STATS.bad = clues.filter(function (c) { var d = c.by != null && liars.indexOf(c.by) >= 0 ? neg(c) : c; return !holdsX(z, d, P); }).map(JSON.stringify); STATS.cr = JSON.stringify(crimeOf(z, P)); STATS.z = JSON.stringify({ clues: z.clues, crime: z.crime, P: P, liars: z.liars, S: z.S, T: z.T }); return null; }
       var best = null, bs = -1;
+      var cnt = {}; clues.forEach(function (c) { cnt[c.type] = (cnt[c.type] || 0) + 1; });
       for (var i = 0; i < cands.length; i++) {
         var c = cands[i], n = 0;
+        if (MAX_PER_TYPE[c.type] && (cnt[c.type] || 0) >= MAX_PER_TYPE[c.type]) continue;
         for (var j = 0; j < alts.length; j++) if (!holdsX(z, c, alts[j].P)) n++;
         if (!n) continue;
         var sc = n * w[c.type] * (0.6 + R() * 0.8);
@@ -622,7 +631,7 @@
 
   /* ---------- Textes ---------- */
   function TL(puz, t, en) {
-    var m = puz.t0 * 30 + t * 30, h = Math.floor(m / 60) % 24, mm = m % 60;
+    var m = puz.t0 * 60 + t * 30, h = Math.floor(m / 60) % 24, mm = m % 60;
     if (en) return ((h + 11) % 12 + 1) + (mm ? ':' + (mm < 10 ? '0' : '') + mm : '') + (h >= 12 ? ' pm' : ' am');
     return h + ' h' + (mm ? ' ' + (mm < 10 ? '0' : '') + mm : '');
   }

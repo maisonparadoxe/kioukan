@@ -1,0 +1,18 @@
+/* Campagne 2 : passages secrets, portes fermées, arme, panne, victime */
+.plan .secret{stroke:#b3261e;stroke-width:2.4;stroke-dasharray:5 4;fill:none;opacity:.9}
+.plan .door.locked{fill:#b3261e;stroke:#5a0f0b}
+.plan .padlock rect{fill:#ffd54a;stroke:#5a0f0b;stroke-width:1}
+.plan .padlock path{stroke:#5a0f0b;stroke-width:1.4}
+.plan .weapon circle{fill:#fffaf0;stroke:#171d2e;stroke-width:1.4}
+.plan .weapon path{stroke:#b3261e;stroke-width:2;fill:none;stroke-linecap:round}
+.train-frame.is-dark{position:relative}
+.train-frame.is-dark::after{content:"";position:absolute;inset:0;background:rgba(10,12,30,.62);border-radius:inherit;pointer-events:none}
+.chip.dark,.time.dark{background:#1b1f33!important;color:#fff!important}
+.cell.dark{background:repeating-linear-gradient(135deg,#2a2f48 0 6px,#232741 6px 12px)!important;color:#d8dcf0!important}
+.who.victim{opacity:.85}
+.who.victim b{text-decoration:underline dotted}
+.legend i.lg-secret{display:inline-block;width:18px;height:0;border-top:2.4px dashed #b3261e;vertical-align:middle;margin-right:6px}
+.legend i.lg-locked{display:inline-block;width:14px;height:6px;background:#b3261e;border-radius:2px;vertical-align:middle;margin-right:6px}
+.legend i.lg-weapon{display:inline-block;width:10px;height:10px;border-radius:50%;border:1.4px solid #171d2e;background:#fffaf0;vertical-align:middle;margin-right:6px}
+.legend i.lg-dark{display:inline-block;width:12px;height:12px;background:#1b1f33;border-radius:2px;vertical-align:middle;margin-right:6px}
+.c2-gate{max-width:560px;margin:40px auto;text-align:center}
