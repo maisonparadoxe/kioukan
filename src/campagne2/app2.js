@@ -456,6 +456,11 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   // heures insécables : « 21 h 30 » ne doit pas se couper en fin de ligne
   function nbsp(s) { return s.replace(/(\d+) h( 30)?/g, function (m, a, b) { return a + '\u00a0h' + (b ? '\u00a030' : ''); }); }
   // déclaration rédigée (mode menteur) : une phrase par déclaration, déjà entre guillemets
+  function flavorOne(P, c) {
+    var FL = FLAVOR[state.ep], i = P.clues.indexOf(c);
+    if (FL) for (var k = 0; k < FL.length; k++) if (FL[k].ids.length === 1 && FL[k].ids[0] === i) return nbsp(esc(TR(FL[k].text)));
+    return '';
+  }
   function flavoredStatement(P, c) {
     var FL = FLAVOR[state.ep], i = P.clues.indexOf(c);
     if (FL) for (var k = 0; k < FL.length; k++) if (FL[k].ids.length === 1 && FL[k].ids[0] === i) return nbsp(esc(TR(FL[k].text)));
@@ -488,7 +493,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     h += '<ul class="clues">' + ruleRows + '</ul>';
     var facts = A.items.filter(function (it) { return !it.rule && it.c.by === undefined; });
     if (facts.length) h += '<div class="speaker"><b>' + TR('Preuves') + '</b><span class="tag">' + TR('certaines') + '</span></div><ul class="clues">' +
-      facts.map(function (it) { return li(it, nbsp(esc(clueTxt(P, it.c))), show); }).join('') + '</ul>';
+      facts.map(function (it) { return li(it, flavorOne(P, it.c) || nbsp(esc(clueTxt(P, it.c))), show); }).join('') + '</ul>';
     for (s = 0; s < NSUS; s++) {
       var rws = A.items.filter(function (it) { return !it.rule && it.c.by === s; }).map(function (it) { return li(it, flavoredStatement(P, it.c), show); }).join('');
       var who = L.length < nLiars(P) && L.indexOf(s) < 0 ? (L.indexOf(s) >= 0 ? '<span class="tag liar-tag">' + TR('ment sur tout') + '</span>' : '') : (L.indexOf(s) >= 0 ? '<span class="tag liar-tag">' + TR('ment sur tout') + '</span>' : '<span class="tag">' + TR('dit vrai') + '</span>');

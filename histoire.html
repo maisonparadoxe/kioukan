@@ -1012,7 +1012,7 @@ window.addEventListener('error', function (e) {
   if (EN) { LEVELS.facile.label = 'Easy'; LEVELS.moyen.label = 'Medium'; LEVELS.difficile.label = 'Hard'; }
 
   function timeLabel(t) {
-    var h = SCENE.t0 + Math.floor(t / 2);
+    var h = (SCENE.t0 + Math.floor(t / 2)) % 24;
     if (EN) return ((h + 11) % 12 + 1) + (t % 2 ? ':30' : ':00') + (h % 24 >= 12 ? ' pm' : ' am');
     return h + 'h' + (t % 2 ? '30' : '00');
   }
