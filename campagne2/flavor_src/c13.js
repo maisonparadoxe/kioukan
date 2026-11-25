@@ -66,3 +66,48 @@ module.exports[84] = [
   [[9], 'À 18 h, le hall était vide.', 'At 6 pm, the hall was empty.'],
   [[12], 'À 18 h 30, personne dans l’escalier.', 'At 6:30 pm, nobody on the staircase.']
 ];
+module.exports[85] = [
+  [[0], '« À 20 h, l’inspecteur et moi étions dans la même pièce. Demandez-lui. »', '“At 8 pm, the inspector and I were in the same room. Ask him.”'],
+  [[1], '« À 19 h 30, Bernadette et moi étions dans la même pièce. »', '“At 7:30 pm, Betty and I were in the same room.”'],
+  [[2], '« À 19 h, je n’étais pas dans le hall. »', '“At 7 pm, I was not in the hall.”'],
+  [[3], '« À 18 h, l’inspecteur et moi n’étions pas ensemble. »', '“At 6 pm, the inspector and I were not together.”'],
+  [[4], '« À 18 h, Ana et moi n’étions pas ensemble. »', '“At 6 pm, Anna and I were not together.”'],
+  [[5], '« À 19 h, monsieur Suisse et moi n’étions pas ensemble. Il ne joue pas. »', '“At 7 pm, Mr Swiss and I were not together. He doesn’t gamble.”'],
+  [[6], '« Je suis resté dans la même pièce à 19 h comme à 19 h 30. »', '“I stayed in the same room at 7 pm and at 7:30 pm.”'],
+  [[7], '« Je suis resté dans la même pièce à 19 h 30 comme à 20 h. »', '“I stayed in the same room at 7:30 pm and at 8 pm.”'],
+  [[8], '« À 18 h 30, j’étais dans le bureau du directeur. Le mien. »', '“At 6:30 pm, I was in the director’s office. Mine.”'],
+  [[9], '« Je suis resté dans la même pièce à 19 h comme à 19 h 30. »', '“I stayed in the same room at 7 pm and at 7:30 pm.”'],
+  [[10], '« Je n’ai jamais mis les pieds dans l’escalier. »', '“I never set foot on the staircase.”'],
+  [[11], '« À 19 h, l’inspecteur et moi n’étions pas ensemble. »', '“At 7 pm, the inspector and I were not together.”'],
+  [[12], '« À 20 h 30, j’étais dans la salle des coffres. Je surveillais le collier. »', '“At 8:30 pm, I was in the vault. I was watching the necklace.”'],
+  [[13], '« Je n’ai jamais mis les pieds dans le bureau du directeur. »', '“I never set foot in the director’s office.”'],
+  [[14], '« J’ai changé de pièce entre 20 h et 20 h 30. »', '“I changed rooms between 8 pm and 8:30 pm.”'],
+  [[15], 'À 18 h, Ana Gramme et Frank Suisse étaient dans la même pièce.', 'At 6 pm, Anna Gram and Frank Swiss were in the same room.'],
+  [[16], 'René Vaplu n’a pas bougé de la soirée.', 'Noah Morbets did not move all evening.'],
+  [[17], 'Frank Suisse n’a changé de pièce qu’une seule fois.', 'Frank Swiss changed rooms only once.'],
+  [[18], 'Bernadette est passée par la salle du conseil.', 'Betty went through the boardroom.'],
+  [[19], 'L’inspecteur Songe est passé par le local des gardiens.', 'Inspector Fibbs went through the guards’ room.'],
+  [[20], 'À 18 h 30, René et l’inspecteur Songe étaient dans la même pièce.', 'At 6:30 pm, Noah and Inspector Fibbs were in the same room.'],
+  [[21], 'L’inspecteur a changé de pièce deux fois.', 'The inspector changed rooms twice.'],
+  [[22], 'Bernadette n’a jamais mis les pieds dans le couloir.', 'Betty never set foot in the corridor.'],
+  [[23], 'À 20 h 30, Ana et Frank Suisse n’étaient pas ensemble.', 'At 8:30 pm, Anna and Frank Swiss were not together.']
+];
+module.exports[86] = [
+  [[7, 17], 'René Vaplu et Gaspard Pièce étaient dans la même pièce à 18 h, puis à 18 h 30. Ils parlaient de serrures et de roulettes.', 'Noah Morbets and Gus Pick were in the same room at 6 pm, then at 6:30 pm. They were talking about locks and roulette wheels.'],
+  [[6], 'À 18 h, René et Jacques Potte étaient dans la même pièce.', 'At 6 pm, Noah and Jack Potts were in the same room.'],
+  [[0], 'À 18 h 30, Gaspard et Jacques Potte étaient dans la même pièce.', 'At 6:30 pm, Gus and Jack Potts were in the same room.'],
+  [[13], 'Jacques Potte a changé de pièce entre 18 h 30 et 19 h.', 'Jack Potts changed rooms between 6:30 pm and 7 pm.'],
+  [[1], 'À 19 h 30, Gaspard et Frank Suisse étaient dans la même pièce.', 'At 7:30 pm, Gus and Frank Swiss were in the same room.'],
+  [[2], 'À 20 h 30, Bernadette et Gaspard étaient dans la même pièce.', 'At 8:30 pm, Betty and Gus were in the same room.'],
+  [[20], 'À 20 h 30, Gaspard et Frank Suisse n’étaient pas ensemble.', 'At 8:30 pm, Gus and Frank Swiss were not together.'],
+  [[21], 'À 20 h, Gaspard était seul dans sa pièce.', 'At 8 pm, Gus was alone in his room.'],
+  [[5], 'À 20 h, Bernadette et Frank Suisse étaient dans la même pièce.', 'At 8 pm, Betty and Frank Swiss were in the same room.'],
+  [[3, 10, 18], 'Frank Suisse n’a mis les pieds ni aux guichets, ni dans le local des gardiens, ni dans le couloir.', 'Frank Swiss set foot neither at the counters, nor in the guards’ room, nor in the corridor.'],
+  [[14], 'Frank Suisse est resté dans la même pièce à 19 h comme à 19 h 30.', 'Frank Swiss stayed in the same room at 7 pm and at 7:30 pm.'],
+  [[4], 'René n’a jamais mis les pieds dans le couloir.', 'Noah never set foot in the corridor.'],
+  [[16], 'René n’a changé de pièce qu’une seule fois.', 'Noah changed rooms only once.'],
+  [[8, 12], 'Bernadette a changé de pièce deux fois ; elle est passée par la salle du conseil.', 'Betty changed rooms twice; she went through the boardroom.'],
+  [[15, 9], 'Le hall était vide à 18 h, et encore à 18 h 30.', 'The hall was empty at 6 pm, and again at 6:30 pm.'],
+  [[11], 'À 19 h 30, personne dans l’escalier.', 'At 7:30 pm, nobody on the staircase.'],
+  [[19], 'À 19 h, le couloir était vide.', 'At 7 pm, the corridor was empty.']
+];
