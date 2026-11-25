@@ -8,6 +8,7 @@ Jeu de déduction en ligne : chaque énigme a une solution unique. Placez chaque
 - `histoire.html` : mode histoire « Le Hibou » (6 chapitres, 42 épisodes)
 - `partie.html` : partie rapide (énigmes générées, trois modes, trois niveaux)
 - `tutoriel.html` : tutoriel guidé
+- `campagne2.html` : campagne 2 « La Dernière Vente » (épisodes 43 à 100), ouverte une fois la campagne 1 terminée (ou `campagne2.html#test`)
 - `img/images.js` : illustrations (portraits et décors)
 
 Jouer : https://maisonparadoxe.github.io/kioukan/
@@ -21,7 +22,8 @@ On ne les modifie plus à la main : on modifie `src/`, puis on reconstruit.
 - `src/shared/` : code commun (moteur `engine.js`, langue, sons, illustrations, application du mode histoire…)
 - `src/histoire/` : campagne 1 (trame `story.js`, indices rédigés `flavor.js`, énigmes `puzzles.js`)
 - `src/partie/`, `src/tutoriel/`, `src/index/` : code propre à chaque page
-- `campagne2/` : moteur, lieux, générateur et épisodes de la campagne 2
+- `campagne2/` : campagne 2 — moteur `engine2.js`, lieux `places2.js`, plan des épisodes `plan.js`, trame `story2.js` (+ `en2.js`), énigmes générées `puzzles2.json`, indices rédigés `flavor_src/`
+- `src/campagne2/` : application de la campagne 2 (`app2.js`, styles, accès)
 - `tools/` : build et vérifications
 
 ## Commandes
@@ -30,4 +32,9 @@ On ne les modifie plus à la main : on modifie `src/`, puis on reconstruit.
 python3 tools/build.py          # reconstruit les pages depuis src/
 python3 tools/build.py --check  # vérifie que les pages publiées sont à jour
 python3 tools/check_c1.py       # campagne 1 : solution unique, aucun lieu donné à l'heure du crime
+node tools/gen_c2.js [n…]       # campagne 2 : génère les énigmes manquantes (ou celles indiquées)
+node tools/build_flavor2.js     # campagne 2 : assemble et vérifie les indices rédigés
+python3 tools/check_c2_ui.py    # campagne 2 : chaque épisode se joue jusqu'au bout dans la vraie page
+python3 tools/dump_c2.py 43-51  # campagne 2 : liste les indices bruts, pour la rédaction
+node tools/test_engine2.js      # moteur de la campagne 2 : une énigme par mécanique
 ```

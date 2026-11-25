@@ -417,7 +417,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
         var cls = 'cell s' + ci(s) + (v < 0 ? ' empty' : '') + (given ? ' given' : '') + (isDarkT(t) ? ' dark' : '') + (show && !given && A.bad[idx] ? ' bad' : '');
         var label = SUSPECTS[s].name + ', ' + tl(t) + ' : ' + (v < 0 ? TR('vide') : ROOMS[v].name) + (given ? ' (' + TR('confirmé') + ')' : '');
         h += '<button type="button" class="' + cls + '" data-act="cell" data-s="' + s + '" data-t="' + t + '" aria-label="' + label + '"' +
-          (given || state.solved ? ' disabled' : '') + '>' + (v < 0 ? (isDarkT(t) ? '?' : '') : ROOMS[v].short) + (given ? ICON.lock : '') + '</button>';
+          (given || state.solved ? ' disabled' : '') + '>' + (v < 0 ? '' : ROOMS[v].short) + (given ? ICON.lock : '') + '</button>';
       }
     }
     h += '</div>';
