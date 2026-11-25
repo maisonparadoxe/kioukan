@@ -73,6 +73,20 @@
 
   /* ---------- Langue : surcouche anglaise des décors (les identifiants restent français) ---------- */
   var EN = typeof window !== 'undefined' && window.KIOUKAN_LANG === 'en';
+  var IT = typeof window !== 'undefined' && window.KIOUKAN_LANG === 'it';
+  /* Italien : « il salotto » -> « nel salotto » (ou « sul » pour les lieux à ciel ouvert) */
+  function itIn(the, on) {
+    var m = /^(il|lo|la|l’|l'|i|gli|le) ?(.*)$/.exec(the || '');
+    if (!m) return (on ? 'su ' : 'in ') + the;
+    var A = on ? { il: 'sul', lo: 'sullo', la: 'sulla', 'l’': 'sull’', "l'": 'sull’', i: 'sui', gli: 'sugli', le: 'sulle' } : { il: 'nel', lo: 'nello', la: 'nella', 'l’': 'nell’', "l'": 'nell’', i: 'nei', gli: 'negli', le: 'nelle' };
+    var a = A[m[1]]; return a + (/’$/.test(a) ? '' : ' ') + m[2];
+  }
+  var IT_SCENE = {
+    manoir: { label: 'Villa', unit: 'stanza', rooms: [['Atrio', 'Atrio', 'l’atrio'], ['Salotto', 'Salotto', 'il salotto'], ['Cucina', 'Cucina', 'la cucina'], ['Biblioteca', 'Biblio.', 'la biblioteca'], ['Studio', 'Studio', 'lo studio'], ['Cantina', 'Cantina', 'la cantina'], ['Giardino', 'Giardino', 'il giardino']] },
+    train: { label: 'Treno', unit: 'carrozza', rooms: [['Bagagliaio', 'Bagagli', 'il bagagliaio'], ['Vagone letto A', 'Letto A', 'il vagone letto A'], ['Vagone letto B', 'Letto B', 'il vagone letto B'], ['Vagone ristorante', 'Ristor.', 'il vagone ristorante'], ['Carrozza bar', 'Bar', 'la carrozza bar'], ['Salottino fumatori', 'Fumatori', 'il salottino fumatori'], ['Tetto del treno', 'Tetto', 'il tetto del treno']] },
+    hotel: { label: 'Hotel', unit: 'stanza', rooms: [['Bar', 'Bar', 'il bar'], ['Reception', 'Recep.', 'la reception'], ['Ristorante', 'Ristor.', 'il ristorante'], ['Cucine', 'Cucine', 'le cucine'], ['Ascensore', 'Ascens.', 'l’ascensore'], ['Corridoio', 'Corridoio', 'il corridoio'], ['Suite 12', 'Suite 12', 'la suite 12'], ['Terrazza', 'Terrazza', 'la terrazza']] }
+  };
+  var IT_ROLE = { gouvernante: 'governante', 'médecin': 'medico', neveu: 'nipote', militaire: 'militare', 'secrétaire': 'segretaria', veuve: 'vedova', baron: 'barone', 'contrôleur': 'controllore', cantatrice: 'cantante lirica', barman: 'barista', cliente: 'cliente', cuisinier: 'cuoco' };
   var EN_SCENE = {
     manoir: { label: 'Manor', unit: 'room', rooms: [['Hall','Hall','the hall'],['Lounge','Lounge','the lounge'],['Kitchen','Kitchen','the kitchen'],['Library','Library','the library'],['Study','Study','the study'],['Cellar','Cellar','the cellar'],['Garden','Garden','the garden']] },
     train: { label: 'Train', unit: 'car', rooms: [['Luggage van','Luggage','the luggage van'],['Sleeper A','Sleeper A','sleeper A'],['Sleeper B','Sleeper B','sleeper B'],['Dining car','Diner','the dining car'],['Bar car','Bar','the bar car'],['Smoking lounge','Smoking','the smoking lounge'],['Train roof','Roof','the roof of the train']] },
@@ -81,15 +95,15 @@
   var EN_ROLE = { gouvernante: 'housekeeper', 'médecin': 'doctor', neveu: 'nephew', militaire: 'soldier', 'secrétaire': 'secretary', veuve: 'widow', baron: 'baron', 'contrôleur': 'ticket inspector', cantatrice: 'opera singer', barman: 'bartender', cliente: 'guest', cuisinier: 'cook' };
   function localize(key) {
     var sc = SCENES[key];
-    if (!EN || sc.localized) return;
-    var o = EN_SCENE[key];
+    if ((!EN && !IT) || !sc || sc.localized) return;
+    var o = (IT ? IT_SCENE : EN_SCENE)[key];
     if (o) {
       sc.label = o.label; sc.unit = o.unit;
-      sc.rooms.forEach(function (r, i) { r.id = r.name; r.name = o.rooms[i][0]; r.short = o.rooms[i][1]; r.the = o.rooms[i][2]; });
+      sc.rooms.forEach(function (r, i) { r.id = r.name; r.name = o.rooms[i][0]; r.short = o.rooms[i][1]; r.the = o.rooms[i][2]; if (IT) r.inn = itIn(r.the, r.on); });
     }
     sc.suspects.forEach(function (p) {
-      p.id = p.id || p.name; p.role = EN_ROLE[p.role] || p.role;
-      if (window.tn) { p.name = window.tn(p.id); p.short = (window.KIOUKAN_SHORT_EN && window.KIOUKAN_SHORT_EN[p.id]) || p.name.replace(/^(Mrs|Mr|Dr|Miss|Prof\.|Colonel|Baron|Chef|Countess) /, ''); }
+      p.id = p.id || p.name; p.role = (IT ? IT_ROLE : EN_ROLE)[p.role] || p.role;
+      if (window.tn) { p.name = window.tn(p.id); p.short = ((IT ? window.KIOUKAN_SHORT_IT : window.KIOUKAN_SHORT_EN) || {})[p.id] || p.name.replace(/^(Mrs|Mr|Dr|Miss|Prof\.|Colonel|Baron|Chef|Countess|Sig\.ra|Sig\.na|Sig\.|Dott\.|Colonnello|Barone) /, ''); }
     });
     sc.localized = true;
   }
@@ -137,10 +151,12 @@
   };
 
   if (EN) { LEVELS.facile.label = 'Easy'; LEVELS.moyen.label = 'Medium'; LEVELS.difficile.label = 'Hard'; }
+  if (IT) { LEVELS.facile.label = 'Facile'; LEVELS.moyen.label = 'Medio'; LEVELS.difficile.label = 'Difficile'; }
 
   function timeLabel(t) {
     var h = (SCENE.t0 + Math.floor(t / 2)) % 24;
     if (EN) return ((h + 11) % 12 + 1) + (t % 2 ? ':30' : ':00') + (h % 24 >= 12 ? ' pm' : ' am');
+    if (IT) return h + (t % 2 ? ':30' : ':00');
     return h + 'h' + (t % 2 ? '30' : '00');
   }
 
@@ -422,8 +438,49 @@
     }
     return clueTextEN(puz, c);
   }
+  /* ---------- Textes italiens ---------- */
+  function itLoc(r) { return ROOMS[r].inn || itIn(ROOMS[r].the, ROOMS[r].on); }
+  function alle(t) { var l = timeLabel(t); return l === '0:00' ? 'a mezzanotte' : /^1:/.test(l) ? 'all’' + l : 'alle ' + l; }
+  function tra(t) { var a = timeLabel(t), b = timeLabel(t + 1); return 'tra le ' + a + ' e ' + (b === '0:00' ? 'la mezzanotte' : /^1:/.test(b) ? 'l’' + b : 'le ' + b); }
+  function stessa() { return 'nella stessa ' + U(); }
+  function clueTextIT(puz, c) {
+    var nm = function (s) { return SUSPECTS[s].name; }, o = function (s) { return SUSPECTS[s].f ? 'a' : 'o'; };
+    switch (c.type) {
+      case 'at': return nm(c.s) + ' era ' + itLoc(c.r) + ' ' + alle(c.t) + '.';
+      case 'notAt': return nm(c.s) + ' non era ' + itLoc(c.r) + ' ' + alle(c.t) + '.';
+      case 'together': return nm(c.a) + ' e ' + nm(c.b) + ' erano ' + stessa() + ' ' + alle(c.t) + '.';
+      case 'apart': return nm(c.a) + ' e ' + nm(c.b) + ' non erano insieme ' + alle(c.t) + '.';
+      case 'stay': return nm(c.s) + ' è rimast' + o(c.s) + ' ' + stessa() + ' ' + alle(c.t) + ' e ' + alle(c.t + 1) + '.';
+      case 'move': return nm(c.s) + ' ha cambiato ' + U() + ' ' + tra(c.t) + '.';
+      case 'moves':
+        return c.n === 0 ? nm(c.s) + ' non si è mai spostat' + o(c.s) + ' in tutta la serata.'
+          : c.n === 1 ? nm(c.s) + ' ha cambiato ' + U() + ' una sola volta.'
+          : nm(c.s) + ' ha cambiato ' + U() + ' ' + c.n + ' volte in tutto.';
+      case 'never': return nm(c.s) + ' non ha mai messo piede ' + itLoc(c.r) + ' in tutta la serata.';
+      case 'visited': return nm(c.s) + ' è passat' + o(c.s) + ' per ' + ROOMS[c.r].the + ' durante la serata.';
+      case 'empty': return 'Non c’era nessuno ' + itLoc(c.r) + ' ' + alle(c.t) + '.';
+      case 'alone': return nm(c.s) + ' era sol' + o(c.s) + ' nella sua ' + U() + ' ' + alle(c.t) + '.';
+      case 'crime': return 'Un solo sospettato si trovava ' + itLoc(puz.crime.room) + ' ' + alle(puz.crime.t) + ': l’assassino.';
+    }
+    return '';
+  }
+  function statementTextIT(puz, c) {
+    var by = c.by, me = function (s) { return s === by; }, nm = function (s) { return SUSPECTS[s].name; }, o = SUSPECTS[by].f ? 'a' : 'o', other;
+    switch (c.type) {
+      case 'at': if (me(c.s)) return 'Ero ' + itLoc(c.r) + ' ' + alle(c.t) + '.'; break;
+      case 'notAt': if (me(c.s)) return 'Non ero ' + itLoc(c.r) + ' ' + alle(c.t) + '.'; break;
+      case 'together': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' e io eravamo ' + stessa() + ' ' + alle(c.t) + '.'; } break;
+      case 'apart': if (me(c.a) || me(c.b)) { other = me(c.a) ? c.b : c.a; return nm(other) + ' e io non eravamo insieme ' + alle(c.t) + '.'; } break;
+      case 'stay': if (me(c.s)) return 'Sono rimast' + o + ' ' + stessa() + ' ' + alle(c.t) + ' e ' + alle(c.t + 1) + '.'; break;
+      case 'move': if (me(c.s)) return 'Ho cambiato ' + U() + ' ' + tra(c.t) + '.'; break;
+      case 'never': if (me(c.s)) return 'Non ho mai messo piede ' + itLoc(c.r) + ' in tutta la serata.'; break;
+      case 'visited': if (me(c.s)) return 'Sono passat' + o + ' per ' + ROOMS[c.r].the + ' durante la serata.'; break;
+    }
+    return clueTextIT(puz, c);
+  }
   function clueText(puz, c) {
     if (EN) return clueTextEN(puz, c);
+    if (IT) return clueTextIT(puz, c);
     var nm = function (s) { return SUSPECTS[s].name; };
     var the = function (r) { return ROOMS[r].the; };
     var loc = function (r) { return (ROOMS[r].on ? 'sur ' : 'dans ') + ROOMS[r].the; };
@@ -825,6 +882,7 @@
   // Déclaration à la première personne quand le sujet est celui qui parle
   function statementText(puz, c) {
     if (EN) return statementTextEN(puz, c);
+    if (IT) return statementTextIT(puz, c);
     var by = c.by, me = function (s) { return s === by; };
     var nm = function (s) { return SUSPECTS[s].name; };
     var the = function (r) { return ROOMS[r].the; };
@@ -850,7 +908,7 @@
   return {
     get ROOMS() { return ROOMS; }, get DOORS() { return DOORS; }, get ADJ() { return ADJ; },
     get STEP() { return STEP; }, get SUSPECTS() { return SUSPECTS; }, get SCENE() { return SCENE; },
-    SCENES: SCENES, setScene: setScene, LEVELS: LEVELS, propagated: propagated, get POP() { return POP; }, get NR() { return NR; },
+    SCENES: SCENES, setScene: setScene, itIn: itIn, alle: alle, tra: tra, LEVELS: LEVELS, propagated: propagated, get POP() { return POP; }, get NR() { return NR; },
     timeLabel: timeLabel, solve: solve, evalClue: evalClue, badCells: badCells,
     clueText: clueText, generate: generate,
     statementText: statementText, solveLiar: solveLiar, neg: neg, LIAR_LEVELS: LIAR_LEVELS, HALF_LEVELS: HALF_LEVELS

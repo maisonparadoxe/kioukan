@@ -126,6 +126,16 @@
     casino: { label: "The Monte Carlo Casino", unit: 'room', rooms: [["Terrace", "Terrace", "the terrace"], ["American bar", "Bar", "the American bar"], ["Hall", "Hall", "the hall"], ["Manager’s office", "Office", "the manager’s office"], ["Private lounge", "Lounge", "the private lounge"], ["Gaming room", "Gaming", "the gaming room"], ["Cash desk", "Cash", "the cash desk"]], labels: ["TERRACE", "BAR", "HALL", "OFFICE", "PRIVATE LOUNGE", "GAMING ROOM", "CASH DESK"] }
   };
   var EN_ROLES = { 'détective': 'detective', comtesse: 'countess', 'neveu fauché': 'broke nephew', cantatrice: 'opera singer', steward: 'steward', 'contrôleur': 'ticket inspector', 'archéologue': 'archaeologist', "chef de la sécurité": "head of security", "directeur": "manager", "femme de chambre": "chambermaid", "groom": "bellboy", "barman": "barman", "riche cliente": "wealthy guest", "chef": "chef", "notaire": "notary", "cousine": "cousin", "majordome": "butler", "cuisinière": "cook", "jardinier": "gardener", "médecin": "doctor", "mécanicien": "mechanic", "pianiste": "pianist", "passagère": "passenger", "romancière": "novelist", "capitaine": "captain", "ténor": "tenor", "habilleuse": "dresser", "souffleur": "prompter", "régisseur": "stage manager", "chef d’orchestre": "conductor", "croupier": "croupier", "joueuse": "gambler" };
+  var IT_PLACES = {
+    express: { label: 'L’Espresso di mezzanotte', unit: 'carrozza', rooms: [['Bagagliaio', 'Bagagli', 'il bagagliaio'], ['Vagone letto A', 'Letto A', 'il vagone letto A'], ['Vagone letto B', 'Letto B', 'il vagone letto B'], ['Vagone ristorante', 'Ristor.', 'il vagone ristorante'], ['Carrozza bar', 'Bar', 'la carrozza bar'], ['Salottino fumatori', 'Fumatori', 'il salottino fumatori'], ['Tetto del treno', 'Tetto', 'il tetto del treno']], labels: ['BAGAGLI', 'LETTO A', 'LETTO B', 'RISTOR.', 'BAR', 'FUMATORI'] },
+    palace: { label: 'Il Grand Hotel dei Gabbiani', unit: 'stanza', rooms: [['Bar', 'Bar', 'il bar'], ['Reception', 'Recep.', 'la reception'], ['Ristorante', 'Ristor.', 'il ristorante'], ['Cucine', 'Cucine', 'le cucine'], ['Ascensore', 'Ascens.', 'l’ascensore'], ['Corridoio', 'Corridoio', 'il corridoio'], ['Suite 12', 'Suite 12', 'la suite 12'], ['Terrazza', 'Terrazza', 'la terrazza']], labels: ['BAR', 'RECEPTION', 'RISTORANTE', 'CUCINE', 'ASCENSORE', 'CORRIDOIO', 'SUITE 12', 'TERRAZZA'] },
+    manoir: { label: 'Villa degli Ulivi', unit: 'stanza', rooms: [['Atrio', 'Atrio', 'l’atrio'], ['Salotto', 'Salotto', 'il salotto'], ['Cucina', 'Cucina', 'la cucina'], ['Biblioteca', 'Biblio.', 'la biblioteca'], ['Studio', 'Studio', 'lo studio'], ['Cantina', 'Cantina', 'la cantina'], ['Giardino', 'Giardino', 'il giardino']] },
+    paquebot: { label: 'Il transatlantico Bel Azur', unit: 'locale', rooms: [['Ponte passeggiata', 'Ponte', 'il ponte passeggiata'], ['Plancia', 'Plancia', 'la plancia'], ['Salone della musica', 'Musica', 'il salone della musica'], ['Sala da pranzo', 'Pranzo', 'la sala da pranzo'], ['Corridoio', 'Corrid.', 'il corridoio'], ['Cabina 7', 'Cab. 7', 'la cabina 7'], ['Cabina 12', 'Cab. 12', 'la cabina 12'], ['Sala macchine', 'Macchine', 'la sala macchine']], labels: ['PONTE PASSEGGIATA', 'PLANCIA', 'SALONE MUSICA', 'SALA DA PRANZO', 'CORRIDOIO', 'CABINA 7', 'CABINA 12', 'MACCHINE'] },
+    opera: { label: 'L’Opera di Monte Carlo', unit: 'locale', rooms: [['Palcoscenico', 'Palco', 'il palcoscenico'], ['Quinte', 'Quinte', 'le quinte'], ['Camerino della diva', 'Camerino', 'il camerino della diva'], ['Buca dell’orchestra', 'Buca', 'la buca dell’orchestra'], ['Ridotto', 'Ridotto', 'il ridotto'], ['Platea', 'Platea', 'la platea'], ['Graticcia', 'Graticcia', 'la graticcia'], ['Sala macchine', 'Macch.', 'la sala macchine']], labels: ['PALCO', 'QUINTE', 'CAMERINO', 'BUCA', 'RIDOTTO', 'PLATEA', 'GRATICCIA', 'MACCH.'] },
+    casino: { label: 'Il Casinò di Monte Carlo', unit: 'sala', rooms: [['Terrazza', 'Terrazza', 'la terrazza'], ['Bar americano', 'Bar', 'il bar americano'], ['Atrio', 'Atrio', 'l’atrio'], ['Ufficio del direttore', 'Ufficio', 'l’ufficio del direttore'], ['Salottino privato', 'Salottino', 'il salottino privato'], ['Sala da gioco', 'Gioco', 'la sala da gioco'], ['Cassa', 'Cassa', 'la cassa']], labels: ['TERRAZZA', 'BAR', 'ATRIO', 'UFFICIO', 'SALOTTINO PRIVATO', 'SALA DA GIOCO', 'CASSA'] }
+  };
+  var IT_ROLES = { 'détective': 'investigatrice', comtesse: 'contessa', 'neveu fauché': 'nipote squattrinato', cantatrice: 'cantante lirica', steward: 'steward', 'contrôleur': 'controllore', 'archéologue': 'archeologo', 'chef de la sécurité': 'capo della sicurezza', directeur: 'direttore', 'femme de chambre': 'cameriera ai piani', groom: 'fattorino', barman: 'barista', 'riche cliente': 'ricca cliente', chef: 'chef', notaire: 'notaio', cousine: 'cugina', majordome: 'maggiordomo', 'cuisinière': 'cuoca', jardinier: 'giardiniere', 'médecin': 'medico', 'mécanicien': 'meccanico', pianiste: 'pianista', 'passagère': 'passeggera', 'romancière': 'romanziera', capitaine: 'capitano', 'ténor': 'tenore', habilleuse: 'sarta di scena', souffleur: 'suggeritore', 'régisseur': 'direttore di scena', 'chef d’orchestre': 'direttore d’orchestra', croupier: 'croupier', joueuse: 'giocatrice' };
+  var IS_IT = typeof window !== 'undefined' && window.KIOUKAN_LANG === 'it';
   var IS_EN = typeof window !== 'undefined' && window.KIOUKAN_LANG === 'en';
 
   /* Distribution : nom (jeu de mots), nom court, rôle, féminin */
@@ -172,21 +182,21 @@
   };
 
   function scene(placeKey, suspectNames) {
-    var P = PLACES[placeKey], X = IS_EN && EN_PLACES[placeKey];
+    var P = PLACES[placeKey], X = (IS_EN && EN_PLACES[placeKey]) || (IS_IT && IT_PLACES[placeKey]);
     var rooms = P.rooms, label = P.label, unit = P.unit;
     if (X) {
-      rooms = P.rooms.map(function (r, i) { var o = {}; for (var k in r) o[k] = r[k]; o.id = r.name; o.name = X.rooms[i][0]; o.short = X.rooms[i][1]; o.the = X.rooms[i][2]; return o; });
+      rooms = P.rooms.map(function (r, i) { var o = {}; for (var k in r) o[k] = r[k]; o.id = r.name; o.name = X.rooms[i][0]; o.short = X.rooms[i][1]; o.the = X.rooms[i][2]; if (IS_IT && E && E.itIn) o.inn = E.itIn(o.the, r.on); return o; });
       label = X.label; unit = X.unit;
     }
     return {
       label: label, unit: unit, t0: P.t0, rooms: rooms, doors: P.doors,
-      suspects: suspectNames.map(function (n) { var c = CAST[n]; return { name: n, short: c.short, role: IS_EN ? (EN_ROLES[c.role] || c.role) : c.role, f: c.f }; })
+      suspects: suspectNames.map(function (n) { var c = CAST[n]; return { name: n, short: c.short, role: IS_EN ? (EN_ROLES[c.role] || c.role) : IS_IT ? (IT_ROLES[c.role] || c.role) : c.role, f: c.f }; })
     };
   }
   function use(key, placeKey, suspectNames) {
     E.SCENES[key] = scene(placeKey, suspectNames);
     E.setScene(key);
   }
-  return { PLACES: PLACES, CAST: CAST, scene: scene, use: use, EN_PLACES: EN_PLACES, EN_ROLES: EN_ROLES };
+  return { PLACES: PLACES, CAST: CAST, scene: scene, use: use, EN_PLACES: EN_PLACES, EN_ROLES: EN_ROLES, IT_PLACES: IT_PLACES, IT_ROLES: IT_ROLES, LOC_PLACES: IS_IT ? IT_PLACES : IS_EN ? EN_PLACES : null };
 });
 

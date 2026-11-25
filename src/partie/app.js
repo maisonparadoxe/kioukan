@@ -3,7 +3,7 @@
   'use strict';
   var E = window.KioukanEngine;
   var ROOMS, SUSPECTS, STEP, DOORS, GEO, SC;
-  var EN = window.KIOUKAN_LANG === 'en', TR = window.T;
+  var EN = window.KIOUKAN_LANG === 'en', IT = window.KIOUKAN_LANG === 'it', TR = window.T;
   function pl(n, one, many) { return n > 1 ? many : one; }
   var LEVELS = E.LEVELS;
   var tl = E.timeLabel;
@@ -61,8 +61,8 @@
   }
 var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22', '#5b6fa8', '#d07a2f'], OUT_TINT = '#4ea35a';
   function roomTint(G, r, k) { return G.out ? OUT_TINT : ROOM_TINT[(r - (k || 0)) % ROOM_TINT.length]; }
-  function inRoom(r) { return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
-  function unitize(str) { return EN ? str.replace(/\{unit\}/g, E.SCENE.unit) : str.replace(/pièce/g, E.SCENE.unit); }
+  function inRoom(r) { if (IT) return ROOMS[r].inn || E.itIn(ROOMS[r].the, ROOMS[r].on); return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
+  function unitize(str) { return EN || IT ? str.replace(/\{unit\}/g, E.SCENE.unit) : str.replace(/pièce/g, E.SCENE.unit); }
   function doorRect(a, b) {
     var A = GEO[a], B = GEO[b];
     var x1 = Math.max(A.x, B.x), x2 = Math.min(A.x + A.w, B.x + B.w);
@@ -233,16 +233,16 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   function renderCase() {
     var P = state.puz;
     var liarMode = isLiar(P), half = P.mode === 'half';
-    $('dossier').textContent = EN ? 'Case no. ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' time slots' + (liarMode ? (half ? ' · half-truths' : ' · one liar') : '') : 'Dossier n° ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' créneaux' + (liarMode ? (half ? ' · demi-vérités' : ' · un menteur') : '');
+    $('dossier').textContent = IT ? 'Fascicolo n. ' + pad4(P.seed % 10000) + ' · ' + P.S + ' sospettati · ' + P.T + ' fasce orarie' + (liarMode ? (half ? ' · mezze verità' : ' · un bugiardo') : '') : EN ? 'Case no. ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' time slots' + (liarMode ? (half ? ' · half-truths' : ' · one liar') : '') : 'Dossier n° ' + pad4(P.seed % 10000) + ' · ' + P.S + ' suspects · ' + P.T + ' créneaux' + (liarMode ? (half ? ' · demi-vérités' : ' · un menteur') : '');
     $('case').innerHTML =
       '<p class="eyebrow">' + TR('L’affaire') + '</p>' +
-      '<h2>' + SC.dead + ' ' + (EN ? (ROOMS[P.crime.room].on ? 'on' : 'in') : (ROOMS[P.crime.room].on ? 'sur' : 'dans')) + ' <em>' + ROOMS[P.crime.room].the + '</em>.</h2>' +
+      '<h2>' + SC.dead + ' ' + (IT ? '<em>' + inRoom(P.crime.room) + '</em>' : (EN ? (ROOMS[P.crime.room].on ? 'on' : 'in') : (ROOMS[P.crime.room].on ? 'sur' : 'dans')) + ' <em>' + ROOMS[P.crime.room].the + '</em>') + '.</h2>' +
       '<p>' + SC.watch + ' <b class="mono">' + tl(P.crime.t) + '</b>. ' + TR(NUMWORD[P.S]) +
       (liarMode
         ? (half
           ? TR(' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a mêlé le vrai et le faux : au moins une de ses déclarations est vraie, au moins une est fausse. Démasque-le.') + '</p>'
           : TR(' suspects ont été interrogés. Les innocents ont dit la vérité. Le meurtrier, seul avec la victime à cet instant, a menti dans chacune de ses déclarations. Démasque-le.') + '</p>')
-        : (EN ? ' suspects were ' + SC.where + ', and only one of them was with him at that moment. Reconstruct their movements to find out which.' : ' suspects se trouvaient ' + SC.where + ', et un seul d’entre eux était avec lui à cet instant. Reconstitue leurs déplacements pour trouver lequel.') + '</p>');
+        : (IT ? ' sospettati si trovavano ' + SC.where + ', e uno solo di loro era con lui in quell’istante. Ricostruisci i loro spostamenti per scoprire chi.' : EN ? ' suspects were ' + SC.where + ', and only one of them was with him at that moment. Reconstruct their movements to find out which.' : ' suspects se trouvaient ' + SC.where + ', et un seul d’entre eux était avec lui à cet instant. Reconstitue leurs déplacements pour trouver lequel.') + '</p>');
   }
 
   function pill(x, y, text) {
@@ -285,7 +285,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     });
     for (r = 0; r < ROOMS.length; r++) {
       var G4 = GEO[r];
-      svg += pill(G4.x + G4.w / 2, G4.y + 11, (EN ? '' : G4.l) || ROOMS[r].name.toUpperCase());
+      svg += pill(G4.x + G4.w / 2, G4.y + 11, (EN || IT ? '' : G4.l) || ROOMS[r].name.toUpperCase());
     }
     var burst = [], bi, br;
     for (bi = 0; bi < 12; bi++) { br = bi % 2 ? 6.5 : 11; burst.push((Math.sin(bi * Math.PI / 6) * br).toFixed(1) + ',' + (-Math.cos(bi * Math.PI / 6) * br).toFixed(1)); }
@@ -394,7 +394,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
       return '<li class="clue ' + st + (it.rule ? ' rule' : '') + '"><span class="ico">' + ICON[st] + '</span><span class="txt">' + text + ' ' + tag + '</span></li>';
     }
     var rule = A.items.filter(function (it) { return it.rule; })[0];
-    h += '<ul class="clues">' + li(rule, EN ? 'The liar is the killer: only they were ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '.' : 'Le menteur est le meurtrier : lui seul se trouvait ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) + '.') + '</ul>';
+    h += '<ul class="clues">' + li(rule, IT ? 'Il bugiardo è l’assassino: solo lui si trovava ' + inRoom(P.crime.room) + ' ' + E.alle(P.crime.t) + '.' : EN ? 'The liar is the killer: only they were ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '.' : 'Le menteur est le meurtrier : lui seul se trouvait ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) + '.') + '</ul>';
     var facts = P.clues.filter(function (c) { return c.by === undefined; });
     if (facts.length) {
       h += '<div class="speaker"><b>' + TR('Preuves') + '</b><span class="tag">' + TR('certaines') + '</span></div><ul class="clues proof-list">' +
@@ -403,7 +403,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     for (s = 0; s < S; s++) {
       var mix = (P.mode === 'half' && L === s) ? A.items.filter(function (it) { return it.mix; })[0] : null;
       var rows = (mix ? li(mix, TR('Au moins une de ses déclarations est vraie et au moins une est fausse.')) : '') + A.items.filter(function (it) { return !it.rule && !it.mix && it.c.by === s; }).map(function (it) {
-        return li(it, EN ? '“' + E.statementText(P, it.c) + '”' : '« ' + E.statementText(P, it.c) + ' »');
+        return li(it, EN ? '“' + E.statementText(P, it.c) + '”' : IT ? '«' + E.statementText(P, it.c) + '»' : '« ' + E.statementText(P, it.c) + ' »');
       }).join('');
       var who = L < 0 ? '' : (L === s ? '<span class="tag liar-tag">' + TR(P.mode === 'half' ? 'ment en partie' : 'ment : tout est faux') + '</span>' : '<span class="tag">' + TR('dit vrai') + '</span>');
       h += '<div class="sp s' + ci(s) + '">' + pola(s, '<small>' + SUSPECTS[s].role + '</small>' + who) +
@@ -441,13 +441,19 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     if (!state.solved) { el.innerHTML = ''; return; }
     var c = SUSPECTS[P.culprit];
     el.innerHTML = '<div class="panel verdict"><div class="v-top">' + pola(P.culprit, '<small class="guilty">' + TR('coupable') + '</small>') + '<div class="stamp">' + TR('Affaire classée') + '</div></div>' +
-      (EN
+      (IT
+        ? (P.mode === 'half'
+          ? '<p><b>' + c.name + '</b> mescolava vero e falso: ' + falseCount() + ' delle sue ' + mineCount() + ' dichiarazioni ' + (falseCount() > 1 ? 'erano false' : 'era falsa') + '. Era ' + (c.f ? 'sola' : 'solo') + ' ' + inRoom(P.crime.room) + ' ' + E.alle(P.crime.t) + '. Gli altri sospettati hanno sempre detto la verità.</p>'
+          : P.mode === 'liar'
+          ? '<p><b>' + c.name + '</b> mentiva. Era ' + (c.f ? 'sola' : 'solo') + ' ' + inRoom(P.crime.room) + ' ' + E.alle(P.crime.t) + ', e ognuna delle sue dichiarazioni era falsa. Gli altri sospettati dicevano la verità.</p>'
+          : '<p><b>' + c.name + '</b> era ' + (c.f ? 'sola' : 'solo') + ' ' + inRoom(P.crime.room) + ' ' + E.alle(P.crime.t) + '. Tutti gli altri alibi reggono.</p>')
+        : '') + (EN && !IT
         ? (P.mode === 'half'
           ? '<p><b>' + c.name + '</b> mixed truth and lies: ' + falseCount() + ' of ' + (c.f ? 'her' : 'his') + ' ' + mineCount() + ' statements ' + (falseCount() > 1 ? 'were false' : 'was false') + '. ' + (c.f ? 'She' : 'He') + ' was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '. The other suspects always told the truth.</p>'
           : P.mode === 'liar'
           ? '<p><b>' + c.name + '</b> was lying. ' + (c.f ? 'She' : 'He') + ' was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + ', and every one of ' + (c.f ? 'her' : 'his') + ' statements was false. The other suspects told the truth.</p>'
           : '<p><b>' + c.name + '</b> was alone ' + inRoom(P.crime.room) + ' at ' + tl(P.crime.t) + '. Every other alibi holds.</p>')
-        : '') + (EN ? '' :
+        : '') + (EN || IT ? '' :
       (P.mode === 'half'
         ? '<p><b>' + c.name + '</b> mêlait le vrai et le faux : ' + falseCount() + ' de ' + (c.f ? 'ses' : 'ses') + ' ' + mineCount() + ' déclarations ' + (falseCount() > 1 ? 'étaient fausses' : 'était fausse') + '. ' + (c.f ? 'Elle' : 'Il') + ' était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
           '. Les autres suspects disaient toujours vrai.</p>'
@@ -456,7 +462,11 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
           ', et chacune de ses déclarations était fausse. Les autres suspects disaient vrai.</p>'
         : '<p><b>' + c.name + '</b> était ' + (c.f ? 'seule' : 'seul') + ' ' + inRoom(P.crime.room) + ' à ' + tl(P.crime.t) +
           '. Tous les autres alibis tiennent.</p>')) +
-      '<p class="sub">' + (EN
+      '<p class="sub">' + (IT
+        ? ((state.early ? 'Accusa esatta con ancora ' + state.early + ' casell' + (state.early > 1 ? 'e' : 'a') + ' della cronologia da riempire. ' : '') +
+           (state.hints ? state.hints + ' indizi' + (state.hints > 1 ? '' : 'o') + ' usat' + (state.hints > 1 ? 'i' : 'o') + '. ' : 'Nessun indizio usato. ') +
+           (state.wrong ? state.wrong + ' accus' + (state.wrong > 1 ? 'e' : 'a') + ' sbagliat' + (state.wrong > 1 ? 'e' : 'a') + '.' : 'Nessuna accusa sbagliata.'))
+        : EN
         ? ((state.early ? 'Correct accusation with ' + state.early + ' timeline cell' + (state.early > 1 ? 's' : '') + ' still empty. ' : '') +
            (state.hints ? state.hints + ' hint' + (state.hints > 1 ? 's' : '') + ' used. ' : 'No hints used. ') +
            (state.wrong ? state.wrong + ' wrong accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'No wrong accusations.'))
@@ -497,7 +507,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
         room.name + (far ? '<small>' + TR('trop loin') + '</small>' : '') + '</button>';
     }).join('');
     root.innerHTML = '<div class="scrim" data-act="close"></div>' +
-      '<div class="sheet s' + ci(s) + '" role="dialog" aria-modal="true" aria-label="' + (EN ? 'Choose a ' : 'Choisir une ') + E.SCENE.unit + '">' +
+      '<div class="sheet s' + ci(s) + '" role="dialog" aria-modal="true" aria-label="' + (IT ? 'Scegli una ' : EN ? 'Choose a ' : 'Choisir une ') + E.SCENE.unit + '">' +
       '<div class="sheet-hd">' + mini(s) + '<b>' + SUSPECTS[s].name + '</b></div>' +
       '<p class="trail">' + trail.join(' → ') + '</p>' +
       '<div class="room-grid">' + btns + '</div>' +

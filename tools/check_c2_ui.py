@@ -1,6 +1,6 @@
 """Campagne 2 dans la vraie page : chaque épisode se charge sans erreur, ses textes s'affichent,
 la bonne grille (+ menteurs / accusation) donne la victoire, et aucune contradiction n'apparaît sur la solution.
-Usage : python3 tools/check_c2_ui.py [fr|en]"""
+Usage : python3 tools/check_c2_ui.py [fr|en|it]"""
 import os, sys, json
 from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,14 +19,14 @@ JS = r"""(n)=>{const H=KioukanHistoire; H.unlockAll(); H.load(n); const st=H.sta
   return {n, errs, cont, nbad, nok, nall, solved:st.solved, rows:P.S, mode:P.mode};}"""
 bad = 0
 with sync_playwright() as p:
-    b = p.chromium.launch(); pg = b.new_page(locale='fr-FR' if lang == 'fr' else 'en-GB')
+    b = p.chromium.launch(); pg = b.new_page(locale={'fr': 'fr-FR', 'it': 'it-IT'}.get(lang, 'en-GB'))
     jserr = []; pg.on('pageerror', lambda e: jserr.append(str(e)))
     pg.goto('file://' + os.path.join(ROOT, 'campagne2.html') + '#test'); pg.wait_for_timeout(300)
-    if lang == 'en': pg.evaluate("localStorage.setItem('kioukan.lang','en')"); pg.reload(); pg.wait_for_timeout(400)
+    if lang != 'fr': pg.evaluate("localStorage.setItem('kioukan.lang','%s')" % lang); pg.reload(); pg.wait_for_timeout(400)
     eps = pg.evaluate('Object.keys(KioukanPuzzles2).map(Number)')
     for n in eps:
         r = pg.evaluate(JS, n)
-        ok = not r['errs'] and r['nbad'] == 0 and r['solved'] and ' 0 contradiction' in (' ' + r['cont'].replace('\n', ' ')) and not jserr
+        ok = not r['errs'] and r['nbad'] == 0 and r['solved'] and (' 0 contradiction' in (' ' + r['cont'].replace('\n', ' ')) or ' 0 contraddizion' in (' ' + r['cont'].replace('\n', ' '))) and not jserr
         if not ok: bad += 1; print('PROBLÈME', n, r, jserr[:2]); jserr.clear()
     b.close()
 print('%d épisodes contrôlés (%s), %d problème(s)' % (len(eps), lang, bad)); sys.exit(1 if bad else 0)

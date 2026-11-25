@@ -9,7 +9,7 @@
   var N = FIRST + SPEC.levels.length - 1, tl = E.timeLabel;
   var STEPS = [], NSUS = 0, X = {};
   var ROOMS, SUSPECTS, STEP, DOORS, PLACE, LV, CH;
-  var EN = window.KIOUKAN_LANG === 'en', TR = window.T;
+  var EN = window.KIOUKAN_LANG === 'en', IT = window.KIOUKAN_LANG === 'it', TR = window.T;
   function pl(n, one, many) { return n > 1 ? many : one; }
 
   var ICON = {
@@ -40,11 +40,11 @@
   /* ---------- Outils ---------- */
   function $(id) { return document.getElementById(id); }
   function g(s, t) { return state.grid[s * state.puz.T + t]; }
-  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/ ([!?:;»])/g, EN ? ' $1' : '\u00a0$1').replace(/« /g, EN ? '« ' : '«\u00a0'); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/ ([!?:;»])/g, EN || IT ? ' $1' : '\u00a0$1').replace(/« /g, EN || IT ? '« ' : '«\u00a0'); }
   function isLiar(P) { return P.mode === 'liar' || P.mode === 'half' || P.mode === 'liar2'; }
   function nLiars(P) { return P.mode === 'liar2' ? 2 : 1; }
   function isDarkT(t) { return X.dark != null && t === X.dark; }
-  function inRoom(r) { return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
+  function inRoom(r) { if (IT) return ROOMS[r].inn || E.itIn(ROOMS[r].the, ROOMS[r].on); return (EN ? (ROOMS[r].on ? 'on ' : 'in ') : (ROOMS[r].on ? 'sur ' : 'dans ')) + ROOMS[r].the; }
   function culpritName() { return SUSPECTS[state.puz.culprit].name; }
   function fmt(s) {
     var P = state.puz;
@@ -123,7 +123,21 @@
   }
   function nm(s) { return SUSPECTS[s].name; }
   function fem(s) { return !!SUSPECTS[s].f; }
+  function alle(t) { return E.alle(t); }
+  function ruleTextIT() {
+    var P = state.puz, w = TR(LV.word), where = inRoom(P.crime.room), lie = '';
+    if (isLiar(P)) lie = nLiars(P) === 2 ? 'Due sospettati mentono su tutto: il colpevole e un complice. ' : 'Il bugiardo è il colpevole. ';
+    if (X.times) return lie + 'Tra le ' + X.times.map(tl).join(', ') + ', c’è una sola ora in cui un solo sospettato era ' + where + ': è l’ora dei fatti, ed è ' + w + '.';
+    var h = alle(P.crime.t) + (X.dark != null ? ' (al buio)' : '');
+    if (X.weapon) {
+      var wr = ROOMS[X.weapon.room].the, vn = X.victim ? nm(NSUS) : '';
+      return lie + vn + ' era ' + where + ' ' + h + '. Tra i sospettati presenti, uno solo era passato prima per ' + wr + ': ' + w + '.';
+    }
+    if (X.victim) return lie + nm(NSUS) + ' era ' + where + ' ' + h + ', ' + (fem(NSUS) ? 'sola' : 'solo') + ' con ' + w + '.';
+    return lie + 'Un solo sospettato si trovava ' + where + ' ' + h + ': ' + w + '.';
+  }
   function ruleText() {
+    if (IT) return ruleTextIT();
     var P = state.puz, w = TR(LV.word), where = inRoom(P.crime.room), lie = '';
     if (isLiar(P)) lie = nLiars(P) === 2 ? (EN ? 'Two suspects lie about everything: the culprit and an accomplice. ' : 'Deux suspects mentent sur tout : le coupable et un complice. ') : (EN ? 'The liar is the culprit. ' : 'Le menteur est le coupable. ');
     if (X.times) return lie + (EN ? 'Of ' + X.times.map(tl).join(', ') + ', only one time had a single suspect ' + where + ': that is the time, and that is ' + w + '.'
@@ -139,15 +153,22 @@
   }
   function keyText() {
     var who = nm(X.keyStart), doors = X.locked.map(function (d) { return ROOMS[d[0]].short + ' – ' + ROOMS[d[1]].short; }).join(', ');
+    if (IT) return 'Porte chiuse a chiave (' + doors + '): solo chi ha la chiave, o chi passa insieme a lui, può attraversarle. Due persone nella stessa stanza possono passarsi la chiave. All’inizio ce l’ha ' + who + '.';
     return EN ? 'Locked doors (' + doors + '): only the key holder, or someone going through with them, can pass. Two people in the same room can hand over the key. At the start, ' + who + ' has it.'
       : 'Portes fermées (' + doors + ') : seul le porteur de la clé, ou quelqu’un qui passe avec lui, peut les franchir. Deux personnes dans la même pièce peuvent se passer la clé. Au début, elle est chez ' + who + '.';
   }
   function twinsTxt(c, neg) {
     var r = inRoom(c.r), t = tl(c.t);
+    if (IT) return (neg ? 'Nessuna delle gemelle era ' : 'Almeno una delle gemelle era ') + r + ' ' + alle(c.t) + (neg ? '.' : ' (Pia, Paola, o entrambe).');
     if (EN) return (neg ? 'Neither of the twins was ' : 'At least one of the twins was ') + r + ' at ' + t + (neg ? '.' : ' (Pia, Paola, or both).');
     return (neg ? 'Aucune des jumelles n’était ' : 'Au moins une des jumelles était ') + r + ' à ' + t + (neg ? '.' : ' (Pia, Paola, ou les deux).');
   }
   function clueTxt(P, c) {
+    if (IT) switch (c.type) {
+      case 'notEmpty': return 'C’era qualcuno ' + inRoom(c.r) + ' ' + alle(c.t) + '.';
+      case 'notAlone': return nm(c.s) + ' non era ' + (fem(c.s) ? 'sola' : 'solo') + ' ' + alle(c.t) + '.';
+      case 'notMoves': return nm(c.s) + ' non ha cambiato ' + E.SCENE.unit + ' esattamente ' + c.n + (c.n > 1 ? ' volte.' : ' volta.');
+    }
     switch (c.type) {
       case 'oneOf': return twinsTxt(c, false);
       case 'neither': return twinsTxt(c, true);
@@ -161,7 +182,17 @@
   function stmtTxt(P, c) {
     var by = c.by, me = function (x) { return x === by; }, U = E.SCENE.unit, t = c.t != null ? tl(c.t) : '', f = by != null && fem(by);
     var twin = X.raw.twins && X.raw.twins.indexOf(by) >= 0 && (c.type === 'oneOf' || c.type === 'neither') && (c.a === by || c.b === by);
-    if (EN) {
+    if (IT) {
+      var o = f ? 'a' : 'o';
+      switch (c.type) {
+        case 'moves': if (me(c.s)) return c.n === 0 ? 'Non mi sono mai spostat' + o + ' in tutta la serata.' : c.n === 1 ? 'Ho cambiato ' + U + ' una sola volta.' : 'Ho cambiato ' + U + ' ' + c.n + ' volte in tutto.'; break;
+        case 'notMoves': if (me(c.s)) return 'Non ho cambiato ' + U + ' esattamente ' + c.n + (c.n > 1 ? ' volte.' : ' volta.'); break;
+        case 'alone': if (me(c.s)) return 'Ero sol' + o + ' nella mia ' + U + ' ' + alle(c.t) + '.'; break;
+        case 'notAlone': if (me(c.s)) return 'Non ero sol' + o + ' ' + alle(c.t) + '.'; break;
+        case 'oneOf': if (twin) return 'Almeno una di noi due, mia sorella o io, era ' + inRoom(c.r) + ' ' + alle(c.t) + '.'; break;
+        case 'neither': if (twin) return 'Né mia sorella né io eravamo ' + inRoom(c.r) + ' ' + alle(c.t) + '.'; break;
+      }
+    } else if (EN) {
       switch (c.type) {
         case 'moves': if (me(c.s)) return c.n === 0 ? 'I didn’t move all evening.' : c.n === 1 ? 'I changed ' + U + 's only once.' : 'I changed ' + U + 's ' + c.n + ' times in total.'; break;
         case 'notMoves': if (me(c.s)) return 'I did not change ' + U + 's exactly ' + c.n + ' time' + (c.n > 1 ? 's' : '') + '.'; break;
@@ -361,7 +392,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     if (!IMG) DOORS.forEach(function (d) { var R = doorRect(G, d[0], d[1]); h += '<rect class="door" x="' + R.x + '" y="' + R.y + '" width="' + R.w + '" height="' + R.h + '" rx="2"/>'; });
     h += overlays(G);
     for (r = 0; r < ROOMS.length; r++) {
-      var XL = EN && WORLD.EN_PLACES && WORLD.EN_PLACES[CH.place] && WORLD.EN_PLACES[CH.place].labels, lab = (XL ? XL[r] : G[r].l) || ROOMS[r].name.toUpperCase(), w = Math.round(lab.length * 5.6 + 12), cx = G[r].x + G[r].w / 2, cy = G[r].y + 10;
+      var XL = WORLD.LOC_PLACES && WORLD.LOC_PLACES[CH.place] && WORLD.LOC_PLACES[CH.place].labels, lab = (XL ? XL[r] : WORLD.LOC_PLACES ? '' : G[r].l) || ROOMS[r].name.toUpperCase(), w = Math.round(lab.length * 5.6 + 12), cx = G[r].x + G[r].w / 2, cy = G[r].y + 10;
       h += '<g class="pill"><rect x="' + (cx - w / 2) + '" y="' + (cy - 6) + '" width="' + w + '" height="12" rx="6"/><text x="' + cx + '" y="' + (cy + 0.4) + '">' + lab + '</text></g>';
     }
     occ.forEach(function (list, room) {
@@ -388,7 +419,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     var occ = ROOMS.map(function () { return []; });
     for (s = 0; s < P.S; s++) { var v = g(s, t); if (v >= 0) occ[v].push(s); }
     var svg = PLACE.view === 'train'
-      ? LC.train({ img: (window.KIOUKAN_IMAGES || {})['plan:' + CH.place], tok: tok, small: function (nm) { return !!(IC && IC.has(nm)); }, occ: occ, crime: P.crime.room, labels: (EN && WORLD.EN_PLACES && WORLD.EN_PLACES[CH.place]) ? WORLD.EN_PLACES[CH.place].labels : PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: E.SCENE.label + ' ' + TR('à') + ' ' + tl(t) })
+      ? LC.train({ img: (window.KIOUKAN_IMAGES || {})['plan:' + CH.place], tok: tok, small: function (nm) { return !!(IC && IC.has(nm)); }, occ: occ, crime: P.crime.room, labels: (WORLD.LOC_PLACES && WORLD.LOC_PLACES[CH.place]) ? WORLD.LOC_PLACES[CH.place].labels : PLACE.labels, names: SUSPECTS.map(function (x) { return x.name; }), culprit: state.solved && t === P.crime.t ? P.culprit : -1, label: E.SCENE.label + ' ' + TR('à') + ' ' + tl(t) })
       : planSVG(occ, t);
     var lg = '<span><i class="lg-door"></i>' + (PLACE.view === 'train' ? TR('passage entre voitures') : TR('porte')) + '</span>' + (PLACE.view === 'train' ? '<span><i class="lg-ladder"></i>' + TR('trappe vers le toit') + '</span>' : '') + '<span><i class="lg-crime"></i>' + TR('lieu des faits') + '</span>';
     if (X.secret) X.secret.forEach(function (q) { lg += '<span><i class="lg-secret"></i>' + TR('passage secret') + ' ' + ROOMS[q.a].short + ' – ' + ROOMS[q.b].short + ' (' + q.who.map(function (w) { return SUSPECTS[w].short; }).join(', ') + ')</span>'; });
@@ -464,7 +495,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   function flavoredStatement(P, c) {
     var FL = FLAVOR[state.ep], i = P.clues.indexOf(c);
     if (FL) for (var k = 0; k < FL.length; k++) if (FL[k].ids.length === 1 && FL[k].ids[0] === i) return nbsp(esc(TR(FL[k].text)));
-    return EN ? '“' + stmtTxt(P, c) + '”' : '« ' + stmtTxt(P, c) + ' »';
+    return EN ? '“' + stmtTxt(P, c) + '”' : IT ? '«' + stmtTxt(P, c) + '»' : '« ' + stmtTxt(P, c) + ' »';
   }
   function renderClues() {
     var P = state.puz, A = analyse(), show = showMarks(), h = '';
@@ -505,6 +536,12 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   function verdictText() {
     var P = state.puz, c = SUSPECTS[P.culprit], f = c.f, t = X.crimeT, where = inRoom(P.crime.room);
     var liars = X.liarSet ? X.liarSet.filter(function (x) { return x !== P.culprit; }).map(function (x) { return SUSPECTS[x].name; }) : [];
+    if (IT) {
+      var bIT = '<b>' + c.name + '</b> ' + (X.weapon ? 'era ' + where + ' ' + alle(t) + ', e solo ' + (f ? 'lei' : 'lui') + ' aveva potuto prendere l’arma.' : 'era ' + (f ? 'sola' : 'solo') + ' ' + where + ' ' + alle(t) + '.');
+      if (P.mode === 'liar') return '<b>' + c.name + '</b> ha mentito su tutto. ' + (f ? 'Lei' : 'Lui') + ' ' + bIT.replace(/^<b>[^<]*<\/b> /, '');
+      if (P.mode === 'liar2') return bIT + ' Ha mentito su tutto, e il suo complice pure: ' + liars.join(', ') + '.';
+      return bIT + ' Tutti gli altri alibi reggono.';
+    }
     if (EN) {
       var sh = f ? 'She' : 'He', base = '<b>' + c.name + '</b> was ' + (X.weapon ? 'the only one with the weapon ' : 'alone ') + where + ' at ' + tl(t) + '.';
       if (P.mode === 'liar') return '<b>' + c.name + '</b> lied about everything. ' + sh + ' was ' + (X.weapon ? 'the one with the weapon ' : 'alone ') + where + ' at ' + tl(t) + '.';
@@ -522,7 +559,11 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
     if (!state.solved) { el.innerHTML = ''; return; }
     el.innerHTML = '<div class="panel verdict"><div class="v-top">' + fiche(state.puz.culprit, '<b class="guilty">' + TR('coupable') + '</b>') + '<div class="stamp">' + TR('Affaire classée') + '</div></div>' +
       '<p>' + verdictText() + '</p>' +
-      '<p class="sub">' + (EN
+      '<p class="sub">' + (IT
+        ? ((state.early ? 'Accusa esatta con ancora ' + state.early + ' casell' + (state.early > 1 ? 'e' : 'a') + ' da riempire. ' : '') +
+           (state.hints ? state.hints + ' indizi' + (state.hints > 1 ? '' : 'o') + ' usat' + (state.hints > 1 ? 'i' : 'o') + '. ' : 'Nessun indizio usato. ') +
+           (state.wrong ? state.wrong + ' accus' + (state.wrong > 1 ? 'e' : 'a') + ' sbagliat' + (state.wrong > 1 ? 'e' : 'a') + '.' : 'Nessuna accusa sbagliata.'))
+        : EN
         ? ((state.early ? 'Correct accusation with ' + state.early + ' cell' + (state.early > 1 ? 's' : '') + ' still empty. ' : '') +
            (state.hints ? state.hints + ' hint' + (state.hints > 1 ? 's' : '') + ' used. ' : 'No hints used. ') +
            (state.wrong ? state.wrong + ' wrong accusation' + (state.wrong > 1 ? 's' : '') + '.' : 'No wrong accusations.'))
@@ -549,7 +590,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
         ab += '<button type="button" class="acc-btn' + (out ? ' out' : '') + '" data-act="accpick" data-s="' + q + '"' + (out ? ' disabled' : '') + '>' + fiche(q, out ? TR('innocent') : '') + '</button>';
       }
       root.innerHTML = '<div class="scrim" data-act="close"></div><div class="sheet" role="dialog" aria-modal="true" aria-label="' + TR('Désigner le coupable') + '">' +
-        '<div class="sheet-hd"><b class="acc-t">' + TR('J’accuse…') + '</b></div><p class="trail">' + (EN ? 'Who is ' + esc(TR(LV.word)) + '? A wrong answer counts as a mistake.' : 'Qui est ' + esc(LV.word) + ' ? Une mauvaise réponse est comptée comme une erreur.') + '</p>' +
+        '<div class="sheet-hd"><b class="acc-t">' + TR('J’accuse…') + '</b></div><p class="trail">' + (IT ? 'Chi è ' + esc(TR(LV.word)) + '? Una risposta sbagliata conta come errore.' : EN ? 'Who is ' + esc(TR(LV.word)) + '? A wrong answer counts as a mistake.' : 'Qui est ' + esc(LV.word) + ' ? Une mauvaise réponse est comptée comme une erreur.') + '</p>' +
         '<div class="acc-grid" style="--n:' + Math.min(NSUS, 3) + '">' + ab + '</div><div class="sheet-ft"><button type="button" class="btn sm" data-act="close">' + TR('Annuler') + '</button></div></div>';
       var f0 = root.querySelector('.acc-btn:not(:disabled)'); if (f0) f0.focus();
       return;
@@ -582,7 +623,16 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   }
   function mechRules() {
     var r = [], P = state.puz;
-    if (EN) {
+    if (IT) {
+      if (X.victim) r.push('<b>La vittima</b> ha la sua riga nella griglia. All’ora dei fatti era sul luogo; poi non si è più mossa.');
+      if (X.secret) r.push('<b>I passaggi segreti</b> (tratteggiati sulla pianta) collegano due stanze lontane in un solo spostamento, ma solo per chi li conosce.');
+      if (X.weapon) r.push('<b>L’arma</b> si trovava ' + inRoom(X.weapon.room) + '. Diversi sospettati possono essere con la vittima: il colpevole è l’unico di loro a essere passato prima per ' + ROOMS[X.weapon.room].the + '.');
+      if (X.dark != null) r.push('<b>Blackout</b> ' + alle(X.dark) + ': nessuna testimonianza riguarda quell’ora. Non serve riempire quella colonna: basta trovare il colpevole.');
+      if (X.locked) r.push('<b>Porte chiuse a chiave</b> (in rosso sulla pianta): solo chi ha la chiave, o chi passa insieme a lui, può attraversarle. La chiave può cambiare mano tra due persone nella stessa stanza.');
+      if (X.times) r.push('<b>Il momento giusto</b>: si conosce il luogo, non l’ora. Tra le ore possibili, ce n’è una sola in cui un solo sospettato era sul luogo.');
+      if (X.raw.twins) r.push('<b>Le gemelle</b>: «almeno una delle gemelle era lì» significa Pia, Paola, o entrambe.');
+      if (P.mode === 'liar2') r.push('<b>Due bugiardi</b>: il colpevole e un complice mentono in tutte le loro dichiarazioni. Indicali entrambi sotto «Chi sono i due bugiardi?».');
+    } else if (EN) {
       if (X.victim) r.push('<b>The victim</b> has a row in the grid. At the time of the crime, they were at the scene; after that, they did not move.');
       if (X.secret) r.push('<b>Secret passages</b> (dotted line on the plan) link two distant rooms in one step, but only for those who know them.');
       if (X.weapon) r.push('<b>The weapon</b> was in ' + ROOMS[X.weapon.room].the + '. Several suspects may be with the victim: the culprit is the only one of them who went through ' + ROOMS[X.weapon.room].the + ' beforehand.');
@@ -605,7 +655,19 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
   }
   function renderRules() {
     var U = E.SCENE.unit, mode = state.puz.mode, r;
-    if (EN) {
+    if (IT) {
+      var fem2 = /a$/.test(U), una = fem2 ? 'una' : 'un', la = fem2 ? 'la ' : (/^[aeiou]/.test(U) ? 'l’' : 'il ');
+      r = [
+        'Ogni casella della <b>cronologia</b> indica ' + la + U + ' in cui si trovava un sospettato a una data ora. Tocca una casella per sceglierla.',
+        'Tra due orari si <b>resta sul posto</b> oppure si passa da una <b>porta</b> verso ' + una + ' ' + U + ' vicin' + (fem2 ? 'a' : 'o') + ' (vedi la pianta). I muri non si attraversano.'
+      ];
+      if (mode === 'classic') r.push('Tutti gli indizi del <b>taccuino</b> sono veri, e una sola cronologia li rispetta tutti. Una frase può contenere più informazioni: è confermata solo quando lo sono tutte.');
+      if (FLAVOR[state.ep]) r.push('Pendole e campane battono le ore della sera: sette rintocchi sono le 19:00; otto, le 20:00; nove, le 21:00; dieci, le 22:00; undici, le 23:00. «Passare per» un luogo significa trovarcisi almeno a uno degli orari della tabella. Ogni colonna è un istante preciso, non una durata: «alle 21:00 come alle 21:30» riguarda quindi due colonne.');
+      if (mode === 'liar' || mode === 'liar2') r.push('Ogni sospettato fa delle <b>dichiarazioni</b>. Gli innocenti dicono la verità. <b>Il colpevole mente ogni volta.</b> Le prove dorate sono certe.', 'Indica il tuo sospettato sotto <b>Chi mente?</b>: le sue dichiarazioni vengono allora verificate sulla tua griglia.');
+      r.push('All’ora del misfatto, il colpevole era <b>solo</b> sul luogo. Le caselle dorate sono fatti accertati.',
+        'Non serve riempire tutto: appena sei sicuro, tocca <b>Io accuso!</b>. Un’accusa sbagliata conta come errore.',
+        '<b>Verifica in diretta</b>: se attiva, gli errori appaiono subito in rosso. Se disattiva, il pulsante <b>Verifica</b> controlla la griglia su richiesta.');
+    } else if (EN) {
       r = [
         'Each cell of the <b>timeline</b> shows which ' + U + ' a suspect was in at a given time. Tap a cell to choose.',
         'Between two times, a suspect either <b>stays put</b> or goes through a <b>door</b> to a neighbouring ' + U + ' (see the plan). Nobody walks through walls.'

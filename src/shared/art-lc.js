@@ -140,7 +140,7 @@
     var rf = o.crime === 6 ? ' stroke="#e2483d" stroke-dasharray="5 3" stroke-width="2"' : '';
     h += '<rect x="' + ROOF.x + '" y="' + ROOF.y + '" width="' + ROOF.w + '" height="' + ROOF.h + '" rx="3" fill="rgba(244,234,210,0.08)" stroke="rgba(244,234,210,0.35)" stroke-dasharray="3 3"/>' ;
     if (rf) h += '<rect x="' + (ROOF.x + 2) + '" y="' + (ROOF.y + 2) + '" width="' + (ROOF.w - 4) + '" height="' + (ROOF.h - 4) + '" rx="3" fill="none"' + rf + '/>';
-    h += '<text class="lc-roof-t" x="' + (ROOF.x + ROOF.w / 2) + '" y="' + (ROOF.y + 10) + '">' + (window.KIOUKAN_LANG === 'en' ? 'ROOF' : 'TOIT') + '</text>';
+    h += '<text class="lc-roof-t" x="' + (ROOF.x + ROOF.w / 2) + '" y="' + (ROOF.y + 10) + '">' + ({ en: 'ROOF', it: 'TETTO' }[window.KIOUKAN_LANG] || 'TOIT') + '</text>';
     // voitures
     for (i = 0; i < 6; i++) {
       var x = carX(i);

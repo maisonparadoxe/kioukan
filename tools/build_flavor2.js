@@ -49,5 +49,12 @@ for (const f of fs.readdirSync(DIR).filter(f => f.endsWith('.js')).sort()) {
 }
 fs.writeFileSync(path.join(ROOT, 'campagne2/flavor2.js'), '/* Campagne 2 : indices rédigés (généré par tools/build_flavor2.js depuis campagne2/flavor_src). */\nwindow.KioukanFlavor2 = ' + JSON.stringify(out) + ';\n');
 fs.writeFileSync(path.join(ROOT, 'campagne2/flavor2_en.js'), '/* Campagne 2 : traductions des indices rédigés (généré). */\nObject.assign(window.KIOUKAN_EN || (window.KIOUKAN_EN = {}), ' + JSON.stringify(en) + ');\n');
+// Italien : campagne2/flavor2_it.js est tenu à la main ; chaque indice rédigé doit y avoir sa traduction.
+let itMiss = 0;
+try {
+  const w = {}; new Function('window', fs.readFileSync(path.join(ROOT, 'campagne2/flavor2_it.js'), 'utf8'))(w);
+  for (const n of Object.keys(out)) out[n].forEach(g => { if (!(w.KIOUKAN_IT || {})[g.text]) { itMiss++; if (itMiss <= 5) console.log('  IT manquant ' + n + ' : ' + g.text.slice(0, 70)); } });
+} catch (e) { console.log('flavor2_it.js illisible : ' + e.message); itMiss++; }
+if (itMiss) { console.log(itMiss + ' indice(s) sans traduction italienne'); pb++; }
 console.log(Object.keys(out).length + ' épisodes rédigés, ' + pb + ' problème(s), ' + warn + ' avertissement(s) à relire');
 process.exit(pb ? 1 : 0);
