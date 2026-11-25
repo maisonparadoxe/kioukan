@@ -211,7 +211,7 @@
       close('warm', '@culprit', 'choc', 'Il fallait bien réparer le toit !')
     ] });
 
-  ep({ ch: 9, title: 'Le notaire dans la crypte', word: 'l’agresseur', noun: 'agression',
+  ep({ ch: 9, title: 'Le notaire dans la crypte', word: 'l’agresseur', noun: 'coup',
     intro: [
       sfx('scream', 'BONG !', 'Un bruit de casserole résonne sous la chapelle.'),
       close('warm', 'Dr Mehdi Cament', 'choc', 'Maître Menvussa a été assommé dans la crypte ! Il respire, mais il ne se souvient même plus de son prénom.'),
@@ -261,7 +261,7 @@
     ] });
 
   /* ===== Chapitre 10 · Le train de nuit pour Venise ===== */
-  ep({ ch: 10, title: 'La valise du fourgon', word: 'l’agresseur', noun: 'agression',
+  ep({ ch: 10, title: 'La valise du fourgon', word: 'l’agresseur', noun: 'coup',
     intro: [
       close('warm', 'Jean Bilet', 'choc', 'Une passagère assommée dans le fourgon à bagages ! Et sans billet pour le fourgon, en plus !', 'l', { caps: [cap('Jean Bilet, le contrôleur de l’Express, a changé de ligne.')] }),
       close('warm', 'Lucie Fer', 'gene', 'Aïe… On m’a frappée par derrière. Mais je me souviens très bien de ma soirée, jusqu’au coup.'),
@@ -298,7 +298,7 @@
       nar('night', 'Le passeur, c’était lui.', 'Mais le collier a déjà changé de mains.')
     ] });
 
-  ep({ ch: 10, title: 'Le contrôleur dans le noir', word: 'l’agresseur', noun: 'agression',
+  ep({ ch: 10, title: 'Le contrôleur dans le noir', word: 'l’agresseur', noun: 'coup',
     intro: [
       sfx('scream', 'TCHAC !', 'Un tunnel. Le noir complet. Puis un bruit sourd.'),
       close('warm', 'Jean Bilet', 'gene', 'On m’a frappé avec un objet très lourd. Et très parfumé. Mais je me souviens de tout, jusqu’au coup.'),
@@ -463,7 +463,7 @@
       close('warm', '@culprit', 'neutre', 'Mécanicien, chauffeur, ce qu’on veut. Tant qu’on me paie.')
     ] });
 
-  ep({ ch: 12, title: 'Frère Bernard dans le noir', word: 'l’agresseur', noun: 'agression',
+  ep({ ch: 12, title: 'Frère Bernard dans le noir', word: 'l’agresseur', noun: 'coup',
     intro: [
       sfx('scream', 'POC !', 'Nouvelle panne. Un cri, un bruit sourd.'),
       close('warm', 'Frère Bernard Lhermite', 'gene', 'On m’a assommé avec un chandelier. Je me souviens de toute ma soirée… jusqu’au noir.'),
@@ -635,7 +635,7 @@
       hc('sourire', 'On demande la permission, Paulette. Même à une impératrice en cire.')
     ] });
 
-  ep({ ch: 14, title: 'La diva de cire', word: 'le coupable', noun: 'agression',
+  ep({ ch: 14, title: 'La diva de cire', word: 'le coupable', noun: 'coup',
     intro: [
       close('warm', 'Aria Vibrato', 'choc', 'On m’a assommée dans la loge des artistes ! Avec une louche ! Une louche pleine de cire tiède !'),
       hc('serieux', 'Une louche de l’atelier. C’est arrivé {lieu} à {h}. Plusieurs personnes étaient peut-être là, mais une seule était passée par l’atelier avant.')
@@ -709,7 +709,7 @@
       hc('sourire', 'Vous êtes plus sentimental que vous ne le dites, Rémi.')
     ] });
 
-  ep({ ch: 15, title: 'Le cadre vide', word: 'la coupable', noun: 'agression',
+  ep({ ch: 15, title: 'Le cadre vide', word: 'la coupable', noun: 'coup',
     intro: [
       sfx('scream', 'CRAC !', 'Un cadre doré se brise.'),
       close('warm', 'Ernest Couchette', 'gene', 'On m’a assommé avec un cadre. Vide, heureusement. Je me souviens de tout jusque-là, madame.'),
@@ -770,7 +770,7 @@
       nar('night', 'Un parfum de violette flotte dans le bureau.')
     ] });
 
-  ep({ ch: 15, title: 'La Dernière Vente', word: 'le coupable', noun: 'agression', mode: 'liar2',
+  ep({ ch: 15, title: 'La Dernière Vente', word: 'le coupable', noun: 'coup', mode: 'liar2',
     intro: [
       nar('lobby', 'La vente des Larmes de Lune commence enfin.', 'La Comtesse a été extraite de prison pour y assister.'),
       close('warm', 'Juge Odile Hibéré', 'serieux', 'Lot numéro un : les Larmes de Lune. Mise à prix…'),

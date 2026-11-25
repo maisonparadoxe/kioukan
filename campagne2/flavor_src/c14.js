@@ -72,3 +72,48 @@ module.exports[91] = [
   [[14], 'À 21 h 30, la réserve était vide.', 'At 9:30 pm, the storeroom was empty.'],
   [[15], 'À 22 h, personne dans le petit théâtre.', 'At 10 pm, nobody in the little theatre.']
 ];
+module.exports[92] = [
+  [[0], '« À 21 h 30, Ana et moi étions dans la même salle. Je lui faisais la visite. »', '“At 9:30 pm, Anna and I were in the same room. I was giving her the tour.”'],
+  [[1], '« À 20 h 30, je n’étais pas au palais des mirages. »', '“At 8:30 pm, I was not in the palace of illusions.”'],
+  [[2], '« À 22 h 30, Cyrielle et moi n’étions pas ensemble. »', '“At 10:30 pm, Candice and I were not together.”'],
+  [[3], '« Je suis passée par la loge des artistes. »', '“I went through the artists’ dressing room.”'],
+  [[4], '« J’ai changé de salle entre 20 h et 20 h 30. »', '“I changed rooms between 8 pm and 8:30 pm.”'],
+  [[5], '« À 21 h, j’étais dans la loge des artistes. »', '“At 9 pm, I was in the artists’ dressing room.”'],
+  [[6], '« À 22 h 30, Ana et moi n’étions pas ensemble. »', '“At 10:30 pm, Anna and I were not together.”'],
+  [[7], '« À 20 h 30, j’étais seul dans ma salle, à vérifier mes cordes. »', '“At 8:30 pm, I was alone in my room, checking my ropes.”'],
+  [[8], '« J’ai changé de salle entre 22 h et 22 h 30. »', '“I changed rooms between 10 pm and 10:30 pm.”'],
+  [[9], '« À 20 h 30, Ana et moi n’étions pas ensemble. »', '“At 8:30 pm, Anna and I were not together.”'],
+  [[10], '« Je suis passée par la loge des artistes. »', '“I went through the artists’ dressing room.”'],
+  [[11], '« À 21 h 30, Max et moi n’étions pas ensemble. »', '“At 9:30 pm, Lou and I were not together.”'],
+  [[12], '« Je suis resté dans la même salle à 20 h comme à 20 h 30. »', '“I stayed in the same room at 8 pm and at 8:30 pm.”'],
+  [[13], '« Je n’ai jamais mis les pieds dans la réserve. »', '“I never set foot in the storeroom.”'],
+  [[14], '« Je n’ai jamais mis les pieds dans le petit théâtre. »', '“I never set foot in the little theatre.”'],
+  [[16], 'À 20 h 30, Ana Gramme et l’inspecteur Songe étaient dans la même salle.', 'At 8:30 pm, Anna Gram and Inspector Fibbs were in the same room.'],
+  [[19], 'À 21 h, Ana et l’inspecteur étaient dans la même salle.', 'At 9 pm, Anna and the inspector were in the same room.'],
+  [[15], 'À 21 h 30, Ana et l’inspecteur étaient dans la même salle.', 'At 9:30 pm, Anna and the inspector were in the same room.'],
+  [[25], 'À 22 h, Ana et l’inspecteur étaient dans la même salle.', 'At 10 pm, Anna and the inspector were in the same room.'],
+  [[20], 'À 22 h 30, Ana et l’inspecteur étaient dans la même salle.', 'At 10:30 pm, Anna and the inspector were in the same room.'],
+  [[17], 'À 20 h, Ana et Gérard Rideau étaient dans la même salle.', 'At 8 pm, Anna and Kurt Tenn were in the same room.'],
+  [[18], 'À 20 h, Gérard et Cyrielle Bougie étaient dans la même salle.', 'At 8 pm, Kurt and Candice Wick were in the same room.'],
+  [[21], 'Ana n’a changé de salle qu’une seule fois.', 'Anna changed rooms only once.'],
+  [[22], 'Max Valise a changé de salle trois fois.', 'Lou Gage changed rooms three times.'],
+  [[23], 'Max n’a jamais mis les pieds dans le petit théâtre.', 'Lou never set foot in the little theatre.'],
+  [[24], 'Gérard n’a changé de salle qu’une seule fois.', 'Kurt changed rooms only once.']
+];
+module.exports[93] = [
+  [[6, 0], 'Gérard Rideau et Paulette Paillette n’étaient pas ensemble à 20 h 30, mais ils l’étaient à 21 h.', 'Kurt Tenn and Sally Sequin were not together at 8:30 pm, but they were at 9 pm.'],
+  [[5], 'À 22 h, Gérard et Cyrielle Bougie étaient dans la même salle.', 'At 10 pm, Kurt and Candice Wick were in the same room.'],
+  [[2], 'À 22 h 30, Sam Souffle et Cyrielle étaient dans la même salle.', 'At 10:30 pm, Sam Whisper and Candice were in the same room.'],
+  [[1, 4], 'Sam a changé de salle deux fois ; il est passé par l’atelier des cires.', 'Sam changed rooms twice; he went through the wax workshop.'],
+  [[8], 'À 20 h 30, Sam était seul dans sa salle.', 'At 8:30 pm, Sam was alone in his room.'],
+  [[17], 'Sam n’a jamais mis les pieds dans la réserve.', 'Sam never set foot in the storeroom.'],
+  [[3, 18], 'Gérard a changé de salle deux fois ; il est passé par le palais des mirages.', 'Kurt changed rooms twice; he went through the palace of illusions.'],
+  [[7], 'Cyrielle est passée par l’atelier des cires.', 'Candice went through the wax workshop.'],
+  [[16], 'Cyrielle est restée dans la même salle à 20 h comme à 20 h 30.', 'Candice stayed in the same room at 8 pm and at 8:30 pm.'],
+  [[12, 9], 'Cyrielle était seule dans sa salle à 21 h, puis à 21 h 30.', 'Candice was alone in her room at 9 pm, then at 9:30 pm.'],
+  [[10], 'À 21 h 30, le hall des glaces était vide.', 'At 9:30 pm, the hall of mirrors was empty.'],
+  [[13], 'À 21 h, personne au palais des mirages.', 'At 9 pm, nobody in the palace of illusions.'],
+  [[11], 'À 22 h, l’atelier était vide.', 'At 10 pm, the workshop was empty.'],
+  [[14], 'Paulette a changé de salle trois fois.', 'Sally changed rooms three times.'],
+  [[15], 'Paulette est restée dans la même salle à 21 h 30 comme à 22 h.', 'Sally stayed in the same room at 9:30 pm and at 10 pm.']
+];
