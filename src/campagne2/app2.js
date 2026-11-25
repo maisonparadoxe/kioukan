@@ -144,8 +144,8 @@
   }
   function twinsTxt(c, neg) {
     var r = inRoom(c.r), t = tl(c.t);
-    if (EN) return (neg ? 'Neither of the twins was ' : 'One of the twins was ') + r + ' at ' + t + (neg ? '.' : ' (Pia, Paola, or both).');
-    return (neg ? 'Aucune des jumelles n’était ' : 'Une des jumelles était ') + r + ' à ' + t + (neg ? '.' : ' (Pia, Paola, ou les deux).');
+    if (EN) return (neg ? 'Neither of the twins was ' : 'At least one of the twins was ') + r + ' at ' + t + (neg ? '.' : ' (Pia, Paola, or both).');
+    return (neg ? 'Aucune des jumelles n’était ' : 'Au moins une des jumelles était ') + r + ' à ' + t + (neg ? '.' : ' (Pia, Paola, ou les deux).');
   }
   function clueTxt(P, c) {
     switch (c.type) {
@@ -167,7 +167,7 @@
         case 'notMoves': if (me(c.s)) return 'I did not change ' + U + 's exactly ' + c.n + ' time' + (c.n > 1 ? 's' : '') + '.'; break;
         case 'alone': if (me(c.s)) return 'I was alone in my ' + U + ' at ' + t + '.'; break;
         case 'notAlone': if (me(c.s)) return 'I was not alone at ' + t + '.'; break;
-        case 'oneOf': if (twin) return 'My sister or I was ' + inRoom(c.r) + ' at ' + t + '.'; break;
+        case 'oneOf': if (twin) return 'At least one of us, my sister or I, was ' + inRoom(c.r) + ' at ' + t + '.'; break;
         case 'neither': if (twin) return 'Neither my sister nor I was ' + inRoom(c.r) + ' at ' + t + '.'; break;
       }
     } else {
@@ -176,7 +176,7 @@
         case 'notMoves': if (me(c.s)) return 'Je n’ai pas changé de ' + U + ' exactement ' + c.n + ' fois.'; break;
         case 'alone': if (me(c.s)) return 'J’étais ' + (f ? 'seule' : 'seul') + ' dans ma ' + U + ' à ' + t + '.'; break;
         case 'notAlone': if (me(c.s)) return 'Je n’étais pas ' + (f ? 'seule' : 'seul') + ' à ' + t + '.'; break;
-        case 'oneOf': if (twin) return 'Ma sœur ou moi étions ' + inRoom(c.r) + ' à ' + t + '.'; break;
+        case 'oneOf': if (twin) return 'Au moins l’une de nous deux, ma sœur ou moi, était ' + inRoom(c.r) + ' à ' + t + '.'; break;
         case 'neither': if (twin) return 'Ni ma sœur ni moi n’étions ' + inRoom(c.r) + ' à ' + t + '.'; break;
       }
     }
@@ -589,7 +589,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
       if (X.dark != null) r.push('<b>Power cut</b> at ' + tl(X.dark) + ': no statement concerns that time. That column does not need to be filled: just find the culprit.');
       if (X.locked) r.push('<b>Locked doors</b> (red on the plan): only the key holder, or someone going through with them, can pass. The key can change hands between two people in the same room.');
       if (X.times) r.push('<b>The right moment</b>: the place is known, not the time. Of the possible times, only one had a single suspect at the scene.');
-      if (X.raw.twins) r.push('<b>The twins</b>: “one of the twins was there” means Pia, Paola, or both.');
+      if (X.raw.twins) r.push('<b>The twins</b>: “at least one of the twins was there” means Pia, Paola, or both.');
       if (P.mode === 'liar2') r.push('<b>Two liars</b>: the culprit and an accomplice lie in every statement. Pick both under “Who are the two liars?”.');
     } else {
       if (X.victim) r.push('<b>La victime</b> a sa ligne dans la grille. À l’heure des faits, elle était sur les lieux ; ensuite, elle n’a plus bougé.');
@@ -598,7 +598,7 @@ var ROOM_TINT = ['#3f8fd0', '#e0a21f', '#8a63c9', '#1f9d96', '#a8743f', '#8a9a22
       if (X.dark != null) r.push('<b>Panne</b> à ' + tl(X.dark) + ' : aucun témoignage ne porte sur cette heure. Pas besoin de remplir cette colonne : il suffit de trouver le coupable.');
       if (X.locked) r.push('<b>Portes fermées à clé</b> (en rouge sur le plan) : seul le porteur de la clé, ou quelqu’un qui passe avec lui, peut les franchir. La clé peut changer de main entre deux personnes dans la même pièce.');
       if (X.times) r.push('<b>Le bon moment</b> : le lieu est connu, pas l’heure. Parmi les heures possibles, une seule où un seul suspect était sur les lieux.');
-      if (X.raw.twins) r.push('<b>Les jumelles</b> : « une des jumelles était là » veut dire Pia, Paola, ou les deux.');
+      if (X.raw.twins) r.push('<b>Les jumelles</b> : « au moins une des jumelles était là » veut dire Pia, Paola, ou les deux.');
       if (P.mode === 'liar2') r.push('<b>Deux menteurs</b> : le coupable et un complice mentent dans toutes leurs déclarations. Désigne-les tous les deux sous « Qui sont les deux menteurs ? ».');
     }
     return r;

@@ -40,7 +40,7 @@ module.exports = {
     [[12], 'Le professeur n’a jamais mis les pieds dans le dortoir.', 'The professor never set foot in the dormitory.']
   ],
   76: [
-    [[0], 'À 20 h, une des jumelles était dans la salle commune.', 'At 8 pm, one of the twins was in the common room.'],
+    [[0], 'À 20 h, au moins une des jumelles était dans la salle commune.', 'At 8 pm, at least one of the twins was in the common room.'],
     [[1], 'À 20 h, Paola et le professeur Tumulus étaient dans la même pièce.', 'At 8 pm, Paola and Professor Barrow were in the same room.'],
     [[2], 'À 21 h 30, le professeur et Marcel Hélice étaient dans la même pièce.', 'At 9:30 pm, the professor and Rusty Propp were in the same room.'],
     [[3, 14, 19], 'Pia est passée par la salle commune, par la chapelle et par le chenil.', 'Pia went through the common room, the chapel and the kennels.'],
@@ -103,7 +103,7 @@ module.exports = {
   ]
 };
 module.exports[79] = [
-  [[0, 15], 'Une des jumelles était au chenil à 20 h, et une des jumelles y était aussi à 21 h 30. La même ? Mystère.', 'One of the twins was in the kennels at 8 pm, and one of the twins was there at 9:30 pm too. The same one? Who knows.'],
+  [[0, 15], 'Au moins une des jumelles était au chenil à 20 h, et au moins une des jumelles y était aussi à 21 h 30. La même ? Mystère.', 'At least one of the twins was in the kennels at 8 pm, and at least one of the twins was there at 9:30 pm too. The same one? Who knows.'],
   [[7, 1], 'Paola et le professeur Tumulus étaient dans la même pièce à 19 h, puis à 19 h 30.', 'Paola and Professor Barrow were in the same room at 7 pm, then at 7:30 pm.'],
   [[2, 9], 'Marcel Hélice n’a mis les pieds ni dans le réfectoire, ni dans le dortoir.', 'Rusty Propp set foot neither in the refectory nor in the dormitory.'],
   [[5, 11, 17, 3], '« Paola ne m’a pas quitté : même pièce à 19 h 30, à 20 h, à 21 h et à 21 h 30. Un vrai moussaillon », dit le capitaine.', '“Paola never left me: same room at 7:30 pm, 8 pm, 9 pm and 9:30 pm. A real cabin girl,” says the captain.'],

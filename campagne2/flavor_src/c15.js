@@ -14,7 +14,7 @@ module.exports = {
     [[7, 16], 'À 17 h 30, la salle d’exposition et le bureau du commissaire-priseur étaient vides.', 'At 5:30 pm, the viewing room and the auctioneer’s office were empty.']
   ],
   95: [
-    [[0], 'À 15 h, une des jumelles était dans la réserve.', 'At 3 pm, one of the twins was in the storeroom.'],
+    [[0], 'À 15 h, au moins une des jumelles était dans la réserve.', 'At 3 pm, at least one of the twins was in the storeroom.'],
     [[8, 7], '« Lucie et moi étions dans la même salle à 15 h, puis à 15 h 30 », se souvient Ernest.', '“Lucy and I were in the same room at 3 pm, then at 3:30 pm,” Ernest remembers.'],
     [[1, 5], '« Et Paola était avec moi à 16 h, puis à 16 h 30. Ou était-ce Pia ? Non : Paola », ajoute-t-il.', '“And Paola was with me at 4 pm, then at 4:30 pm. Or was it Pia? No: Paola,” he adds.'],
     [[4, 6, 2], 'Paola et Lucie Fer étaient dans la même salle à 15 h 30, à 17 h et à 17 h 30.', 'Paola and Lucy Fer were in the same room at 3:30 pm, at 5 pm and at 5:30 pm.'],

@@ -57,8 +57,8 @@ module.exports[90] = [
   [[18], 'À 22 h 30, la salle des grands criminels était vide.', 'At 10:30 pm, the chamber of great criminals was empty.']
 ];
 module.exports[91] = [
-  [[0], 'À 20 h 30, une des jumelles était dans la salle des grands criminels.', 'At 8:30 pm, one of the twins was in the chamber of great criminals.'],
-  [[16], 'À 20 h 30, une des jumelles était dans le hall des glaces.', 'At 8:30 pm, one of the twins was in the hall of mirrors.'],
+  [[0], 'À 20 h 30, au moins une des jumelles était dans la salle des grands criminels.', 'At 8:30 pm, at least one of the twins was in the chamber of great criminals.'],
+  [[16], 'À 20 h 30, au moins une des jumelles était dans le hall des glaces.', 'At 8:30 pm, at least one of the twins was in the hall of mirrors.'],
   [[1], 'À 21 h 30, Pia et Paola étaient dans la même salle.', 'At 9:30 pm, Pia and Paola were in the same room.'],
   [[3, 5], 'Paola et Cyrielle Bougie étaient dans la même salle à 20 h, puis à 22 h 30.', 'Paola and Candice Wick were in the same room at 8 pm, then at 10:30 pm.'],
   [[4], 'Paola n’a changé de salle qu’une seule fois.', 'Paola changed rooms only once.'],

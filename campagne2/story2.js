@@ -366,10 +366,10 @@
     intro: [
       close('warm', 'Paulette Paillette', 'choc', 'Le masque d’or du carnaval a disparu ! Je l’avais posé dans le cabinet des masques !'),
       close('warm', 'Pia Doppio', 'sourire', 'Nous sommes Pia et Paola Doppio, les danseuses du bal. Et non, on ne nous distingue pas.', 'l', { caps: [cap('Deux jumelles. Le même masque, la même robe.')] }),
-      hc('serieux', 'Le masque a été pris {lieu} à {h}. Le voleur était seul. Attention : quand un témoin dit avoir vu « une des jumelles », il ne sait pas laquelle.'),
-      rule('Nouveau : les jumelles. « Une des jumelles était là » veut dire Pia, ou Paola, ou les deux.')
+      hc('serieux', 'Le masque a été pris {lieu} à {h}. Le voleur était seul. Attention : quand un témoin dit avoir vu « au moins une des jumelles », il ne sait pas laquelle, ni si les deux étaient là.'),
+      rule('Nouveau : les jumelles. « Au moins une des jumelles était là » veut dire Pia, ou Paola, ou les deux.')
     ],
-    caseTitle: 'Le masque d’or a disparu.', caseBody: 'Il a été pris à {h}, {lieu}, par la seule personne présente. « Une des jumelles » veut dire Pia, Paola, ou les deux.',
+    caseTitle: 'Le masque d’or a disparu.', caseBody: 'Il a été pris à {h}, {lieu}, par la seule personne présente. « Au moins une des jumelles » veut dire Pia, Paola, ou les deux.',
     outro: [
       close('warm', '@culprit', 'gene', 'Nous devions danser avec le même masque. Il n’y en avait qu’un !'),
       close('warm', 'Paola Doppio', 'sourire', 'Ma sœur ne partage jamais rien.')
@@ -662,7 +662,7 @@
   ep({ ch: 14, title: 'Le palais des mirages', word: 'le voleur', noun: 'vol',
     intro: [
       close('warm', 'Max Valise', 'choc', 'Le grand miroir du palais des mirages a été volé ! Il reste un trou dans le mur… et dans le trou, un autre miroir.'),
-      hc('serieux', 'On sait où, pas quand. Et n’oublions pas : « une des jumelles » ne dit pas laquelle.')
+      hc('serieux', 'On sait où, pas quand. Et n’oublions pas : « au moins une des jumelles » ne dit pas laquelle.')
     ],
     caseTitle: 'Un miroir a disparu du palais des mirages.', caseBody: 'Il a été pris au palais des mirages, à l’une de ces heures : {heures}. La voleuse ou le voleur y était seul.',
     outro: [

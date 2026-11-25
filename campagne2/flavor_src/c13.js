@@ -52,7 +52,7 @@ module.exports[83] = [
   [[21], 'Pia a changé de pièce trois fois.', 'Pia changed rooms three times.']
 ];
 module.exports[84] = [
-  [[0], 'À 18 h, une des jumelles était dans le local des gardiens.', 'At 6 pm, one of the twins was in the guards’ room.'],
+  [[0], 'À 18 h, au moins une des jumelles était dans le local des gardiens.', 'At 6 pm, at least one of the twins was in the guards’ room.'],
   [[3], 'À 18 h, Paola et Jacques Potte étaient dans la même pièce.', 'At 6 pm, Paola and Jack Potts were in the same room.'],
   [[2, 6, 1], 'Pia et Jacques Potte étaient dans la même pièce à 18 h 30, à 20 h et à 20 h 30. Il lui expliquait le baccara.', 'Pia and Jack Potts were in the same room at 6:30 pm, 8 pm and 8:30 pm. He was explaining baccarat to her.'],
   [[4], 'Jacques Potte n’a jamais mis les pieds dans le couloir.', 'Jack Potts never set foot in the corridor.'],

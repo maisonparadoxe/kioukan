@@ -11,7 +11,7 @@ module.exports = {
     [[12], 'Paulette n’a jamais mis les pieds dans la salle de bal. « Je ne danse pas, je couds. »', 'Sally never set foot in the ballroom. “I don’t dance, I sew.”']
   ],
   67: [
-    [[0], 'À 23 h 30, une des jumelles se trouvait dans le cabinet des masques.', 'At 11:30 pm, one of the twins was in the mask cabinet.'],
+    [[0], 'À 23 h 30, au moins une des jumelles se trouvait dans le cabinet des masques.', 'At 11:30 pm, at least one of the twins was in the mask cabinet.'],
     [[8, 6, 4, 1], '« Paola ne m’a pas quitté : à 21 h, 21 h 30, 22 h 30 et 23 h, nous étions dans la même salle », fanfaronne Enzo.', '“Paola never left my side: at 9 pm, 9:30 pm, 10:30 pm and 11 pm, we were in the same room,” Enzo boasts.'],
     [[3], 'À 22 h, Pia et Enzo étaient dans la même salle. Enzo jure que c’était Paola.', 'At 10 pm, Pia and Enzo were in the same room. Enzo swears it was Paola.'],
     [[2], 'Enzo est passé par le cabinet des masques.', 'Enzo went through the mask cabinet.'],
@@ -23,8 +23,8 @@ module.exports = {
     [[13], 'Enzo a changé de salle deux fois.', 'Enzo changed rooms twice.']
   ],
   68: [
-    [[0], 'À 21 h 30, une des jumelles était sur la loggia.', 'At 9:30 pm, one of the twins was on the loggia.'],
-    [[15], 'À 22 h 30, une des jumelles était dans les cuisines.', 'At 10:30 pm, one of the twins was in the kitchens.'],
+    [[0], 'À 21 h 30, au moins une des jumelles était sur la loggia.', 'At 9:30 pm, at least one of the twins was on the loggia.'],
+    [[15], 'À 22 h 30, au moins une des jumelles était dans les cuisines.', 'At 10:30 pm, at least one of the twins was in the kitchens.'],
     [[1], 'À 23 h 30, Vivalto et Pia étaient dans la même salle.', 'At 11:30 pm, Vivalto and Pia were in the same room.'],
     [[2], 'À 23 h, Vivalto et Paola étaient dans la même salle.', 'At 11 pm, Vivalto and Paola were in the same room.'],
     [[3, 4], 'Vivalto a changé de salle trois fois, et il est passé par le salon des miroirs.', 'Vivalto changed rooms three times, and he went through the hall of mirrors.'],
@@ -52,7 +52,7 @@ module.exports = {
     [[11], 'Le maestro n’a pas bougé de la soirée. Il battait la mesure.', 'The maestro did not move all evening. He was beating time.']
   ],
   70: [
-    [[0], 'À 21 h, une des jumelles était sur la loggia.', 'At 9 pm, one of the twins was on the loggia.'],
+    [[0], 'À 21 h, au moins une des jumelles était sur la loggia.', 'At 9 pm, at least one of the twins was on the loggia.'],
     [[4], 'À 21 h, Vivalto et Paola étaient dans la même salle.', 'At 9 pm, Vivalto and Paola were in the same room.'],
     [[3], 'À 21 h 30, Vivalto et maître Menvussa étaient dans la même salle.', 'At 9:30 pm, Vivalto and Mr Nott were in the same room.'],
     [[1], 'À 21 h 30, maître Menvussa et Paola étaient dans la même salle.', 'At 9:30 pm, Mr Nott and Paola were in the same room.'],
@@ -71,8 +71,8 @@ module.exports = {
     [[18], 'Vivalto a changé de salle deux fois.', 'Vivalto changed rooms twice.']
   ],
   71: [
-    [[0], 'À 23 h, une des jumelles était dans la salle de bal.', 'At 11 pm, one of the twins was in the ballroom.'],
-    [[19], 'À 21 h 30, une des jumelles était dans l’escalier d’honneur.', 'At 9:30 pm, one of the twins was on the grand staircase.'],
+    [[0], 'À 23 h, au moins une des jumelles était dans la salle de bal.', 'At 11 pm, at least one of the twins was in the ballroom.'],
+    [[19], 'À 21 h 30, au moins une des jumelles était dans l’escalier d’honneur.', 'At 9:30 pm, at least one of the twins was on the grand staircase.'],
     [[1], '« À 22 h, je n’étais pas seule. Je ne suis jamais seule : j’ai une sœur. »', '“At 10 pm, I was not alone. I’m never alone: I have a sister.”'],
     [[2], '« Je n’ai jamais mis les pieds dans la salle de bal. Je danse ailleurs. »', '“I never set foot in the ballroom. I dance elsewhere.”'],
     [[3], '« À 22 h 30, je n’étais pas dans la salle de bal. »', '“At 10:30 pm, I was not in the ballroom.”'],
@@ -95,7 +95,7 @@ module.exports = {
     [[21], 'L’inspecteur a changé de salle entre 21 h 30 et 22 h.', 'The inspector changed rooms between 9:30 pm and 10 pm.']
   ],
   72: [
-    [[0], 'À 21 h 30, une des jumelles était sur le ponton des gondoles.', 'At 9:30 pm, one of the twins was on the gondola landing.'],
+    [[0], 'À 21 h 30, au moins une des jumelles était sur le ponton des gondoles.', 'At 9:30 pm, at least one of the twins was on the gondola landing.'],
     [[7], 'À 21 h, le maestro et Vivalto étaient dans la même salle.', 'At 9 pm, the maestro and Vivalto were in the same room.'],
     [[1, 4], 'Le maestro et Paola étaient dans la même salle à 21 h 30, et encore à 23 h.', 'The maestro and Paola were in the same room at 9:30 pm, and again at 11 pm.'],
     [[2], 'À 22 h 30, le maestro et Pia étaient dans la même salle.', 'At 10:30 pm, the maestro and Pia were in the same room.'],
