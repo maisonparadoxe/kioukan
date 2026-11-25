@@ -1406,7 +1406,7 @@ window.addEventListener('error', function (e) {
     if (e.t !== crime.t) return null;
     switch (e.type) {
       case 'together': return { bad: true, clr: [e.a, e.b] };
-      case 'at': return e.r === crime.room ? { bad: true, clr: [] } : { clr: [e.s] };
+      case 'at': return { bad: true, clr: [] }; // jamais de lieu donné à l’heure du crime
       case 'notAt': return e.r === crime.room ? { clr: [e.s] } : null;
     }
     return null;
@@ -1611,6 +1611,8 @@ window.addEventListener('error', function (e) {
           }
         }
       });
+      // aucune phrase (vraie ou mensongère) ne situe un suspect à l’heure du crime
+      cands = cands.filter(function (it) { return !(it.c.type === 'at' && it.c.t === crime.t); });
       var count = {};
       cands.forEach(function (it) { var g0 = groupOf(it); count[g0] = (count[g0] || 0) + 1; });
       var ordered = cands.map(function (it) {
