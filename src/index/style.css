@@ -1,0 +1,56 @@
+
+.menu{max-width:980px;margin:0 auto;padding:44px 20px 60px;color:var(--ink)}
+.mtop{display:flex;justify-content:space-between;align-items:center;font:600 13px var(--sans);border-bottom:1.5px solid var(--ink);padding-bottom:12px}
+.mtop .badge{font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.mtop nav{display:flex;gap:22px}
+.mtop nav a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:transform .18s cubic-bezier(.3,1.6,.5,1),color .15s,border-color .15s}
+.mtop nav a:hover,.mtop nav a:focus-visible{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.head{margin:50px 0 40px}
+.head h1.logo{margin:0 0 8px;font:400 clamp(64px,15vw,150px)/.88 var(--display);letter-spacing:-.02em;display:inline-block;transition:transform .4s cubic-bezier(.3,1.6,.5,1);cursor:default}
+.head h1.logo span{display:inline-block}
+.head:hover h1.logo{transform:scale(1.04)}
+.head h1.logo:hover span{animation:logohop .6s ease-in-out calc(var(--i) * 55ms) 1}
+@keyframes logohop{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-14px) rotate(-6deg)}65%{transform:translateY(2px) rotate(3deg)}}
+.sub{display:flex;gap:18px 28px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.sub .owl{width:34px;height:34px;color:var(--accent);flex:none;transition:transform .45s cubic-bezier(.3,1.7,.5,1)}
+.head:hover .owl{transform:scale(1.5) rotate(-10deg)}
+.sub b{font:400 26px/1.1 var(--display)}
+.sub p{margin:0;color:var(--ink-2);max-width:44ch}
+.tickets{display:grid;gap:28px}
+.k-n{display:inline-block;margin-right:8px;padding:2px 7px;background:var(--ink);color:var(--paper);letter-spacing:.12em}
+@media(min-width:760px){a.ticket.main{display:grid;grid-template-columns:1.15fr 1fr;grid-template-rows:auto 1fr auto}a.ticket.main .t-top{grid-column:1/-1}a.ticket.main .img{grid-row:2/4;aspect-ratio:auto;min-height:320px;border-right:1.5px solid var(--ink)}a.ticket.main .t-body{display:flex;flex-direction:column;justify-content:center;padding:26px 24px}a.ticket.main h2{font-size:44px}}
+a.ticket.quick .img{display:none}a.ticket.quick h2{font-size:26px}
+@media(min-width:760px){a.ticket.quick{display:grid;grid-template-columns:1fr auto}a.ticket.quick .t-top{grid-column:1/-1}a.ticket.quick .stub{border-top:0;border-left:2px dashed var(--ink);flex-direction:column;justify-content:center;align-items:stretch;text-align:center;padding:16px 22px}a.ticket.quick .stub::before,a.ticket.quick .stub::after{display:none}}
+a.ticket{position:relative;display:flex;flex-direction:column;color:var(--ink);text-decoration:none;background:var(--paper);border:1.5px solid var(--ink);overflow:hidden;transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s}
+a.ticket:hover,a.ticket:focus-visible{transform:translate(-3px,-5px) rotate(-.5deg);box-shadow:7px 9px 0 var(--accent)}
+a.ticket.quick:hover{transform:translate(-3px,-5px) rotate(.5deg)}
+.t-top{display:flex;justify-content:space-between;padding:9px 16px;border-bottom:1.5px solid var(--ink);font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase}
+.t-top span:last-child{color:var(--accent)}
+.img{aspect-ratio:16/10;overflow:hidden;background:var(--panel-2);position:relative}
+.img img.p{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+a.ticket:hover .img img.p{transform:scale(1.07)}
+.faces{display:flex;gap:12px;padding:18px 16px 0;height:100%;align-items:flex-end;background:var(--panel-2)}
+.faces div{flex:1;aspect-ratio:2/3;background-size:cover;background-position:center 18%;transform:rotate(var(--r,0deg));transition:transform .3s}
+a.ticket:hover .faces div{transform:translateY(-6px) rotate(var(--r,0deg))}
+.t-body{padding:18px 18px 18px;flex:1}
+.t-body .k{margin:0;font:600 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.t-body h2{margin:4px 0 6px;font:400 32px/1.05 var(--display)}
+.t-body p.d{margin:0;color:var(--ink-2)}
+.stub{position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px 18px;border-top:2px dashed var(--ink)}
+.stub::before,.stub::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1.5px solid var(--ink)}
+.stub::before{left:-11px}.stub::after{right:-11px}
+.go{display:inline-flex;gap:10px;align-items:center;background:var(--btn);color:var(--btn-ink);padding:11px 18px;font:600 13px var(--sans);transition:background .2s,gap .2s}
+.go::after{content:"→"}
+a.ticket:hover .go{background:var(--accent);color:var(--accent-ink);gap:16px}
+.no{font:600 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.no.prog{color:var(--accent)}
+.mtuto{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:16px 18px;border:1.5px solid var(--ink);border-left:6px solid var(--accent);background:var(--paper);color:var(--ink);text-decoration:none;font-size:15px;transition:transform .25s,box-shadow .25s}.mtuto:hover{transform:translate(-3px,-4px);box-shadow:6px 7px 0 var(--accent)}.mtuto .k-n{font:600 11px var(--sans);text-transform:uppercase;padding:3px 8px}.mtuto b{font-family:var(--display);font-size:22px;font-weight:400}.mtuto .go{flex:none}.mtuto .d{flex:1 1 240px;color:var(--ink-2)}.mtuto.done{border-left-color:var(--ink-2)}.mtuto.done .go{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.ticket.soon{position:relative;display:flex;flex-direction:column;color:var(--ink);background:var(--paper);border:1.5px dashed var(--ink-2);overflow:hidden}
+.ticket.soon .t-top{border-bottom:1.5px dashed var(--ink-2)}
+.ticket.soon .t-body{padding-right:120px}.ticket.soon h2{font-size:26px}
+.ticket.soon .stub{border-top:2px dashed var(--ink-2)}
+.ticket.soon .wait{display:inline-flex;align-items:center;padding:10px 16px;border:1.5px solid var(--ink-2);color:var(--ink-2);font:600 13px var(--sans)}
+.ticket.soon .stamp{position:absolute;right:16px;top:52px;transform:rotate(9deg);border:2px solid var(--accent);color:var(--accent);padding:5px 10px;font:600 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;background:var(--paper)}
+@media(max-width:480px){.ticket.soon .t-body{padding-right:18px;padding-top:48px}.ticket.soon .stamp{top:48px}}
+.mfoot{margin-top:40px;color:var(--ink-2);font-size:13px}
+@media(prefers-reduced-motion:reduce){.head h1.logo,.owl,a.ticket,.img img.p,.faces div{transition:none!important;animation:none!important}.head:hover .owl,.head:hover h1.logo,a.ticket:hover{transform:none}}

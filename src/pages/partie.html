@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kioukan · Partie rapide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap">
+<style><!--@inc src/partie/style.css--></style>
+
+
+<script>window.KIOUKAN_DEMO_CH=0</script>
+<script><!--@inc src/shared/i18n.js--></script>
+<script><!--@inc src/shared/en-base.js--></script>
+<script><!--@inc src/shared/sfx.js--></script>
+<style id="skin"><!--@inc src/shared/skin.css--></style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="duo" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues="0.078 0.839 0.953"/><feFuncG type="table" tableValues="0.078 0.227 0.941"/><feFuncB type="table" tableValues="0.078 0.141 0.910"/></feComponentTransfer></filter></svg><script><!--@inc src/shared/errbanner.js--></script>
+<noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
+<div class="topnav"><a href="index.html" class="navbtn" data-i18n>← Menu</a><a href="#rules" class="navbtn howto-btn" data-i18n onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a><button type="button" class="navbtn sndbtn" data-sound-toggle></button><div class="langdd" data-lang-menu></div></div>
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Kioukan</h1>
+      <p class="dossier mode-tag" id="dossier">Dossier en préparation…</p>
+    </div>
+    <div class="controls">
+      <div class="seg" id="scenes" role="group" data-i18n-aria="Décor" aria-label="Décor"></div>
+      <div class="seg" id="modes" role="group" data-i18n-aria="Mode de jeu" aria-label="Mode de jeu"></div>
+      <div class="seg" id="levels" role="group" data-i18n-aria="Difficulté" aria-label="Difficulté"></div>
+      <button class="btn primary" type="button" data-act="new" data-i18n>Nouvelle affaire</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="col">
+      <section class="panel case" id="case" data-i18n-aria="L'affaire" aria-label="L'affaire"></section>
+      <section class="panel" id="suspects" data-i18n-aria="Les suspects" aria-label="Les suspects" hidden></section>
+      <section class="panel" id="board-panel" data-i18n-aria="Chronologie des déplacements" aria-label="Chronologie des déplacements"></section>
+      <section id="verdict" aria-live="polite"></section>
+    </div>
+    <div class="col">
+      <section class="panel" id="map-panel" data-i18n-aria="Plan du manoir" aria-label="Plan du manoir"></section>
+      <section class="panel" id="clues-panel" data-i18n-aria="Constats" aria-label="Constats"></section>
+      <details class="panel rules" id="rules">
+        <summary data-i18n>Comment jouer</summary>
+        <ol id="rules-list"></ol>
+      </details>
+    </div>
+  </div>
+</div>
+<div id="sheet-root"></div>
+<script>Object.assign(window.KIOUKAN_EN || (window.KIOUKAN_EN = {}), {"42 épisodes": "42 episodes", "Histoire terminée": "Story complete"});</script>
+<script><!--@inc src/shared/en-fix.js--></script>
+<script src="img/images.js"></script>
+
+<script><!--@inc src/partie/art.js--></script>
+<script><!--@inc src/shared/engine.js--></script>
+<script><!--@inc src/partie/app.js--></script>
+
+</body>
+</html>

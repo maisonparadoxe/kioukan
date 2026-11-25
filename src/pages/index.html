@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kioukan · Qui ? Où ? Quand ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap">
+<style><!--@inc src/index/style.css--></style>
+<div class="menu">
+<div class="mtop"><span></span><nav><a href="tutoriel.html" data-i18n id="tuto-open">Tutoriel</a><a href="histoire.html#rules" data-i18n id="howto-open">Comment jouer ?</a><a href="mailto:maisonparadoxe@gmail.com?subject=Kioukan%20-%20contact" data-i18n>Contact</a><button type="button" class="sndbtn" data-sound-toggle></button><div class="langdd" data-lang-menu></div></nav></div>
+<header class="head"><h1 class="logo">Kioukan</h1>
+<div class="sub"><span class="owl" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 9 7M18 4l-3 3"/><path d="M5 10a7 7 0 0 1 14 0v4a7 7 0 0 1-14 0z"/><circle cx="9" cy="11" r="2"/><circle cx="15" cy="11" r="2"/><path d="m11 15 1 1.5 1-1.5"/></svg></span><b data-i18n>Qui ? Où ? Quand ?</b><p data-i18n>Résolvez les crimes en reconstituant les emplois du temps des suspects.</p></div></header>
+
+<script>window.KIOUKAN_DEMO_CH=0</script>
+<script><!--@inc src/shared/i18n.js--></script>
+<script><!--@inc src/shared/en-base.js--></script>
+<script><!--@inc src/shared/sfx.js--></script>
+<style id="skin"><!--@inc src/index/skin.css--></style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="duo" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues="0.078 0.839 0.953"/><feFuncG type="table" tableValues="0.078 0.227 0.941"/><feFuncB type="table" tableValues="0.078 0.141 0.910"/></feComponentTransfer></filter></svg><script><!--@inc src/shared/errbanner.js--></script>
+<noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
+<main class="tickets">
+<a class="mtuto" href="tutoriel.html" id="tuto-cta"><span class="k-n" data-i18n>Étape 1</span><b data-i18n>Tutoriel</b> <span class="d" data-i18n>Apprends à jouer avec une enquête guidée, pas à pas (3 minutes).</span> <span class="go" id="tuto-btn" data-i18n>Commencer ici</span></a>
+<a class="ticket main" href="histoire.html"><div class="t-top"><span data-i18n>Wagons-Lits</span><span data-i18n>1ʳᵉ classe</span></div>
+<div class="img"><img class="p" id="story-img" src="img/bg-night.webp" alt=""></div>
+<div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 2</span><span data-i18n>La campagne</span></p><h2 data-i18n>Le Hibou</h2><p class="d" data-i18n>Hortense Lafleur, institutrice à la retraite, traque un voleur de bijoux de l’Express de minuit jusqu’au casino de Monte-Carlo.</p></div>
+<div class="stub"><span class="go" id="story-btn" data-i18n>Commencer l’enquête</span><span class="no" id="story-no" data-i18n>42 épisodes</span></div></a>
+<a class="ticket quick" href="partie.html"><div class="t-top"><span data-i18n>Dossier</span><span data-i18n>Affaire libre</span></div>
+<div class="img"><div class="faces" id="faces"></div></div>
+<div class="t-body"><p class="k"><span class="k-n" data-i18n>Étape 3</span><span data-i18n>Pour continuer</span></p><h2 data-i18n>Parties rapides</h2><p class="d" data-i18n>Une énigme toujours nouvelle, à la difficulté de votre choix.</p></div>
+<div class="stub"><span class="go" data-i18n>Ouvrir un dossier</span><span class="no" data-i18n>3 niveaux</span></div></a>
+<div class="ticket soon" aria-label="Campagne 2, bientôt"><div class="t-top"><span data-i18n>Campagne 2</span><span data-i18n>Bientôt</span></div>
+<span class="stamp" data-i18n>En cours d’écriture</span>
+<div class="t-body"><p class="k"><span data-i18n>La suite</span></p><h2 data-i18n>La Dernière Vente</h2><p class="d" data-i18n>La Comtesse est derrière les barreaux, mais les Larmes de Lune n’ont pas fini de faire des victimes. De Paris à Venise, Hortense reprend la route, et chaque chapitre cache une règle nouvelle.</p></div>
+<div class="stub"><span class="wait" id="c2-lock" data-i18n>Après la campagne 1</span><span class="no" data-i18n>58 épisodes</span></div></div>
+</main>
+<p class="mfoot" data-i18n>Votre progression est enregistrée sur cet appareil.</p></div>
+<dialog id="howto" class="howto-dlg" aria-labelledby="howto-title"><div class="howto-in"><button type="button" class="howto-x" aria-label="Fermer" data-close>×</button><div id="howto-body"></div></div></dialog>
+<script><!--@inc src/index/en-extra.js--></script>
+<script><!--@inc src/shared/en-fix.js--></script>
+<script src="img/images.js"></script>
+<script><!--@inc src/index/app.js--></script>
+
+</body>
+</html>

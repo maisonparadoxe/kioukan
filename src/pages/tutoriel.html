@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kioukan · Tutoriel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap">
+<style><!--@inc src/shared/story.css--></style>
+
+
+<script>window.KIOUKAN_DEMO_CH=0</script>
+<script><!--@inc src/shared/i18n.js--></script>
+<script><!--@inc src/shared/en-base.js--></script>
+<script><!--@inc src/shared/sfx.js--></script>
+<style id="skin"><!--@inc src/shared/skin.css--></style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="duo" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0.33 0.5 0.17 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues="0.078 0.839 0.953"/><feFuncG type="table" tableValues="0.078 0.227 0.941"/><feFuncB type="table" tableValues="0.078 0.141 0.910"/></feComponentTransfer></filter></svg><script><!--@inc src/shared/errbanner.js--></script>
+<noscript><p style="padding:16px">Kioukan a besoin de JavaScript pour fonctionner.</p></noscript>
+<div class="topnav"><a href="index.html" class="navbtn" data-i18n>← Menu</a><a href="#rules" class="navbtn howto-btn" data-i18n onclick="var r=document.getElementById('rules');if(r){r.open=true;r.scrollIntoView({behavior:'smooth',block:'start'});return false}">Comment jouer ?</a><button type="button" class="navbtn sndbtn" data-sound-toggle></button><div class="langdd" data-lang-menu></div></div>
+<div class="app" id="app">
+  <header class="top">
+    <h1>Kioukan</h1>
+    <p class="mode-tag" data-i18n>Tutoriel</p>
+  </header>
+  <nav id="episodes" data-i18n-aria="Épisodes" aria-label="Épisodes"></nav>
+  <section id="intro" data-i18n-aria="Introduction" aria-label="Introduction"></section>
+  <div class="layout">
+    <div class="col">
+      <section class="panel case" id="case" data-i18n-aria="L'affaire" aria-label="L'affaire"></section>
+      <section class="panel" id="suspects" data-i18n-aria="Les suspects" aria-label="Les suspects"></section>
+      <section class="panel" id="board-panel" data-i18n-aria="Chronologie des déplacements" aria-label="Chronologie des déplacements"></section>
+      <section id="verdict" aria-live="polite"></section>
+    </div>
+    <div class="col">
+      <section class="panel" id="map-panel" data-i18n-aria="Le train en coupe" aria-label="Le train en coupe"></section>
+      <section class="panel" id="clues-panel" data-i18n-aria="Constats" aria-label="Constats"></section>
+      <details class="panel rules" id="rules">
+        <summary data-i18n>Comment jouer</summary>
+        <ol id="rules-list"></ol>
+      </details>
+    </div>
+  </div>
+</div>
+<div id="sheet-root"></div>
+
+<script><!--@inc src/shared/engine.js--></script>
+<script><!--@inc src/shared/story-places.js--></script>
+<script><!--@inc src/shared/art-flat.js--></script>
+<script><!--@inc src/shared/art-lc.js--></script>
+<script>Object.assign(window.KIOUKAN_EN || (window.KIOUKAN_EN = {}), {"42 épisodes": "42 episodes", "Histoire terminée": "Story complete"});</script>
+<script><!--@inc src/shared/en-fix.js--></script>
+<script src="img/images.js"></script>
+<script><!--@inc src/shared/art-webtoon.js--></script>
+<script><!--@inc src/tutoriel/story.js--></script>
+<script>
+window.KioukanFlavor = KioukanTutoData.flavor;
+</script>
+<script>
+window.KIOUKAN_TUTO = true;
+window.KIOUKAN_IMAGES = window.KIOUKAN_IMAGES || {};
+window.KioukanPuzzles = KioukanTutoData.puzzles;
+</script>
+<script><!--@inc src/shared/story-app.js--></script>
+<script><!--@inc src/tutoriel/guide.js--></script>
+
+</body>
+</html>
