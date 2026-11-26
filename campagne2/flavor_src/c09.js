@@ -106,7 +106,7 @@ module.exports = {
   58: [
     [[0], 'Lucie Fer n’a jamais mis les pieds dans le grand salon.', 'Lucy Fer never set foot in the grand salon.'],
     [[1], 'À 20 h 30, Lucie et Julie Enne étaient dans la même pièce.', 'At 8:30 pm, Lucy and Julie Anne were in the same room.'],
-    [[10, 2], 'Le docteur Cament a changé de pièce deux fois, dont une entre 20 h et 20 h 30.', 'Dr Cation changed rooms twice, once of them between 8 pm and 8:30 pm.'],
+    [[10, 2], 'Le docteur Cament a changé de pièce deux fois, dont une entre 20 h et 20 h 30.', 'Dr Cation changed rooms twice, once between 8 pm and 8:30 pm.'],
     [[3], 'À 20 h 30, le docteur et le marquis étaient dans la même pièce. Il lui prenait le pouls.', 'At 8:30 pm, the doctor and the marquis were in the same room. He was taking his pulse.'],
     [[19, 4, 17], 'La salle d’armes était vide à 20 h, à 21 h 30 et à 22 h.', 'The armoury was empty at 8 pm, at 9:30 pm and at 10 pm.'],
     [[5], 'Julie n’a jamais mis les pieds dans la galerie des portraits.', 'Julie never set foot in the portrait gallery.'],

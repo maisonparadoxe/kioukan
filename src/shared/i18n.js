@@ -26,7 +26,7 @@
     'Maître Gérard Menvussa': 'Notaio Guido Nonvedo', 'Lucie Fer': 'Lucia Fero', 'Hippolyte Plateau': 'Ippolito Vassoio', 'Julie Enne': 'Giulia Soffritto', 'Basile Bouture': 'Basilio Talea', 'Dr Mehdi Cament': 'Dott. Medi Camento',
     'Capitaine Jean Tempête': 'Capitano Gianni Tempesta', 'Marcel Hélice': 'Marcello Elica', 'Paul Ka': 'Mario Zurka', 'Cécile Ence': 'Cecilia Silenzi', 'Agathe Crispie': 'Agata Crispi',
     'Enzo Lyrico': 'Enzo Lyrico', 'Maestro Vivaldo Baguette': 'Maestro Vivaldo Bacchetta', 'Paulette Paillette': 'Carla Lustrini', 'Sam Souffle': 'Saverio Soffio', 'Gérard Rideau': 'Gerardo Sipario',
-    'René Vaplu': 'Renato Puntata', 'Bernadette Banco': 'Bernardetta Banco', 'Jacques Potte': 'Giacomo Potti',
+    'René Vaplu': 'Renato Puntata', 'Bernadette Banco': 'Bernardetta Banco', 'Jacques Potte': 'Giacomo Piatti',
     'Mme Vernet': 'Sig.ra Vernet', 'Dr Aubry': 'Dott. Aubry', 'Lucas': 'Lucas', 'Colonel Marchal': 'Colonnello Marchal', 'Inès': 'Inès',
     'Mme Delaunay': 'Sig.ra Delaunay', 'Dr Moreau': 'Dott. Moreau', 'Baron Voss': 'Barone Voss', 'Roux': 'Roux', 'Mlle Ferrand': 'Sig.na Ferrand',
     'Mme Lefèvre': 'Sig.ra Lefèvre', 'M. Costa': 'Sig. Costa', 'Dr Bellamy': 'Dott. Bellamy', 'Mme Okafor': 'Sig.ra Okafor', 'Chef Duval': 'Chef Duval',
@@ -39,7 +39,7 @@
     'André Vivalto': 'Vivalto', 'Paul Ochon': 'Guanciale', 'Lise Défait': 'Lisa', 'Max Valise': 'Max', 'Jacques Teil': 'Spritz', 'Ginette Pépite': 'Gina', 'Chef Al Dente': 'Al Dente',
     'Maître Gérard Menvussa': 'Nonvedo', 'Lucie Fer': 'Lucia', 'Hippolyte Plateau': 'Ippolito', 'Julie Enne': 'Giulia', 'Basile Bouture': 'Basilio', 'Dr Mehdi Cament': 'Camento',
     'Capitaine Jean Tempête': 'Tempesta', 'Marcel Hélice': 'Marcello', 'Paul Ka': 'Zurka', 'Cécile Ence': 'Cecilia', 'Agathe Crispie': 'Agata',
-    'Enzo Lyrico': 'Enzo', 'Maestro Vivaldo Baguette': 'Bacchetta', 'Paulette Paillette': 'Carla', 'Sam Souffle': 'Saverio', 'Gérard Rideau': 'Sipario', 'René Vaplu': 'Renato', 'Bernadette Banco': 'Banco', 'Jacques Potte': 'Potti',
+    'Enzo Lyrico': 'Enzo', 'Maestro Vivaldo Baguette': 'Bacchetta', 'Paulette Paillette': 'Carla', 'Sam Souffle': 'Saverio', 'Gérard Rideau': 'Sipario', 'René Vaplu': 'Renato', 'Bernadette Banco': 'Banco', 'Jacques Potte': 'Piatti',
     'Inspecteur Armand Songe': 'Fandoni', 'Juge Odile Hibéré': 'Berata', 'Gédéon Barreau': 'Sbarra', 'Maître Adjugé Vandu': 'Venduto', 'Ana Gramme': 'Anna', 'Marquis Hugues de Montfaucon': 'Marchese',
     'Pia Doppio': 'Pia', 'Paola Doppio': 'Paola', 'Frère Bernard Lhermite': 'Frate Bernardo', 'Frank Suisse': 'Svizzero', 'Gaspard Pièce': 'Gaspare', 'Cyrielle Bougie': 'Cirilla', 'Monsieur Moustache': 'Baffo', 'Barnabé': 'Barnaba' };
   window.KIOUKAN_NAMES_IT = NAMES_IT;

@@ -11,7 +11,7 @@ module.exports = {
   ]
 };
 module.exports[88] = [
-  [[0, 16], 'Gérard Rideau a changé de salle deux fois, dont une entre 22 h et 22 h 30.', 'Kurt Tenn changed rooms twice, once of them between 10 pm and 10:30 pm.'],
+  [[0, 16], 'Gérard Rideau a changé de salle deux fois, dont une entre 22 h et 22 h 30.', 'Kurt Tenn changed rooms twice, once between 10 pm and 10:30 pm.'],
   [[3, 8, 10], 'Gérard n’a mis les pieds ni dans la galerie des rois, ni dans l’atelier, ni au palais des mirages.', 'Kurt set foot neither in the gallery of kings, nor in the workshop, nor in the palace of illusions.'],
   [[1, 14], 'Sam Souffle est passé par l’atelier des cires et par la salle des grands criminels.', 'Sam Whisper went through the wax workshop and the chamber of great criminals.'],
   [[15], 'Sam est resté dans la même salle à 20 h 30 comme à 21 h.', 'Sam stayed in the same room at 8:30 pm and at 9 pm.'],

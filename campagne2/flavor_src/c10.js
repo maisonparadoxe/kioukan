@@ -117,7 +117,7 @@ module.exports = {
     [[9, 16], 'À 23 h 30, personne dans le fourgon, ni dans la voiture d’observation.', 'At 11:30 pm, nobody in the luggage van, nor in the observation car.'],
     [[12], 'À 23 h 30, Paul Ka était seul dans sa voiture.', 'At 11:30 pm, Paul Kerr was alone in his car.'],
     [[14, 23], 'Paul Ka a changé de voiture deux fois. Il est resté dans la même voiture à 22 h comme à 22 h 30.', 'Paul Kerr changed cars twice. He stayed in the same car at 10 pm and at 10:30 pm.'],
-    [[15, 25], 'Ernest a changé de voiture deux fois, dont une entre 22 h 30 et 23 h.', 'Ernest changed cars twice, once of them between 10:30 pm and 11 pm.'],
+    [[15, 25], 'Ernest a changé de voiture deux fois, dont une entre 22 h 30 et 23 h.', 'Ernest changed cars twice, once between 10:30 pm and 11 pm.'],
     [[18, 17], 'Lucie n’a pas bougé : même voiture à 22 h 30, à 23 h et à 23 h 30.', 'Lucy didn’t budge: same car at 10:30 pm, at 11 pm and at 11:30 pm.'],
     [[20], 'Paul Ka est passé par le fourgon à bagages.', 'Paul Kerr went through the luggage van.'],
     [[24], 'À 0 h 30, Ernest était seul dans sa voiture.', 'At 12:30 am, Ernest was alone in his car.'],

@@ -9,7 +9,7 @@ module.exports = {
   81: [
     [[0, 7], 'René Vaplu est passé par la salle du conseil et par le hall.', 'Noah Morbets went through the boardroom and the hall.'],
     [[1, 2, 11], 'Jacques Potte est passé par la salle des coffres, par le local des gardiens et par le couloir. Il surveillait ses économies.', 'Jack Potts went through the vault, the guards’ room and the corridor. He was keeping an eye on his savings.'],
-    [[12, 13], 'Jacques Potte a changé de pièce deux fois, dont une entre 18 h et 18 h 30.', 'Jack Potts changed rooms twice, once of them between 6 pm and 6:30 pm.'],
+    [[12, 13], 'Jacques Potte a changé de pièce deux fois, dont une entre 18 h et 18 h 30.', 'Jack Potts changed rooms twice, once between 6 pm and 6:30 pm.'],
     [[3], 'Gaspard Pièce n’a changé de pièce qu’une seule fois.', 'Gus Pick changed rooms only once.'],
     [[4], 'Bernadette n’a pas bougé de la soirée. « Je porte malheur quand je bouge. »', 'Betty did not move all evening. “I bring bad luck when I move.”'],
     [[5], 'À 18 h, Bernadette et Gaspard étaient dans la même pièce.', 'At 6 pm, Betty and Gus were in the same room.'],
@@ -36,7 +36,7 @@ module.exports[82] = [
 module.exports[83] = [
   [[0], 'À 19 h, René Vaplu et Ernest étaient dans la même pièce. Ernest lui proposait du café ; René pariait sur le sucre.', 'At 7 pm, Noah Morbets and Ernest were in the same room. Ernest offered him coffee; Noah was betting on the sugar.'],
   [[1], 'À 19 h 30, Pia et Ernest étaient dans la même pièce. Il la suivait déjà.', 'At 7:30 pm, Pia and Ernest were in the same room. He was already following her.'],
-  [[2, 4, 16], 'Bernadette est passée par l’escalier ; elle a changé de pièce deux fois, dont une entre 18 h et 18 h 30.', 'Betty went through the staircase; she changed rooms twice, once of them between 6 pm and 6:30 pm.'],
+  [[2, 4, 16], 'Bernadette est passée par l’escalier ; elle a changé de pièce deux fois, dont une entre 18 h et 18 h 30.', 'Betty went through the staircase; she changed rooms twice, once between 6 pm and 6:30 pm.'],
   [[17, 11], 'Bernadette était seule dans sa pièce à 19 h, puis à 19 h 30. Elle comptait ses jetons.', 'Betty was alone in her room at 7 pm, then at 7:30 pm. She was counting her chips.'],
   [[19, 12], 'Pia et Bernadette étaient dans la même pièce à 18 h, puis à 18 h 30.', 'Pia and Betty were in the same room at 6 pm, then at 6:30 pm.'],
   [[22], 'À 18 h, Bernadette et Ernest étaient dans la même pièce.', 'At 6 pm, Betty and Ernest were in the same room.'],
