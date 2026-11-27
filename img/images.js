@@ -144,6 +144,22 @@ window.KIOUKAN_IMAGES = {
 
   // ——— Identité du jeu ———
 
+  // ——— Campagne 2 · La Dernière Vente ———
+  'inspecteur-armand-songe': 'img/inspecteur-armand-songe-carte.webp',
+  'juge-odile-hibere': 'img/juge-odile-hibere-carte.webp',
+  'gedeon-barreau': 'img/gedeon-barreau-carte.webp',
+  'maitre-adjuge-vandu': 'img/maitre-adjuge-vandu-carte.webp',
+  'ana-gramme': 'img/ana-gramme-carte.webp',
+  'monsieur-moustache': 'img/monsieur-moustache-carte.webp',
+  'barnabe': 'img/barnabe-carte.webp',
+  'marquis-hugues-de-montfaucon': 'img/marquis-hugues-de-montfaucon-carte.webp',
+  'pia-doppio': 'img/pia-doppio-carte.webp',
+  'paola-doppio': 'img/paola-doppio-carte.webp',
+  'frere-bernard-lhermite': 'img/frere-bernard-lhermite-carte.webp',
+  'frank-suisse': 'img/frank-suisse-carte.webp',
+  'gaspard-piece': 'img/gaspard-piece-carte.webp',
+  'cyrielle-bougie': 'img/cyrielle-bougie-carte.webp',
+
   _: 0
 };
 
